@@ -1,0 +1,131 @@
+<%- include('../components/head.ejs') %>
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Destination</h1>
+            <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
+                data-target="#createDestination">
+                <i class="fas fa-plus-circle fa-sm text-white-50"></i> Create Data
+            </button>
+        </div>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">List Destinations</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Image</th>
+                                <th>Location</th>
+                                <th>Price</th>
+                                <th>Reccomendation</th>
+                                <th>Indonesia</th>
+                                <th>International</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for( let i = 0; i < destination.length; i++ ) { %>
+                                <tr>
+                                    <td><%= i+1  %></td>
+                                    <td><%= destination[i]._id %></td>
+                                    <td><%= destination[i].name %></td>
+                                    <td><%= destination[i].image %></td>
+                                    <td><%= destination[i].location %></td>
+                                    <td><%= destination[i].price %></td>
+                                    <td><%= destination[i].isRecommendation %></td>
+                                    <td><%= destination[i].idnRecommendation %></td>
+                                    <td><%= destination[i].interRecommendation %></td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-warning">
+                                            <i class="fa fa-edit"></i>
+                                            Edit
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger">
+                                            <i class="fa fa-trash"></i>
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="createDestination" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title">Create Data</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div action="/admin/create-destination" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="font-weight-bold"> Name </label>
+                        <input type="text" class="form-control" name="name" id="nameDestination"
+                            placeholder="please add destination name..">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold"> Image </label>
+                        <input type="text" class="form-control" name="image" id="imageDestination"
+                            placeholder="please add image..">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold"> Location </label>
+                        <input type="text" class="form-control" name="location" id="locDestination"
+                            placeholder="please add location..">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold"> Price </label>
+                        <input type="text" class="form-control" name="price" id="priceDestination"
+                            placeholder="please add price..">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold"> Reccomendation</label>
+                        <select name="isRecommendation" id="isRecommendation" class="form-control">
+                            <option>--Choose One--</option>
+                            <option value="true"> Yes</option>
+                            <option value="false"> No</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold"> Indonesia Recommendation</label>
+                        <select name="idnRecommendation" id="idnRecommendation" class="form-control">
+                            <option>--Choose One--</option>
+                            <option value="true"> Yes</option>
+                            <option value="false"> No</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold">International Recommendation</label>
+                        <select name="interRecommendation" id="interRecommendation" class="form-control">
+                            <option>--Choose One--</option>
+                            <option value="true"> Yes</option>
+                            <option value="false"> No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-save"></i>
+                        Save
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    </div>
+    </div>
+    <%- include('../components/bottom.ejs')%>
