@@ -8,9 +8,17 @@
                 <i class="fas fa-plus-circle fa-sm text-white-50"></i> Create Data
             </button>
         </div>
+        <div class="row-cols-12">
+            <% if (alert.message != '') { %>
+                <div class="alert alert-<%= alert.status %>" role="alert">
+                    <%- alert.status == 'success' ? `<i class="fas fa-check-square mr-2"></i>`: `<i class="fas fa-exclamation-triangle"></i>` %> 
+                    <%= alert.message %>
+                </div>
+            <% } %>
+        </div>
         <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">List Destinations</h6>
+            <div class="card-header py-3 ch">
+                <h6 class="m-0 font-weight-bold text-white">List Destinations</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -19,8 +27,8 @@
                             <tr>
                                 <th>No</th>
                                 <th>Id</th>
-                                <th>Name</th>
                                 <th>Image</th>
+                                <th>Name</th>
                                 <th>Location</th>
                                 <th>Price</th>
                                 <th>Reccomendation</th>
@@ -34,19 +42,31 @@
                                 <tr>
                                     <td><%= i+1  %></td>
                                     <td><%= destination[i]._id %></td>
-                                    <td><%= destination[i].name %></td>
                                     <td><%= destination[i].image %></td>
+                                    <td><%= destination[i].name %></td>
                                     <td><%= destination[i].location %></td>
                                     <td><%= destination[i].price %></td>
                                     <td><%= destination[i].isRecommendation %></td>
                                     <td><%= destination[i].idnRecommendation %></td>
                                     <td><%= destination[i].interRecommendation %></td>
                                     <td>
-                                        <button type="button" class="btn btn-sm btn-warning">
+                                        <button type="button" class="btn btn-sm cbg text-white btn-edit"
+                                        data-id = "<%= destination[i]._id %>"
+                                        data-image = "<%= destination[i].image %>"
+                                        data-name = "<%= destination[i].name %>"
+                                        data-location = "<%= destination[i].location %>"
+                                        data-price = "<%= destination[i].price %>"
+                                        data-recommended = "<%= destination[i].isRecommendation%>"
+                                        data-idn = "<%= destination[i].idnRecommendation%>"
+                                        data-inter = "<%= destination[i].interRecommendation%>"
+                                        
+                                        >
                                             <i class="fa fa-edit"></i>
                                             Edit
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-danger">
+                                        <button type="button" class="btn btn-sm btn-danger btn-delete"
+                                        data-id = "<%= destination[i]._id %>"
+                                        >
                                             <i class="fa fa-trash"></i>
                                             Delete
                                         </button>
@@ -70,7 +90,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div action="/admin/create-destination" method="post">
+                <form action="/admin/c-destination" method="post">
                 <div class="modal-body">
                     <div class="form-group">
                         <label class="font-weight-bold"> Name </label>
@@ -123,9 +143,169 @@
                         Save
                     </button>
                 </div>
-            </div>
+            </form>
+    </div>
+    </div>
+    </div>
+    <!-- Modal Edit -->
+    <div class="modal fade" id="editDestination" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title">Edit Data</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/admin/update-destination?_method=put" method="post">
+                    <div class="modal-body">
+                        <input type="hidden" class="form-control id" name="id">
+                        <div class="form-group">
+                            <label class="font-weight-bold"> Name </label>
+                            <input type="text" class="form-control name-destination" name="name" id="nameDestination"
+                                placeholder="please add destination name..">
+                        </div>
+                        <div class="form-group">
+                            <label class="font-weight-bold"> Image </label>
+                            <input type="text" class="form-control image-destination" name="image" id="imageDestination"
+                                placeholder="please add image..">
+                        </div>
+                        <div class="form-group">
+                            <label class="font-weight-bold"> Location </label>
+                            <input type="text" class="form-control location" name="location" id="locDestination"
+                                placeholder="please add location..">
+                        </div>
+                        <div class="form-group">
+                            <label class="font-weight-bold"> Price </label>
+                            <input type="text" class="form-control price-destination" name="price" id="priceDestination"
+                                placeholder="please add price..">
+                        </div>
+                        <div class="form-group">
+                            <label class="font-weight-bold"> Reccomendation</label>
+                            <select name="isRecommendation" id="isRecommendation" class="form-control is-recommendation">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="font-weight-bold"> Indonesia Recommendation</label>
+                            <select name="idnRecommendation" id="idnRecommendation" class="form-control idn-recommendation">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="font-weight-bold">International Recommendation</label>
+                            <select name="interRecommendation" id="interRecommendation" class="form-control inter-recommendation">
+                            </select>
+                        </div>
+                    </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-save"></i>
+                        Save
+                    </button>
+                </div>
+                </form>
         </form>
+            </div>
+        </div>
     </div>
+    <!-- Modal Delete -->
+    <div class="modal fade" id="deleteDestination" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Confirm Data</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" class="delete-destination">
+                    <div class="modal-body">
+                        <h5> Are you sure for delete this data ?</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-check-circle"></i>
+                            Yes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-    </div>
+
+    <script>
+        <!-- Modal Jquery Edit -->
+        $('#dataTable').on('click', '.btn-edit', function(){
+            $('#editDestination').modal('show');
+            let id = $(this).data('id');
+            let name = $(this).data('name');
+            let location = $(this).data('location');
+            let image = $(this).data('image');
+            let price = $(this).data('price');
+            let recommend = $(this).data('recommended');
+            let indonesia = $(this).data('idn');
+            let international = $(this).data('inter');
+            console.log(price);
+            console.log(recommend);
+            console.log(indonesia);
+            console.log(international);
+
+            $('.id').val(id);
+            $('.name-destination').val(name);
+            $('.location').val(location);
+            $('.price-destination').val(price);
+            $('.image-destination').val(image);
+
+            let optionRecommendation = `<option>--Choose One--</option>`;
+            if (recommend) {
+                optionRecommendation += `<option value="true" selected>Yes</option>`;
+                optionRecommendation += `<option value="false">No</option>`;
+            } else {
+                optionRecommendation += `<option value="true">Yes</option>`;
+                optionRecommendation += `<option value="false" selected>No</option>`;
+            }
+
+            $('.is-recommendation').html(optionRecommendation);
+
+            let optionIdn = `<option>--Choose One--</option>`;
+            if (indonesia) {
+                optionIdn += `<option value="true" selected>Yes</option>`;
+                optionIdn += `<option value="false">No</option>`;
+            } else {
+                optionIdn += `<option value="true">Yes</option>`;
+                optionIdn += `<option value="false" selected>No</option>`;
+            }
+
+            $('.idn-recommendation').html(optionIdn);
+
+            let optionInternational = `<option>--Choose One--</option>`;
+            if (international) {
+                optionInternational += `<option value="true" selected>Yes</option>`;
+                optionInternational += `<option value="false">No</option>`;
+            } else {
+                optionInternational += `<option value="true">Yes</option>`;
+                optionInternational += `<option value="false" selected>No</option>`;
+            }
+
+            $('.inter-recommendation').html(optionInternational);
+        });
+        // Modal Delete
+        $('#dataTable').on('click', '.btn-delete', function(){
+            $('#deleteDestination').modal('show');
+            let id = $(this).data('id');
+            console.log(id);
+            let url = `/admin/delete-destination/${id}?_method=delete`;
+            $('.delete-destination').attr('action', url);
+            
+        });
+
+        $(document).ready(function(){
+            const timerAlert = $('.alert').text();
+            if( timerAlert !== '') {
+                setTimeout(function(){
+                    $('.alert').fadeOut('slow')
+                }, 3000);
+            }
+        });
+        
+    </script>
     <%- include('../components/bottom.ejs')%>

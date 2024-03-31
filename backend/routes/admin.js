@@ -8,5 +8,8 @@ const destinationController = require('../controller/destinationController');
 router.get('/', dashboardController.index);
 //  Destination
 router.get('/destination', destinationController.index);
-router.post('/create-destination', destinationController.store);
+router.post('/c-destination', destinationController.store);
+router.put('/update-destination', destinationController.update);
+router.delete('/delete-destination/:id', destinationController.delete);
+
 module.exports = router;

@@ -21,6 +21,20 @@ mongoose.connect('mongodb://localhost:27017/onawan');
 const methodOverride = require('method-override');
 app.use(methodOverride('_method'));
 
+/** ==== Express Session modul */
+const session = require('express-session');
+
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { maxAge: 3600000 }
+}));
+
+/** ====== Connect Flash modul */
+const flash = require('connect-flash');
+app.use(flash());
+
 /** ====== Mengatur format file untuk tampilan ======*/
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

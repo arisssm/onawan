@@ -1,8 +1,14 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px "Poppins", Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
+}
+
+.ch {
+  background: linear-gradient(to right, #336699, #0055a5);
+}
+.cbg {
+  background: linear-gradient(to bottom, #336699, #0055a5);
 }
