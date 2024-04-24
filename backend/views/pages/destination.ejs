@@ -113,30 +113,25 @@
                         <input type="text" class="form-control name" name="name" id="nameDestination"
                             placeholder="add destination name" autocomplete="off">
                         <div class="errorMessage text-danger"></div>
-                        <div class="successMesssage text-success"></div>
                     </div>
                     <div class="form-group">
                         <label for="imageCreateDestination" class="font-weight-bold"> Image </label>
                         <input type="file" class="form-control image" name="image" id="imageCreateDestination"
                             placeholder="add image" autocomplete="off">
                         <div class="errorMessage text-danger"></div>
-                        <div class="successMesssage text-success"></div>
                         <img src="" class="preview-image mt-1" id="viewImage" width="150vh" alt="preview">
                     </div>
                     <div class="form-group">
                         <label for="locDestination" class="font-weight-bold"> Location </label>
                         <input type="text" class="form-control location" name="location" id="locDestination"
                             placeholder="add location" autocomplete="off">
-                        <div class="errorMessage text-danger"></div>
-                        <div class="successMesssage text-success"></div>
-
+                            <div class="errorMessage text-danger"></div>
                     </div>
                     <div class="form-group">
                         <label for="priceDestination" class="font-weight-bold"> Price </label>
                         <input type="number" class="form-control price" name="price" id="priceDestination"
                             placeholder="add price" autocomplete="off">
-                        <div class="errorMessage text-danger"></div>
-                        <div class="successMesssage text-success"></div>
+                            <div class="errorMessage text-danger"></div>
                     </div>
                     <div class="form-group">
                         <label for="isRecommendation" class="font-weight-bold"> Reccomendation</label>
@@ -145,7 +140,6 @@
                             <option value="true"> Yes</option>
                             <option value="false"> No</option>
                         </select>
-                        <div class="successMesssage text-success"></div>
                         <div class="errorMessage text-danger"></div>
                     </div>
                     <div class="form-group">
@@ -155,7 +149,6 @@
                             <option value="true"> Yes</option>
                             <option value="false"> No</option>
                         </select>
-                        <div class="successMesssage text-success"></div>
                         <div class="errorMessage text-danger"></div>
                     </div>
                     <div class="form-group">
@@ -165,7 +158,6 @@
                             <option value="true"> Yes</option>
                             <option value="false"> No</option>
                         </select>
-                        <div class="successMesssage text-success"></div>
                         <div class="errorMessage text-danger"></div>
                     </div>
                 </div>
@@ -326,7 +318,7 @@
         $('#dataTable').on('click', '.btn-delete', function(){
             $('#deleteDestination').modal('show');
             let id = $(this).data('id');
-            // console.log(id);
+            console.log(id);
             let url = `/admin/delete-destination/${id}?_method=delete`;
             $('.delete-destination').attr('action', url);
             
@@ -375,7 +367,7 @@
                 success: function(response) {
                     console.log(response);
                     if( response.errors && response.errors.length > 0) {
-                        // $('.errorMessage').empty();
+                        $('.errorMessage').empty();
                         response.errors.forEach(function(error){
                             $('.form-control.' + error.path).siblings('.errorMessage').text(error.msg);
                         });

@@ -45,7 +45,7 @@ module.exports = {
 
             req.flash('alertMsg', 'New document has been saved');
             req.flash('alertStatus', 'success');
-            res.json({ alertMsg: 'Success, new document has been saved.', alertStatus: 'success' });
+            res.json({ alertMsg: 'New document has been saved.', alertStatus: 'success' });
             // res.redirect('/admin/destination');
             
             // console.log(req.body);
@@ -86,13 +86,15 @@ module.exports = {
             console.log(req.file);
             req.flash('alertMsg', 'Success, document has been updated');
             req.flash('alertStatus', 'success');
-            res.redirect('/admin/destination');
+            res.json({ alertMsg: 'Success, new document has been saved.', alertStatus: 'success' });
+            // res.redirect('/admin/destination');
 
         } catch(error){
             console.log(error.message);
-            req.flash('alertMsg', error.message );
+            req.flash('alertMsg','Failed, error code: ' + error.message );
             req.flash('alertStatus', 'danger');
-            res.redirect('/admin/destination');
+            res.json({ alertMsg: 'Failed, error code: ' + error.message, alertStatus: 'danger' });
+            // res.redirect('/admin/destination');
         }
     },
     delete: async (req, res) => {
