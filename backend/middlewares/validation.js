@@ -1,23 +1,23 @@
 const {body, validationResult} = require('express-validator');
-const documentDestination = require('../models/destination');
+// const documentDestination = require('../models/destination');
 
 
-exports.validateCreateDestination = [
+exports.validateDestination = [
     body('name')
     .notEmpty().withMessage('Name is required')
     .isLength({ min:4, max:20}).withMessage('Name must be between 5 until 20 characters')
-    .matches(/^[a-zA-Z\s]+$/).withMessage('Name must only contain letters and spaces')
-    .custom((value) => {
-        return documentDestination.find({ name: value }).then(destination => {
-            if (destination.length > 0) {
-                throw new Error("Destination name is taken!");
-            }
-        });
-    }),
+    .matches(/^[a-zA-Z\s]+$/).withMessage('Name must only contain letters and spaces'),
+    // .custom((value) => {
+    //     return documentDestination.find({ name: value }).then(destination => {
+    //         if (destination.length > 0) {
+    //             throw new Error("Destination name is taken!");
+    //         }
+    //     });
+    // }),
     body('location')
     .notEmpty().withMessage('Location is required')
-    .matches(/^[a-zA-Z\s]+$/).withMessage('Name must only contain letters and spaces')
-    .isLength({ min: 4, max: 20}).withMessage('Name must be between 5 until 20 characters'),
+    .matches(/^[a-zA-Z\s]+$/).withMessage('Name location must only contain letters and spaces')
+    .isLength({ min: 4, max: 20}).withMessage('Name location must be between 5 until 20 characters'),
 
     body('price')
     .notEmpty().withMessage('Price is required') 
@@ -51,4 +51,4 @@ exports.validateCreateDestination = [
         }
         next();
     }
-]
+];

@@ -19,7 +19,6 @@ const storage = multer.diskStorage({
         } else {
             cb(new Error('Unsupported file type'));
         }
-        cb(null, uploadPath);
     },
     filename: function(req, file, cb){
     cb(null, Date.now() + Math.round(Math.random() * 1E9) + path.extname(file.originalname));

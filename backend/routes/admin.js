@@ -11,14 +11,14 @@ const testimonialController = require('../controller/testimonialController');
 const userController = require('../controller/userController');
 const bannerController = require('../controller/bannerController');
 const { upload } = require('../middlewares/multer');
-const { validateCreateDestination } = require('../middlewares/validation');
+const { validateDestination } = require('../middlewares/validation');
 
 /** Dashboard */
 router.get('/', dashboardController.index);
 /** Destination */
 router.get('/destination', destinationController.index);
-router.post('/create-destination', upload, validateCreateDestination, destinationController.store);
-router.put('/update-destination', upload, destinationController.update);
+router.post('/create-destination', upload, validateDestination, destinationController.store);
+router.put('/update-destination', upload, validateDestination, destinationController.update);
 router.delete('/delete-destination/:id', destinationController.delete);
 /** About */
 router.get('/about', aboutController.index);

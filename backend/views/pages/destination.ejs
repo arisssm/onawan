@@ -106,7 +106,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="destinationFormCreate" action="/admin/create-destination" method="post" enctype="multipart/form-data">
+                <form id="destinationFormCreate" enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="nameDestination" class="font-weight-bold"> Name </label>
@@ -182,44 +182,52 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="/admin/update-destination?_method=put" method="post" enctype="multipart/form-data">
+                <form id="destinationFormUpdate" enctype="multipart/form-data">
                     <div class="modal-body">
                         <input type="hidden" class="form-control id" name="id">
                         <div class="form-group">
                             <label for="nameDestination" class="font-weight-bold"> Name </label>
-                            <input type="text" class="form-control name-destination" name="name" id="nameDestination"
+                            <input type="text" class="form-control name name-destination" name="name" id="nameDestination"
                                 placeholder="please add destination name.." autocomplete="off">
+                            <div class="errorMessageUpdate text-danger"></div>
                         </div>
                         <div class="form-group">
                             <label for="imageUpdateDestination" class="font-weight-bold"> Image </label>
-                            <input type="file" class="form-control image-destination" name="image" id="imageUpdateDestination"
-                                placeholder="please add image.." autocomplete="off">
+                            <input type="file" class="form-control image image-destination" name="image" id="imageUpdateDestination"
+                                autocomplete="off">
+                            <div class="errorMessageUpdate text-danger"></div>
+                            <div class="errorFileUpdate text-danger"></div>
                             <img src="" class="previewImg mt-2" id="previewImg" width="150vh" alt="preview">
                         </div>
                         <div class="form-group">
                             <label for="locDestination" class="font-weight-bold"> Location </label>
-                            <input type="text" class="form-control location" name="location" id="locDestination"
+                            <input type="text" class="form-control location location-destination" name="location" id="locDestination"
                                 placeholder="please add location.." autocomplete="off">
+                            <div class="errorMessageUpdate text-danger"></div>
                         </div>
                         <div class="form-group">
                             <label for="priceDestination" class="font-weight-bold"> Price </label>
-                            <input type="number" class="form-control price-destination" name="price" id="priceDestination"
+                            <input type="number" class="form-control price price-destination" name="price" id="priceDestination"
                                 placeholder="please add price.." autocomplete="off">
+                            <div class="errorMessageUpdate text-danger"></div>    
                         </div>
                         <div class="form-group">
                             <label for="isRecommendation" class="font-weight-bold"> Reccomendation</label>
-                            <select name="isRecommendation" id="isRecommendation" class="form-control is-recommendation">
+                            <select name="isRecommendation" id="isRecommendation" class="form-control isRecommendation is-recommendation">
                             </select>
+                            <div class="errorMessageUpdate text-danger"></div>
                         </div>
                         <div class="form-group">
                             <label for="idnRecommendation" class="font-weight-bold"> Indonesia Recommendation</label>
-                            <select name="idnRecommendation" id="idnRecommendation" class="form-control idn-recommendation">
+                            <select name="idnRecommendation" id="idnRecommendation" class="form-control idnRecommendation idn-recommendation">
                             </select>
+                            <div class="errorMessageUpdate text-danger"></div>
                         </div>
                         <div class="form-group">
                             <label for="interRecommendation" class="font-weight-bold">International Recommendation</label>
-                            <select name="interRecommendation" id="interRecommendation" class="form-control inter-recommendation">
+                            <select name="interRecommendation" id="interRecommendation" class="form-control interRecommendation inter-recommendation">
                             </select>
+                            <div class="errorMessageUpdate text-danger"></div>
                         </div>
                     </div>
                 <div class="modal-footer">
@@ -278,7 +286,7 @@
 
             $('.id').val(id);
             $('.name-destination').val(name);
-            $('.location').val(location);
+            $('.location-destination').val(location);
             $('.price-destination').val(price);
             $('.previewImg').attr('src', imgUrl);
 
@@ -354,8 +362,8 @@
                 $('#previewImg').attr('src', e.target.result);
             };
             reader.readAsDataURL(file);
-            $('.errorMessage').empty();
-            $('.errorFile').empty();   
+            $('.errorMessageUpdate').empty();
+            $('.errorFileUpdate').empty();   
         });
 
         // jquery ajax untuk response validasi
@@ -399,6 +407,51 @@
                     error: function(xhr, textStatus, errorThrown) {
                         console.error('Error:', errorThrown);
                         $('.errorFile').text('Bad, please check again your upload.');
+                    }
+                });
+        });
+
+        // validasi form update
+        $('#destinationFormUpdate').submit(function(event) {
+            event.preventDefault();
+                let formData = new FormData(this);
+                $.ajax({
+                method: 'POST',
+                url: '/admin/update-destination?_method=put',
+                async: true,
+                data: formData,
+                contentType: false,
+                processData: false,
+                    success: function(response) {
+                        console.log(response);
+                        if( response.errors && response.errors.length > 0) {
+                            $('.errorMessageUpdate').empty();
+                            response.errors.forEach(function(error){
+                                $('.form-control.' + error.path).siblings('.errorMessageUpdate').text(error.msg);
+                            });
+                        } else {
+                            $('#editDestination').modal('hide');
+                            let alertMsg = response.alertMsg;
+                            let alertStatus = response.alertStatus;
+
+                            $('.flash-messages').html(
+                                `<div class=" alert alert-` + alertStatus + `"role="alert">` +
+                                (alertStatus === 'success' ? `<i class="fas fa-check-square mr-2"></i>` : ` <i class="fas fa-exlamation-triangle"></i>`)
+                                + alertMsg + `</div>`
+                            );
+
+                            const timerAlert = $('.flash-messages').html();
+                            if( timerAlert !== '') {
+                                setTimeout(function(){
+                                    $('.flash-messages').fadeOut('slow')
+                                }, 3000);
+                            }
+                            location.reload();
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.error('Error:', errorThrown);
+                        $('.errorFileUpdate').text('Bad, please check again your upload.');
                     }
                 });
         });
