@@ -96,7 +96,7 @@
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal Create -->
     <div class="modal fade" id="createDestination" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -107,69 +107,70 @@
                     </button>
                 </div>
                 <form id="destinationFormCreate" action="/admin/create-destination" method="post" enctype="multipart/form-data">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="nameDestination" class="font-weight-bold"> Name </label>
-                        <input type="text" class="form-control name" name="name" id="nameDestination"
-                            placeholder="add destination name" autocomplete="off">
-                        <div class="errorMessage text-danger"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="imageCreateDestination" class="font-weight-bold"> Image </label>
-                        <input type="file" class="form-control image" name="image" id="imageCreateDestination"
-                            placeholder="add image" autocomplete="off">
-                        <div class="errorMessage text-danger"></div>
-                        <img src="" class="preview-image mt-1" id="viewImage" width="150vh" alt="preview">
-                    </div>
-                    <div class="form-group">
-                        <label for="locDestination" class="font-weight-bold"> Location </label>
-                        <input type="text" class="form-control location" name="location" id="locDestination"
-                            placeholder="add location" autocomplete="off">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="nameDestination" class="font-weight-bold"> Name </label>
+                            <input type="text" class="form-control name" name="name" id="nameDestination"
+                                placeholder="add destination name" autocomplete="off">
                             <div class="errorMessage text-danger"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="priceDestination" class="font-weight-bold"> Price </label>
-                        <input type="number" class="form-control price" name="price" id="priceDestination"
-                            placeholder="add price" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="imageCreateDestination" class="font-weight-bold"> Image </label>
+                            <input type="file" class="form-control image" name="image" id="imageCreateDestination"
+                                placeholder="add image" autocomplete="off">
                             <div class="errorMessage text-danger"></div>
+                            <div class="errorFile text-danger"></div>
+                            <img src="" class="preview-image mt-1" id="viewImage" width="150vh" alt="preview">
+                        </div>
+                        <div class="form-group">
+                            <label for="locDestination" class="font-weight-bold"> Location </label>
+                            <input type="text" class="form-control location" name="location" id="locDestination"
+                                placeholder="add location" autocomplete="off">
+                                <div class="errorMessage text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="priceDestination" class="font-weight-bold"> Price </label>
+                            <input type="number" class="form-control price" name="price" id="priceDestination"
+                                placeholder="add price" autocomplete="off">
+                                <div class="errorMessage text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="isRecommendation" class="font-weight-bold"> Reccomendation</label>
+                            <select name="isRecommendation" id="isRecommendation" class="form-control isRecommendation">
+                                <option>--Choose One--</option>
+                                <option value="true"> Yes</option>
+                                <option value="false"> No</option>
+                            </select>
+                            <div class="errorMessage text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="idnRecommendation" class="font-weight-bold"> Indonesia Recommendation</label>
+                            <select name="idnRecommendation" id="idnRecommendation" class="form-control idnRecommendation">
+                                <option>--Choose One--</option>
+                                <option value="true"> Yes</option>
+                                <option value="false"> No</option>
+                            </select>
+                            <div class="errorMessage text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="interRecommendation" class="font-weight-bold">International Recommendation</label>
+                            <select name="interRecommendation" id="interRecommendation" class="form-control interRecommendation">
+                                <option>--Choose One--</option>
+                                <option value="true"> Yes</option>
+                                <option value="false"> No</option>
+                            </select>
+                            <div class="errorMessage text-danger"></div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="isRecommendation" class="font-weight-bold"> Reccomendation</label>
-                        <select name="isRecommendation" id="isRecommendation" class="form-control isRecommendation">
-                            <option>--Choose One--</option>
-                            <option value="true"> Yes</option>
-                            <option value="false"> No</option>
-                        </select>
-                        <div class="errorMessage text-danger"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="idnRecommendation" class="font-weight-bold"> Indonesia Recommendation</label>
-                        <select name="idnRecommendation" id="idnRecommendation" class="form-control idnRecommendation">
-                            <option>--Choose One--</option>
-                            <option value="true"> Yes</option>
-                            <option value="false"> No</option>
-                        </select>
-                        <div class="errorMessage text-danger"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="interRecommendation" class="font-weight-bold">International Recommendation</label>
-                        <select name="interRecommendation" id="interRecommendation" class="form-control interRecommendation">
-                            <option>--Choose One--</option>
-                            <option value="true"> Yes</option>
-                            <option value="false"> No</option>
-                        </select>
-                        <div class="errorMessage text-danger"></div>
-                    </div>
-                </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">
                         <i class="fa fa-save"></i>
                         Save
                     </button>
                 </div>
-            </form>
-    </div>
-    </div>
+                </form>
+            </div>
+        </div>
     </div>
     <!-- Modal Edit -->
     <div class="modal fade" id="editDestination" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -341,6 +342,8 @@
                 $('#viewImage').attr('src', e.target.result);
             };
             reader.readAsDataURL(file);
+            $('.errorMessage').empty();
+            $('.errorFile').empty();   
         });
 
         //display image create
@@ -351,47 +354,53 @@
                 $('#previewImg').attr('src', e.target.result);
             };
             reader.readAsDataURL(file);
+            $('.errorMessage').empty();
+            $('.errorFile').empty();   
         });
 
         // jquery ajax untuk response validasi
         $('#destinationFormCreate').submit(function(event) {
             event.preventDefault();
-            let formData = new FormData(this);
-            $.ajax({
+                let formData = new FormData(this);
+                $.ajax({
                 method: 'POST',
                 url: '/admin/create-destination',
                 async: true,
                 data: formData,
                 contentType: false,
                 processData: false,
-                success: function(response) {
-                    console.log(response);
-                    if( response.errors && response.errors.length > 0) {
-                        $('.errorMessage').empty();
-                        response.errors.forEach(function(error){
-                            $('.form-control.' + error.path).siblings('.errorMessage').text(error.msg);
-                        });
-                    } else {
-                        $('#createDestination').modal('hide');
-                        let alertMsg = response.alertMsg;
-                        let alertStatus = response.alertStatus;
+                    success: function(response) {
+                        console.log(response);
+                        if( response.errors && response.errors.length > 0) {
+                            $('.errorMessage').empty();
+                            response.errors.forEach(function(error){
+                                $('.form-control.' + error.path).siblings('.errorMessage').text(error.msg);
+                            });
+                        } else {
+                            $('#createDestination').modal('hide');
+                            let alertMsg = response.alertMsg;
+                            let alertStatus = response.alertStatus;
 
-                        $('.flash-messages').html(
-                            `<div class=" alert alert-` + alertStatus + `"role="alert">` +
-                            (alertStatus === 'success' ? `<i class="fas fa-check-square mr-2"></i>` : ` <i class="fas fa-exlamation-triangle"></i>`)
-                            + alertMsg + `</div>`
-                        );
+                            $('.flash-messages').html(
+                                `<div class=" alert alert-` + alertStatus + `"role="alert">` +
+                                (alertStatus === 'success' ? `<i class="fas fa-check-square mr-2"></i>` : ` <i class="fas fa-exlamation-triangle"></i>`)
+                                + alertMsg + `</div>`
+                            );
 
-                        const timerAlert = $('.flash-messages').html();
-                        if( timerAlert !== '') {
-                            setTimeout(function(){
-                                $('.flash-messages').fadeOut('slow')
-                            }, 3000);
+                            const timerAlert = $('.flash-messages').html();
+                            if( timerAlert !== '') {
+                                setTimeout(function(){
+                                    $('.flash-messages').fadeOut('slow')
+                                }, 3000);
+                            }
+                            location.reload();
                         }
-                        location.reload();
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.error('Error:', errorThrown);
+                        $('.errorFile').text('Bad, please check again your upload.');
                     }
-                }
-            })
+                });
         });
 
     </script>

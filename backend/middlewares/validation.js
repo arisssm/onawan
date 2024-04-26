@@ -28,8 +28,12 @@ exports.validateCreateDestination = [
         }
         return true;
     }),
-    // body('image')
-    // .notEmpty().withMessage('Image is required'),
+    body('image').custom((value, { req }) => {
+        if (!req.file) {
+            throw new Error('Image is required');
+        }
+        return true;
+    }),
     body('isRecommendation')
     .notEmpty().withMessage('Recommendation is required')
     .isBoolean().withMessage('Recommendation must be selected'),
