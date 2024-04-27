@@ -6,9 +6,8 @@ a {
   color: #00B7FF;
 }
 
-.ch {
-  background: linear-gradient(to right, #336699, #0055a5);
-}
-.cbg {
-  background: linear-gradient(to bottom, #336699, #0055a5);
+.cbg, .ch {
+  background-color: rgb(28, 116, 172);
+  border-color: #ffffff;
+  border-style: solid;
 }
