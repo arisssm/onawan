@@ -28,12 +28,12 @@ exports.validateDestination = [
         }
         return true;
     }),
-    body('image').custom((value, { req }) => {
-        if (!req.file) {
-            throw new Error('Image is required');
-        }
-        return true;
-    }),
+    // body('image').custom((value, { req }) => {
+    //     if (!req.file) {
+    //         throw new Error('Image is required');
+    //     }
+    //     return true;
+    // }),
     body('isRecommendation')
     .notEmpty().withMessage('Recommendation is required')
     .isBoolean().withMessage('Recommendation must be selected'),
@@ -52,3 +52,4 @@ exports.validateDestination = [
         next();
     }
 ];
+

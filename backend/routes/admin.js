@@ -17,14 +17,22 @@ const { validateDestination } = require('../middlewares/validation');
 router.get('/', dashboardController.index);
 /** Destination */
 router.get('/destination', destinationController.index);
-router.post('/create-destination', upload, validateDestination, destinationController.store);
-router.put('/update-destination', upload, validateDestination, destinationController.update);
+router.post('/create-destination', upload.single('image'), validateDestination, destinationController.store);
+router.put('/update-destination', upload.single('image'), validateDestination, destinationController.update);
 router.delete('/delete-destination/:id', destinationController.delete);
 /** About */
 router.get('/about', aboutController.index);
-// router.post('/create-about', aboutController.store);
-// router.put('/update-about', aboutController.update);
-// router.delete('/delete-about/:id', aboutController.delete);
+router.post('/create-about',upload.fields([
+    { name: 'imageHistory' },
+    { name: 'image' },
+    { name: 'bannerSupport' }
+]), aboutController.store);
+router.put('/update-about', upload.fields([
+    { name: 'imageHistory' },
+    { name: 'image' },
+    { name: 'bannerSupport' }
+]), aboutController.update);
+router.delete('/delete-about/:id', aboutController.delete);
 /** Airline */
 router.get('/airline', airlineController.index);
 // router.post('/create-airline', airlineController.store);

@@ -21,7 +21,9 @@ const storage = multer.diskStorage({
         }
     },
     filename: function(req, file, cb){
-    cb(null, Date.now() + Math.round(Math.random() * 1E9) + path.extname(file.originalname));
+    // cb(null, Date.now() + Math.round(Math.random() * 1E9) + path.extname(file.originalname));
+    const uniqueFile = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, `${uniqueFile}${path.extname(file.originalname)}`);
     }
 });
 
@@ -58,6 +60,6 @@ const upload = multer({
     {
         checkTypeFile(file, cb);
     }
-}).single('image');
+});
 
 module.exports = { upload };

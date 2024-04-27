@@ -1,0 +1,429 @@
+<%- include('../components/head.ejs') %>
+    <div class="container-fluid">
+        <div class="row-cols-1 mb-4">
+            <h1 class="h3 mb-0 text-gray-800">About Us</h1>
+        </div>
+        <div class="row-cols-1">
+            <% if (alert.message != '') { %>
+                <div class="alert alert-<%= alert.status %>" role="alert">
+                    <%- alert.status == 'success' ? `<i class="fas fa-check-square mr-2"></i>`: `<i class="fas fa-exclamation-triangle"></i>` %> 
+                    <%= alert.message %>
+                </div>
+            <% } %>
+        </div>
+        <div class="flash-messages"></div>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 ch">
+                <div class="row d-flex">
+                    <div class="col">
+                        <h6 class="m-0 font-weight-bold text-white">About</h6>
+                    </div>
+                    <div class="col-4">
+                        <div class="text-right">
+                            <div class="input-group input-group-sm">
+                                <!-- <input type="text" class="form-control" placeholder="search document"> -->
+                                <div class="input-group-append">
+                                    <!-- <button type="button" class="btn btn-sm btn-info"><i class="fas fa-search"></i></button> -->
+                                    <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#createAbout">
+                                    <i class="fas fa-plus-circle fa-sm text-white-50"></i> Create Data
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>History</th>
+                                <th>imageHistory</th>
+                                <th>Vision</th>
+                                <th>Mission</th>
+                                <th>Image</th>
+                                <th>Banner Support</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for( let i = 0; i < about.length; i++ ) { %>
+                                <tr>
+                                    <td><%= i+1  %></td>
+                                    <td><%= about[i].history %></td>
+                                    <td>
+                                        <!-- <%= about[i].imageHistory %> -->
+                                        <img src="/images/<%= about[i].imageHistory %>" width="150vh" alt="">
+                                    </td>
+                                    <td><%= about[i].vision %></td>
+                                    <td><%= about[i].mission %></td>
+                                    <td>
+                                        <!-- <%= about[i].image %> -->
+                                        <img src="/images/<%= about[i].image %>" width="150vh" alt="">
+                                    </td>
+                                    <td>
+                                        <!-- <%= about[i].bannerSupport %> -->
+                                        <img src="/images/<%= about[i].bannerSupport %>" width="150vh" alt="">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm cbg text-white btn-edit"
+                                        data-id = "<%= about[i]._id %>"
+                                        data-history = "<%= about[i].history %>"
+                                        data-imagehistory = "<%= about[i].imageHistory %>"
+                                        data-vision = "<%= about[i].vision %>"
+                                        data-mission = "<%= about[i].mission %>"
+                                        data-imagemain = "<%= about[i].image %>"
+                                        data-bannersup = "<%= about[i].bannerSupport %>"
+                                        >
+                                            <i class="fa fa-edit"></i>
+                                            Edit
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger btn-delete"
+                                        data-id = "<%= about[i]._id %>"
+                                        >
+                                            <i class="fa fa-trash"></i>
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Create -->
+    <div class="modal fade" id="createAbout" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header ch text-white">
+                    <h5 class="modal-title">Create Data</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="aboutFormCreate" action="/admin/create-about" method="post" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="historyAbout" class="font-weight-bold"> History </label>
+                            <textarea type="text" class="form-control history" name="history" id="historyAbout"
+                                placeholder="add history" autocomplete="off"></textarea>
+                            <div class="errorMessage text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="imageHistoryAbout" class="font-weight-bold"> Image History </label>
+                            <input type="file" class="form-control imageHistory" name="imageHistory" id="imageHistoryAbout"
+                                autocomplete="off">
+                            <div class="errorMessage text-danger"></div>
+                            <div class="errorFileHistory text-danger"></div>
+                            <img src="" class="preview-imageHistory mt-1" id="viewImageHistory" width="150vh" alt="preview">
+                        </div>
+                        <div class="form-group">
+                            <label for="visionAbout" class="font-weight-bold"> Vision </label>
+                            <input type="text" class="form-control vision" name="vision" id="visionAbout"
+                                placeholder="add vision" autocomplete="off">
+                            <div class="errorMessage text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="missionAbout" class="font-weight-bold"> Mission </label>
+                            <textarea type="text" class="form-control mission" name="mission" id="missionAbout"
+                                placeholder="add mission" autocomplete="off"></textarea>
+                            <div class="errorMessage text-danger"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="imageAbout" class="font-weight-bold"> Image </label>
+                                    <input type="file" class="form-control image" name="image" id="imageAbout"
+                                        autocomplete="off">
+                                    <div class="errorMessage text-danger"></div>
+                                    <div class="errorFileImage text-danger"></div>
+                                    <img src="" class="preview-image mt-1" id="viewImage" width="150vh" alt="preview">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="imageBannerSupport" class="font-weight-bold"> Banner </label>
+                                    <input type="file" class="form-control bannerSupport" name="bannerSupport" id="imageBannerSupport"
+                                        autocomplete="off">
+                                    <div class="errorMessage text-danger"></div>
+                                    <div class="errorFileBanner text-danger"></div>
+                                    <img src="" class="preview-bannerSupport mt-1" id="viewImageBanner" width="150vh" alt="preview">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-save"></i>
+                        Save
+                    </button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit -->
+    <div class="modal fade" id="editAbout" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header ch text-white">
+                    <h5 class="modal-title">Edit Data</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="aboutFormUpdate" action="/admin/update-about?_method=put" method="post" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <input type="text" class="form-control id id-about" name="id" disabled>
+                        <div class="form-group">
+                            <label for="historyAbout" class="font-weight-bold"> History </label>
+                            <textarea type="text" class="form-control history history-about" name="history" id="updateHistoryAbout"
+                                placeholder="add history" autocomplete="off"></textarea>
+                            <div class="errorMessageUpdate text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="imageHistoryAbout" class="font-weight-bold"> Image History </label>
+                            <input type="file" class="form-control imageHistory image-history" name="imageHistory" id="updateImageHistory"
+                                autocomplete="off">
+                            <div class="errorMessageUpdate text-danger"></div>
+                            <div class="errorFileHistory text-danger"></div>
+                            <img src="" class="preview-imgHistory mt-1" id="viewImgHistory" width="150vh" alt="preview">
+                        </div>
+                        <div class="form-group">
+                            <label for="visionAbout" class="font-weight-bold"> Vision </label>
+                            <input type="text" class="form-control vision vision-about" name="vision" id="updateVisionAbout"
+                                placeholder="add vision" autocomplete="off">
+                            <div class="errorMessageUpdate text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="missionAbout" class="font-weight-bold"> Mission </label>
+                            <textarea type="text" class="form-control mission mission-about" name="mission" id="updateMissionAbout"
+                                placeholder="add mission" autocomplete="off"></textarea>
+                            <div class="errorMessageUpdate text-danger"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="imageAbout" class="font-weight-bold"> Image </label>
+                                    <input type="file" class="form-control image image-about" name="image" id="updateImageAbout"
+                                        autocomplete="off">
+                                    <div class="errorMessageUpdate text-danger"></div>
+                                    <div class="errorFileImage text-danger"></div>
+                                    <img src="" class="preview-img mt-1" id="viewImg" width="150vh" alt="preview">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="imageBannerSupport" class="font-weight-bold"> Banner </label>
+                                    <input type="file" class="form-control bannerSupport banner-about" name="bannerSupport" id="updateImageBanner"
+                                        autocomplete="off">
+                                    <div class="errorMessageUpdate text-danger"></div>
+                                    <div class="errorFileBanner text-danger"></div>
+                                    <img src="" class="preview-banner mt-1" id="viewImgBanner" width="150vh" alt="preview">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-save"></i>
+                        Save
+                    </button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Delete -->
+    <div class="modal fade" id="deleteAbout" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Confirm Data</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" class="delete-about">
+                    <div class="modal-body">
+                        <h5> Are you sure to delete this data ?</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa fa-check-circle"></i>
+                            Yes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<script>
+    $('#dataTable').on('click', '.btn-edit', function(){
+        $('#editAbout').modal('show');
+        let id = $(this).data('id');
+        let history = $(this).data('history');
+        // 
+        let imgHistory = $(this).data('imagehistory');
+        let imgHistoryUrl = "/images/" + imgHistory;
+        // 
+        let vision = $(this).data('vision');
+        let mission = $(this).data('mission');
+        // 
+        let imageMain = $(this).data('imagemain');
+        let imgUrl = "/images/" + imageMain;
+        // 
+        let banner = $(this).data('bannersup');
+        let imgBannerUrl = "/images/" + banner;
+        console.log(id);
+        console.log(history);
+        console.log(imgHistory);
+        console.log(vision);
+        console.log(mission);
+        console.log(imageMain);
+        console.log(banner);
+
+        $('.id-about').val(id);
+        $('.history-about').val(history);
+        $('.preview-imgHistory').attr('src', imgHistoryUrl);
+        $('.vision-about').val(vision);
+        $('.mission-about').val(mission);
+        $('.preview-img').attr('src', imgUrl);
+        $('.preview-banner').attr('src', imgBannerUrl);
+    });
+
+    //display image update
+    $('#updateImageHistory').change(function(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            $('#viewImgHistory').attr('src', e.target.result);
+        };
+        reader.readAsDataURL(file);
+        $('.errorMessageUpdate').empty();
+        $('.errorFileHistory').empty();   
+    });
+    $('#updateImageAbout').change(function(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            $('#viewImg').attr('src', e.target.result);
+        };
+        reader.readAsDataURL(file);
+        $('.errorMessageUpdate').empty();
+        $('.errorFileImage').empty();   
+    });
+    $('#updateImageBanner').change(function(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            $('#viewImgBanner').attr('src', e.target.result);
+        };
+        reader.readAsDataURL(file);
+        $('.errorMessageUpdate').empty();
+        $('.errorFileBanner').empty();   
+    });
+
+     // Modal Delete
+     $('#dataTable').on('click', '.btn-delete', function(){
+        $('#deleteAbout').modal('show');
+        let id = $(this).data('id');
+        console.log(id);
+        let url = `/admin/delete-about/${id}?_method=delete`;
+        $('.delete-about').attr('action', url);
+        
+    });
+
+    $(document).ready(function(){
+        const timerAlert = $('.alert').text();
+        if( timerAlert !== '') {
+            setTimeout(function(){
+                $('.alert').fadeOut('slow')
+            }, 3000);
+        }
+    });
+     //display image create
+    $('#imageHistoryAbout').change(function(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            $('#viewImageHistory').attr('src', e.target.result);
+        };
+        reader.readAsDataURL(file);
+        $('.errorMessage').empty();
+        $('.errorFileHistory').empty();   
+    });
+    $('#imageAbout').change(function(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            $('#viewImage').attr('src', e.target.result);
+        };
+        reader.readAsDataURL(file);
+        $('.errorMessage').empty();
+        $('.errorFileImage').empty();   
+    });
+    $('#imageBannerSupport').change(function(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            $('#viewImageBanner').attr('src', e.target.result);
+        };
+        reader.readAsDataURL(file);
+        $('.errorMessage').empty();
+        $('.errorFileBanner').empty();   
+    });
+
+    // $('#aboutFormCreate').submit(function(event) {
+    //         event.preventDefault();
+    //             let formData = new FormData(this);
+    //             $.ajax({
+    //             method: 'POST',
+    //             url: '/admin/create-about',
+    //             async: true,
+    //             data: formData,
+    //             contentType: false,
+    //             processData: false,
+    //                 success: function(response) {
+    //                     console.log(response);
+    //                     if( response.errors && response.errors.length > 0) {
+    //                         $('.errorMessage').empty();
+    //                         response.errors.forEach(function(error){
+    //                             $('.form-control.' + error.path).siblings('.errorMessage').text(error.msg);
+    //                         });
+    //                     } else {
+    //                         $('#createAbout').modal('hide');
+    //                         let alertMsg = response.alertMsg;
+    //                         let alertStatus = response.alertStatus;
+
+    //                         $('.flash-messages').html(
+    //                             `<div class=" alert alert-` + alertStatus + `"role="alert">` +
+    //                             (alertStatus === 'success' ? `<i class="fas fa-check-square mr-2"></i>` : ` <i class="fas fa-exlamation-triangle"></i>`)
+    //                             + alertMsg + `</div>`
+    //                         );
+
+    //                         const timerAlert = $('.flash-messages').html();
+    //                         if( timerAlert !== '') {
+    //                             setTimeout(function(){
+    //                                 $('.flash-messages').fadeOut('slow')
+    //                             }, 3000);
+    //                         }
+    //                         location.reload();
+    //                     }
+    //                 },
+    //                 error: function(xhr, textStatus, errorThrown) {
+    //                     console.error('Error:', errorThrown);
+    //                     $('.errorFile').text('Bad, please check again your upload.');
+    //                 }
+    //             });
+    //     });
+</script>
+<%- include('../components/bottom.ejs')%>
