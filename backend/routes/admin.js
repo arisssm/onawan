@@ -10,6 +10,7 @@ const promoController = require('../controller/promoController');
 const testimonialController = require('../controller/testimonialController');
 const userController = require('../controller/userController');
 const bannerController = require('../controller/bannerController');
+const flightController = require('../controller/flightController');
 const { upload } = require('../middlewares/multer');
 const { validateDestination } = require('../middlewares/validation');
 
@@ -39,7 +40,7 @@ router.get('/airline', airlineController.index);
 // router.put('/update-airline', airlineController.update);
 // router.delete('/delete-airline/:id', airlineController.delete);
 /** Promo */
-router.get('/promo', promoController.index);
+// router.get('/promo', upload.array('image', 2), promoController.index);
 // router.post('/create-promo', promoController.store);
 // router.put('/update-promo', promoController.update);
 // router.delete('/delete-promo/:id', promoController.delete);
@@ -58,5 +59,10 @@ router.get('/banner', bannerController.index);
 // router.post('/create-banner', bannerController.store);
 // router.put('/update-banner', bannerController.update);
 // router.delete('/delete-banner/:id', bannerController.delete);
+/** Banner */
+router.get('/flight', flightController.index);
+router.post('/create-flight', flightController.store);
+// router.put('/update-flight', flightController.update);
+router.delete('/delete-flight/:id', flightController.delete);
 
 module.exports = router;

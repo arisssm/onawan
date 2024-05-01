@@ -3,7 +3,7 @@
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
         <div class="sidebar-brand-icon">
-           <img src="/images/favicon.png" width="50vh" alt="">
+           <img src="/images/logo.png" width="50vh" alt="">
         </div>
         <div class="sidebar-brand-text mx-3">Onawan <sup></sup></div>
     </a>
@@ -30,10 +30,99 @@
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="buttons.html">About</a>
-                <a class="collapse-item <%= onPage === 'destination' ? 'active' : '' %>" href="/admin/destination">Destination</a>
+                <a class="collapse-item <%= onPage === 'about' ? 'active' : '' %>" href="/admin/about">
+                    <i class="fas fa-building mr-1"></i>
+                    About
+                </a>
+                <a class="collapse-item <%= onPage === 'airline' ? 'active' : '' %>" href="/admin/airline">
+                    <i class="fas fa-plane mr-1"></i>
+                    Airline
+                </a>
+                <!-- <a class="collapse-item" href="buttons.html">
+                    <i class="fas fa-images mr-1"></i>
+                    Banner
+                </a> -->
+                <a class="collapse-item collapsed" href="#" data-toggle="collapse" data-target="#bannerSection" aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-image mr-1"></i>
+                    <span>Banner</span>
+                </a>
+                <div id="bannerSection" class="collapse">
+                    <div class="collapse-inner rounded py-2">
+                        <a class="collapse-item" href="buttons.html">
+                            LP Banner
+                        </a>
+                        <a class="collapse-item" href="buttons.html">
+                            Destination Banner
+                        </a>
+                        <a class="collapse-item" href="buttons.html">
+                            Profile Banner
+                        </a>
+                    </div>
+                </div>
+                <a class="collapse-item <%= onPage === 'destination' ? 'active' : '' %>" href="/admin/destination">
+                    <i class="fas fa-plane-departure mr-1"></i>
+                    Destination
+                </a>
+                <a class="collapse-item <%= onPage === 'promo' ? 'active' : '' %>" href="/admin/promo">
+                    <i class="fas fa-percent mr-1"></i>
+                    Promo
+                </a>
+                <a class="collapse-item <%= onPage === 'testimonial' ? 'active' : '' %>" href="/admin/testimonial">
+                    <i class="fas fa-comment mr-1"></i>
+                    Testimonial
+                </a>
             </div>
         </div>
+        <hr class="sidebar-divider">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#accountData"
+            aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-user-circle"></i>
+            <span>Account</span>
+        </a>
+        <div id="accountData" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item <%= onPage === 'user' ? 'active' : '' %>" href="/admin/user">
+                    <i class="fas fa-user-lock mr-1"></i>
+                    User
+                </a>
+            </div>
+        </div>
+        <hr class="sidebar-divider">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#aviationData"
+            aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-map"></i>
+            <span>Aviation</span>
+        </a>
+        <div id="aviationData" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item <%= onPage === 'flight' ? 'active' : '' %>" href="/admin/flight">
+                    <i class="fas fa-rocket mr-1"></i>
+                    FLight
+                </a>
+                <a class="collapse-item <%= onPage === 'passangers' ? 'active' : '' %>" href="/admin/passanger">
+                    <i class="fas fa-passport mr-1"></i>
+                    Passangers
+                </a>
+            </div>
+        </div>
+        <!-- <hr class="sidebar-divider"> -->
+        <!-- <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#transactionData"
+            aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-handshake"></i>
+            <span>Transaction</span>
+        </a>
+        <div id="transactionData" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item <%= onPage === 'billing' ? 'active' : '' %>" href="/admin/flight">
+                    <i class="fas fa-money-check mr-1"></i>
+                    Billing
+                </a>
+                <a class="collapse-item <%= onPage === 'payment' ? 'active' : '' %>" href="/admin/flight">
+                    <i class="fas fa-wallet mr-1"></i>
+                    Payment
+                </a>
+            </div>
+        </div> -->
     </li>
 
     <!-- Divider -->
