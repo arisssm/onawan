@@ -1,0 +1,326 @@
+<%- include('../components/head.ejs') %>
+    <div class="container-fluid">
+        <div class="row-cols-1 mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Airline</h1>
+        </div>
+        <div class="row-cols-1">
+            <% if (alert.message != '') { %>
+                <div class="alert alert-<%= alert.status %>" role="alert">
+                    <%- alert.status == 'success' ? `<i class="fas fa-check-square mr-2"></i>`: `<i class="fas fa-exclamation-triangle"></i>` %> 
+                    <%= alert.message %>
+                </div>
+            <% } %>
+        </div>
+        <div class="flash-messages"></div>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 ch">
+                <div class="row d-flex">
+                    <div class="col">
+                        <h6 class="m-0 font-weight-normal text-white">List Of Airlines</h6>
+                    </div>
+                    <div class="col-4">
+                        <div class="text-right">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" placeholder="search document">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-sm btn-info"><i class="fas fa-search"></i></button>
+                                    <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#createAirline">
+                                    <i class="fas fa-plus-circle fa-sm text-white-50"></i> Create Data
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Name</th>
+                                <th>Image</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for( let i = 0; i < airlines.length; i++ ) { %>
+                                <tr>
+                                    <td><%= i+1  %></td>
+                                    <td><%= airlines[i].name %></td>
+                                    <td>
+                                        <img src="/images/<%= airlines[i].image %>" width="150vh" alt="">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm cbg text-white btn-edit"
+                                        data-id = "<%= airlines[i]._id %>"
+                                        data-image = "<%= airlines[i].image %>"
+                                        data-name = "<%= airlines[i].name %>"
+                                        >
+                                            <i class="fa fa-edit"></i>
+                                            Edit
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger btn-delete"
+                                        data-id = "<%= airlines[i]._id %>"
+                                        >
+                                            <i class="fa fa-trash"></i>
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Create -->
+    <div class="modal fade" id="createAirline" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header ch text-white">
+                    <h5 class="modal-title">Create Data</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="airlineFormCreate" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="nameAirline" class="font-weight-bold"> Name </label>
+                            <input type="text" class="form-control name" name="name" id="nameAirline"
+                                placeholder="add airline name" autocomplete="off">
+                            <div class="errorMessage text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="imageCreateAirline" class="font-weight-bold"> Image </label>
+                            <input type="file" class="form-control image" name="image" id="imageCreateAirline"
+                                placeholder="add image" autocomplete="off">
+                            <div class="errorMessage text-danger"></div>
+                            <div class="errorFile text-danger"></div>
+                            <img src="" class="preview-image mt-1" id="viewImage" width="150vh" alt="preview">
+                        </div>
+                    </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-save"></i>
+                        Save
+                    </button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+        <!-- Modal Edit -->
+    <div class="modal fade" id="editAirline" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header ch text-white">
+                    <h5 class="modal-title">Edit Data</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="airlineFormUpdate" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <input type="hidden" class="form-control id" name="id">
+                        <div class="form-group">
+                            <label for="nameAirline" class="font-weight-bold"> Name </label>
+                            <input type="text" class="form-control name name-airline" name="name" id="nameAirline"
+                                placeholder="please add airline name.." autocomplete="off">
+                            <div class="errorMessageUpdate text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="imageUpdateAirline" class="font-weight-bold"> Image </label>
+                            <input type="file" class="form-control image image-airline" name="image" id="imageUpdateAirline"
+                                autocomplete="off">
+                            <div class="errorMessageUpdate text-danger"></div>
+                            <div class="errorFileUpdate text-danger"></div>
+                            <img src="" class="previewImg mt-2" id="previewImg" width="150vh" alt="preview">
+                        </div>
+                    </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-save"></i>
+                        Save
+                    </button>
+                </div>
+                </form>
+        </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Delete -->
+    <div class="modal fade" id="deleteAirline" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Confirm Data</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" class="delete-airline">
+                    <div class="modal-body">
+                        <h5> Are you sure for delete this data ?</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa fa-check-circle"></i>
+                            Yes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $('#dataTable').on('click', '.btn-edit', function(){
+            $('#editAirline').modal('show');
+            let id = $(this).data('id');
+            let name = $(this).data('name');
+            let image = $(this).data('image');
+            let imgUrl = "/images/" + image;
+            console.log(id);
+
+            $('.id').val(id);
+            $('.name-airline').val(name);
+            $('.previewImg').attr('src', imgUrl);
+        });
+        // Modal Delete
+        $('#dataTable').on('click', '.btn-delete', function(){
+            $('#deleteAirline').modal('show');
+            let id = $(this).data('id');
+            // console.log(id);
+            let url = `/admin/delete-airline/${id}?_method=delete`;
+            $('.delete-airline').attr('action', url);
+            
+        });
+
+        $(document).ready(function(){
+            const timerAlert = $('.alert').text();
+            if( timerAlert !== '') {
+                setTimeout(function(){
+                    $('.alert').fadeOut('slow')
+                }, 3000);
+            }
+        });
+
+        //display image create
+        $('#imageCreateAirline').change(function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#viewImage').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
+            $('.errorMessage').empty();
+            $('.errorFile').empty();   
+        });
+
+        //display image create
+        $('#imageUpdateAirline').change(function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#previewImg').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
+            $('.errorMessageUpdate').empty();
+            $('.errorFileUpdate').empty();   
+        });
+
+        // jquery ajax untuk response validasi
+        $('#airlineFormCreate').submit(function(event) {
+            event.preventDefault();
+                let formData = new FormData(this);
+                $.ajax({
+                method: 'POST',
+                url: '/admin/create-airline',
+                async: true,
+                data: formData,
+                contentType: false,
+                processData: false,
+                    success: function(response) {
+                        console.log(response);
+                        if( response.errors && response.errors.length > 0) {
+                            $('.errorMessage').empty();
+                            response.errors.forEach(function(error){
+                                $('.form-control.' + error.path).siblings('.errorMessage').text(error.msg);
+                            });
+                        } else {
+                            $('#createAirline').modal('hide');
+                            let alertMsg = response.alertMsg;
+                            let alertStatus = response.alertStatus;
+
+                            $('.flash-messages').html(
+                                `<div class=" alert alert-` + alertStatus + `"role="alert">` +
+                                (alertStatus === 'success' ? `<i class="fas fa-check-square mr-2"></i>` : ` <i class="fas fa-exlamation-triangle"></i>`)
+                                + alertMsg + `</div>`
+                            );
+
+                            const timerAlert = $('.flash-messages').html();
+                            if( timerAlert !== '') {
+                                setTimeout(function(){
+                                    $('.flash-messages').fadeOut('slow')
+                                }, 3000);
+                            }
+                            location.reload();
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.error('Error:', errorThrown);
+                        $('.errorFile').text('Bad, please check again your upload.');
+                    }
+                });
+        });
+         // validasi form update
+         $('#airlineFormUpdate').submit(function(event) {
+            event.preventDefault();
+                let formData = new FormData(this);
+                $.ajax({
+                method: 'POST',
+                url: '/admin/update-airline?_method=put',
+                async: true,
+                data: formData,
+                contentType: false,
+                processData: false,
+                    success: function(response) {
+                        console.log(response);
+                        if( response.errors && response.errors.length > 0) {
+                            $('.errorMessageUpdate').empty();
+                            response.errors.forEach(function(error){
+                                $('.form-control.' + error.path).siblings('.errorMessageUpdate').text(error.msg);
+                            });
+                        } else {
+                            $('#editAirline').modal('hide');
+                            let alertMsg = response.alertMsg;
+                            let alertStatus = response.alertStatus;
+
+                            $('.flash-messages').html(
+                                `<div class=" alert alert-` + alertStatus + `"role="alert">` +
+                                (alertStatus === 'success' ? `<i class="fas fa-check-square mr-2"></i>` : ` <i class="fas fa-exlamation-triangle"></i>`)
+                                + alertMsg + `</div>`
+                            );
+
+                            const timerAlert = $('.flash-messages').html();
+                            if( timerAlert !== '') {
+                                setTimeout(function(){
+                                    $('.flash-messages').fadeOut('slow')
+                                }, 3000);
+                            }
+                            location.reload();
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.error('Error:', errorThrown);
+                        $('.errorFileUpdate').text('Bad, please check again your upload.');
+                    }
+                });
+        });
+    </script>
+
+<%- include('../components/bottom.ejs')%>

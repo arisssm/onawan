@@ -42,20 +42,20 @@
                     <i class="fas fa-images mr-1"></i>
                     Banner
                 </a> -->
-                <a class="collapse-item collapsed" href="#" data-toggle="collapse" data-target="#bannerSection" aria-expanded="true" aria-controls="collapseTwo">
+                <a class="collapse-item collapsed" href="#" data-toggle="collapse" data-target="#bannerSection" aria-expanded="true" aria-controls="bannerSection">
                     <i class="fas fa-image mr-1"></i>
                     <span>Banner</span>
                 </a>
                 <div id="bannerSection" class="collapse">
                     <div class="collapse-inner rounded py-2">
-                        <a class="collapse-item" href="buttons.html">
-                            LP Banner
+                        <a class="collapse-item <%= onPage === 'homeBanner' ? 'active' : '' %>" href="/admin/home-banner">
+                            Banner Home
                         </a>
-                        <a class="collapse-item" href="buttons.html">
-                            Destination Banner
+                        <a class="collapse-item <%= onPage === 'destinationBanner' ? 'active' : '' %>" href="/admin/destination-banner">
+                            Banner Destination
                         </a>
-                        <a class="collapse-item" href="buttons.html">
-                            Profile Banner
+                        <a class="collapse-item <%= onPage === 'aboutBanner' ? 'active' : '' %>" href="/admin/about-banner">
+                            Banner About
                         </a>
                     </div>
                 </div>

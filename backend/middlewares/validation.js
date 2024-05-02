@@ -52,4 +52,102 @@ exports.validateDestination = [
         next();
     }
 ];
+exports.validateAirline = [
+    body('name')
+    .notEmpty().withMessage('Name is required')
+    .isLength({ min:4, max:20}).withMessage('Name must be between 5 until 20 characters')
+    .matches(/^[a-zA-Z\s]+$/).withMessage('Name must only contain letters and spaces'),
+    // body('image').custom((value, { req }) => {
+    //     if (!req.file) {
+    //         throw new Error('Image is required');
+    //     }
+    //     return true;
+    // }),
+    
+    // handling error validation
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({ errors: errors.array() });
+        }
+        next();
+    }
+];
 
+exports.validateHomeBanner = [
+    body('headline')
+    .notEmpty().withMessage('Headline is required')
+    .isLength({ min:4, max:100}).withMessage('Headline must be between 5 until 100 characters')
+    .matches(/^[a-zA-Z\s]+$/).withMessage('Headline must only contain letters and spaces'),
+    body('subHeadline')
+    .notEmpty().withMessage('subHeadline is required')
+    .isLength({ min:4, max:100}).withMessage('subHeadline must be between 5 until 100 characters')
+    .matches(/^[a-zA-Z\s]+$/).withMessage('subHeadline must only contain letters and spaces'),
+    // body('image').custom((value, { req }) => {
+    //     if (!req.file) {
+    //         throw new Error('Image is required');
+    //     }
+    //     return true;
+    // }),
+    
+    // handling error validation
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({ errors: errors.array() });
+        }
+        next();
+    }
+];
+
+exports.validateDestinationBanner = [
+    body('headline')
+    .notEmpty().withMessage('Headline is required')
+    .isLength({ min:4, max:100}).withMessage('Headline must be between 5 until 100 characters')
+    .matches(/^[a-zA-Z\s]+$/).withMessage('Headline must only contain letters and spaces'),
+    body('subHeadline')
+    .notEmpty().withMessage('subHeadline is required')
+    .isLength({ min:4, max:100}).withMessage('subHeadline must be between 5 until 100 characters')
+    .matches(/^[a-zA-Z\s]+$/).withMessage('subHeadline must only contain letters and spaces'),
+    // body('image').custom((value, { req }) => {
+    //     if (!req.file) {
+    //         throw new Error('Image is required');
+    //     }
+    //     return true;
+    // }),
+    
+    // handling error validation
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({ errors: errors.array() });
+        }
+        next();
+    }
+];
+
+exports.validateAboutBanner = [
+    body('headline')
+    .notEmpty().withMessage('Headline is required')
+    .isLength({ min:4, max:100}).withMessage('Headline must be between 5 until 100 characters')
+    .matches(/^[a-zA-Z\s]+$/).withMessage('Headline must only contain letters and spaces'),
+    body('subHeadline')
+    .notEmpty().withMessage('subHeadline is required')
+    .isLength({ min:4, max:100}).withMessage('subHeadline must be between 5 until 100 characters')
+    .matches(/^[a-zA-Z\s]+$/).withMessage('subHeadline must only contain letters and spaces'),
+    // body('image').custom((value, { req }) => {
+    //     if (!req.file) {
+    //         throw new Error('Image is required');
+    //     }
+    //     return true;
+    // }),
+    
+    // handling error validation
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({ errors: errors.array() });
+        }
+        next();
+    }
+];

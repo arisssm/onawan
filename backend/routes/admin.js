@@ -9,19 +9,21 @@ const airlineController = require('../controller/airlineController');
 const promoController = require('../controller/promoController');
 const testimonialController = require('../controller/testimonialController');
 const userController = require('../controller/userController');
-const bannerController = require('../controller/bannerController');
 const flightController = require('../controller/flightController');
+const bannerHomeController = require('../controller/bannerHomeController');
+const bannerDestinationController = require('../controller/bannerDestinationController');
+const bannerAboutController = require('../controller/bannerAboutController');
 const { upload } = require('../middlewares/multer');
-const { validateDestination } = require('../middlewares/validation');
+const { validateDestination, validateAirline, validateHomeBanner, validateDestinationBanner, validateAboutBanner } = require('../middlewares/validation');
 
-/** Dashboard */
+/** Dashboard ====================================================================== */
 router.get('/', dashboardController.index);
-/** Destination */
+/** Destination ====================================================================== */
 router.get('/destination', destinationController.index);
 router.post('/create-destination', upload.single('image'), validateDestination, destinationController.store);
 router.put('/update-destination', upload.single('image'), validateDestination, destinationController.update);
 router.delete('/delete-destination/:id', destinationController.delete);
-/** About */
+/** About ====================================================================== */
 router.get('/about', aboutController.index);
 router.post('/create-about',upload.fields([
     { name: 'imageHistory' },
@@ -34,32 +36,42 @@ router.put('/update-about', upload.fields([
     { name: 'bannerSupport' }
 ]), aboutController.update);
 router.delete('/delete-about/:id', aboutController.delete);
-/** Airline */
+/** Airline ====================================================================== */
 router.get('/airline', airlineController.index);
-// router.post('/create-airline', airlineController.store);
-// router.put('/update-airline', airlineController.update);
-// router.delete('/delete-airline/:id', airlineController.delete);
-/** Promo */
+router.post('/create-airline', upload.single('image'), validateAirline, airlineController.store);
+router.put('/update-airline', upload.single('image'), validateAirline, airlineController.update);
+router.delete('/delete-airline/:id', airlineController.delete);
+/** Promo ====================================================================== */
 // router.get('/promo', upload.array('image', 2), promoController.index);
 // router.post('/create-promo', promoController.store);
 // router.put('/update-promo', promoController.update);
 // router.delete('/delete-promo/:id', promoController.delete);
-/** Testimonial */
+/** Testimonial ====================================================================== */
 router.get('/testimonial', testimonialController.index);
 // router.post('/create-testimonial', testimonialController.store);
 // router.put('/update-testimonial', testimonialController.update);
 // router.delete('/delete-testimonial/:id', testimonialController.delete);
-/** User */
+/** User ====================================================================== */
 router.get('/user', userController.index);
 // router.post('/create-user', userController.store);
 // router.put('/update-user', userController.update);
 // router.delete('/delete-user/:id', userController.delete);
-/** Banner */
-router.get('/banner', bannerController.index);
-// router.post('/create-banner', bannerController.store);
-// router.put('/update-banner', bannerController.update);
-// router.delete('/delete-banner/:id', bannerController.delete);
-/** Banner */
+/** Banner Home ====================================================================== */
+router.get('/home-banner', bannerHomeController.index);
+router.post('/create-home-banner', upload.single('image'),validateHomeBanner, bannerHomeController.store);
+router.put('/update-home-banner', upload.single('image'),validateHomeBanner, bannerHomeController.update);
+router.delete('/delete-home-banner/:id', bannerHomeController.delete);
+/** Banner Destination ====================================================================== */
+router.get('/destination-banner', bannerDestinationController.index);
+router.post('/create-destination-banner', upload.single('image'),validateDestinationBanner, bannerDestinationController.store);
+router.put('/update-destination-banner', upload.single('image'),validateDestinationBanner, bannerDestinationController.update);
+router.delete('/delete-destination-banner/:id', bannerDestinationController.delete);
+// /** Banner About ====================================================================== */
+router.get('/about-banner', bannerAboutController.index);
+router.post('/create-about-banner', upload.single('image'),validateAboutBanner, bannerAboutController.store);
+router.put('/update-about-banner', upload.single('image'),validateAboutBanner, bannerAboutController.update);
+router.delete('/delete-about-banner/:id', bannerAboutController.delete);
+/** Flight ====================================================================== */
 router.get('/flight', flightController.index);
 router.post('/create-flight', flightController.store);
 // router.put('/update-flight', flightController.update);
