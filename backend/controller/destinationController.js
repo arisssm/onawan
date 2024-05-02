@@ -64,10 +64,18 @@ module.exports = {
             // console.log(req.file);
 
             if(req.file !== undefined ) {
+                const newImage = req.file.filename;
+                const lastData = await Destination.findOne({_id:id});
+
+                if (lastData.image) {
+                    const lastImagePath = `public/images/${lastData.image}`;
+                    fs.unlinkSync(lastImagePath);
+                }
+
                 await Destination.updateOne({_id:id}, {
                     name: name,
                     location: location,
-                    image: req.file.filename,
+                    image: newImage,
                     price: price,
                     isRecommendation: isRecommendation,
                     idnRecommendation: idnRecommendation,
