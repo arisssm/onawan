@@ -1,5 +1,7 @@
 const Flight = require('../models/flight');
 const Airport = require('../models/airport');
+const fs = require('fs');
+const path = require('path');
 
 module.exports = {
     index: async (req, res) => {
@@ -25,7 +27,6 @@ module.exports = {
         try {
             const { 
                 airlineName, 
-                icon, 
                 departureTime, 
                 arrivalTime,
                 duration,
@@ -44,7 +45,8 @@ module.exports = {
             } = req.body;
 
             console.log(req.body);
-
+            console.log(req.file);
+            
             let departureAirport = await Airport.create({
                 city : departure_city,
                 code : departure_cityCode,
@@ -61,7 +63,7 @@ module.exports = {
 
             let newData = await Flight.create({
                 airlineName, 
-                icon, 
+                icon: req.file.filename, 
                 departureTime, 
                 arrivalTime,
                 duration,
@@ -75,11 +77,17 @@ module.exports = {
             newData.airportId.push({ _id: departureAirport.id });
             newData.airportId.push({ _id: arrivalAirport.id });
             await newData.save();
-            res.redirect('/admin/flight');
+            req.flash('alertMsg', 'New document has been saved');
+            req.flash('alertStatus', 'success');
+            res.json({ alertMsg: 'New document has been saved.', alertStatus: 'success' });
+            // res.redirect('/admin/flight');
             
         } catch(error){
             console.log(error);
-            res.redirect('/admin/flight');
+            req.flash('alertMsg','Failed, error code: ' + error.message );
+            req.flash('alertStatus', 'danger');
+            res.json({ alertMsg: 'Failed, error code: ' + error.message, alertStatus: 'danger' });
+            // res.redirect('/admin/flight');
         }
     },
     delete: async (req, res) => {
@@ -90,12 +98,12 @@ module.exports = {
             await Flight.deleteOne({ _id: id });
             await Airport.deleteMany({ _id: { $in: airport_id } });
 
-            // if (flight && flight.icon) {
-            //     const imagePath = path.join(__dirname, '../public/images', flight.icon);
-            //     if (fs.existsSync(imagePath)) {
-            //         fs.unlinkSync(imagePath);
-            //     }
-            // }
+            if (flight && flight.icon) {
+                const imagePath = path.join(__dirname, '../public/images', flight.icon);
+                if (fs.existsSync(imagePath)) {
+                    fs.unlinkSync(imagePath);
+                }
+            }
             req.flash('alertMsg', 'Warning, document has been deleted.');
             req.flash('alertStatus', 'warning');
             res.redirect('/admin/flight');

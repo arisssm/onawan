@@ -14,7 +14,15 @@ const bannerHomeController = require('../controller/bannerHomeController');
 const bannerDestinationController = require('../controller/bannerDestinationController');
 const bannerAboutController = require('../controller/bannerAboutController');
 const { upload } = require('../middlewares/multer');
-const { validateDestination, validateAirline, validateHomeBanner, validateDestinationBanner, validateAboutBanner } = require('../middlewares/validation');
+const { 
+        validateDestination, 
+        validateAirline, 
+        validateHomeBanner, 
+        validateDestinationBanner, 
+        validateAboutBanner, 
+        validateTestimonial,
+        validateFlight 
+    } = require('../middlewares/validation');
 
 /** Dashboard ====================================================================== */
 router.get('/', dashboardController.index);
@@ -42,15 +50,15 @@ router.post('/create-airline', upload.single('image'), validateAirline, airlineC
 router.put('/update-airline', upload.single('image'), validateAirline, airlineController.update);
 router.delete('/delete-airline/:id', airlineController.delete);
 /** Promo ====================================================================== */
-// router.get('/promo', upload.array('image', 2), promoController.index);
+router.get('/promo', promoController.index);
 // router.post('/create-promo', promoController.store);
 // router.put('/update-promo', promoController.update);
 // router.delete('/delete-promo/:id', promoController.delete);
 /** Testimonial ====================================================================== */
 router.get('/testimonial', testimonialController.index);
-// router.post('/create-testimonial', testimonialController.store);
-// router.put('/update-testimonial', testimonialController.update);
-// router.delete('/delete-testimonial/:id', testimonialController.delete);
+router.post('/create-testimonial', upload.single('image'), validateTestimonial, testimonialController.store);
+router.put('/update-testimonial', upload.single('image'), validateTestimonial, testimonialController.update);
+router.delete('/delete-testimonial/:id', testimonialController.delete);
 /** User ====================================================================== */
 router.get('/user', userController.index);
 // router.post('/create-user', userController.store);
@@ -73,7 +81,7 @@ router.put('/update-about-banner', upload.single('image'),validateAboutBanner, b
 router.delete('/delete-about-banner/:id', bannerAboutController.delete);
 /** Flight ====================================================================== */
 router.get('/flight', flightController.index);
-router.post('/create-flight', flightController.store);
+router.post('/create-flight',upload.single('icon'), validateFlight, flightController.store);
 // router.put('/update-flight', flightController.update);
 router.delete('/delete-flight/:id', flightController.delete);
 

@@ -52,6 +52,7 @@ exports.validateDestination = [
         next();
     }
 ];
+
 exports.validateAirline = [
     body('name')
     .notEmpty().withMessage('Name is required')
@@ -141,6 +142,106 @@ exports.validateAboutBanner = [
     //     }
     //     return true;
     // }),
+    
+    // handling error validation
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({ errors: errors.array() });
+        }
+        next();
+    }
+];
+
+exports.validateTestimonial = [
+    body('fullname')
+    .notEmpty().withMessage('Full name is required')
+    .isLength({ min:4, max:20}).withMessage('Full name must be between 5 until 20 characters')
+    .matches(/^[a-zA-Z\s]+$/).withMessage('Full name must only contain letters and spaces'),
+    body('content')
+    .notEmpty().withMessage('Content is required'),
+    // body('image').custom((value, { req }) => {
+    //     if (!req.file) {
+    //         throw new Error('Image is required');
+    //     }
+    //     return true;
+    // }),
+    body('status')
+    .notEmpty().withMessage('Status must be selected'),
+    
+    // handling error validation
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({ errors: errors.array() });
+        }
+        next();
+    }
+];
+
+exports.validateFlight = [
+    body('airlineName')
+    .notEmpty().withMessage('Airline name is required')
+    .isLength({ min:4, max:20}).withMessage('Airline name must be between 5 until 20 characters')
+    .matches(/^[a-zA-Z\s]+$/).withMessage('Airline name must only contain letters and spaces'),
+    body('departureTime')
+    .notEmpty().withMessage('Departure time is required')
+    .custom((value, { req }) => {
+        const selectedDate = new Date(value);
+        const today = new Date();
+        if (selectedDate <= today) {
+            throw new Error('Departure time can not last time');
+        }
+        return true;
+    }),
+    body('arrivalTime')
+    .notEmpty().withMessage('Arrival time is required')
+    .custom((value, { req }) => {
+        const selectedDate = new Date(value);
+        const today = new Date();
+        if (selectedDate <= today) {
+            throw new Error('Arrival time can not last time');
+        }
+        return true;
+    }),
+    body('price')
+    .notEmpty().withMessage('Price is required') 
+    .isNumeric().withMessage('Price must be a numeric')
+    .custom((value) => {
+        if (value < 100000 || value > 5000000) {
+            throw new Error('Price must be between 100.000 IDR until 5.000.000 IDR');
+        }
+        return true;
+    }),
+    // body('icon').custom((value, { req }) => {
+    //     if (!req.file) {
+    //         throw new Error('Icon is required');
+    //     }
+    //     return true;
+    // }),
+    body('duration')
+    .notEmpty().withMessage('Duration is required'),
+    body('capacity')
+    .notEmpty().withMessage('Capacity is required'),
+    body('flightNumber')
+    .notEmpty().withMessage('Flight Number is required')
+    .isLength({ min:5, max:6}).withMessage('Flight Number must be between 5 until 6 characters'),
+    body('flightClass')
+    .notEmpty().withMessage('Flight class must be selected'),
+    body('flightType')
+    .notEmpty().withMessage('Flight type must be selected'),
+    body('departure_city')
+    .notEmpty().withMessage('Departure City is required'),
+    body('departure_cityCode')
+    .notEmpty().withMessage('Departure city code is required'),
+    body('departure_airport')
+    .notEmpty().withMessage('Departure airport is required'),
+    body('arrival_city')
+    .notEmpty().withMessage('Departure City is required'),
+    body('arrival_cityCode')
+    .notEmpty().withMessage('Departure city code is required'),
+    body('arrival_airport')
+    .notEmpty().withMessage('Departure airport is required'),
     
     // handling error validation
     (req, res, next) => {

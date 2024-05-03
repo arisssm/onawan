@@ -15,14 +15,14 @@
             <div class="card-header py-3 ch">
                 <div class="row d-flex">
                     <div class="col">
-                        <h6 class="m-0 font-weight-bold text-white">List Flight</h6>
+                        <h6 class="m-0 font-weight-normal text-white">List Flight</h6>
                     </div>
                     <div class="col-4">
                         <div class="text-right">
                             <div class="input-group input-group-sm">
-                                <!-- <input type="text" class="form-control" placeholder="search document"> -->
+                                <input type="text" class="form-control" placeholder="search document">
                                 <div class="input-group-append">
-                                    <!-- <button type="button" class="btn btn-sm btn-info"><i class="fas fa-search"></i></button> -->
+                                    <button type="button" class="btn btn-sm btn-info"><i class="fas fa-search"></i></button>
                                     <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#createFlight">
                                     <i class="fas fa-plus-circle fa-sm text-white"></i> Create Data
                                     </button>
@@ -56,6 +56,32 @@
                                     <td><span class="text-danger">IDR </span><%= flight[i].price %></td>
                                     <td>
                                         <button type="button" class="btn btn-sm cbg text-white btn-edit"
+                                        data-id = "<%= flight[i]._id %>"
+                                        data-airline_flight = "<%= flight[i].airlineName %>"
+                                        data-dt_flight = "<%= flight[i].departureTime %>"
+                                        data-at_flight = "<%= flight[i].arrivalTime %>"
+                                        data-ic_flight = "<%= flight[i].icon %>"
+                                        data-price_flight = "<%= flight[i].price %>"
+                                        data-duration_flight = "<%= flight[i].duration %>"
+                                        data-capacity_flight = "<%= flight[i].capacity %>"
+                                        data-classFlight = "<%= flight[i].flightClass %>"
+                                        data-number_flight = "<%= flight[i].flightNumber %>"
+                                        data-typeFlight = "<%= flight[i].flightType %>"
+
+                                        <% for (let a = 0; a < flight[i].airportId.length; a++) { %>
+                                            <% if (flight[i].airportId[a].category === 'departure') { %>
+                                                data-departure_city = "<%= flight[i].airportId[a].city %>"
+                                                data-departure_citycode = "<%= flight[i].airportId[a].code %>"
+                                                data-departure_airport = "<%= flight[i].airportId[a].airport %>"
+                                            <% } %>
+                                        <% } %> 
+                                        <% for (let a = 0; a < flight[i].airportId.length; a++) { %>
+                                            <% if (flight[i].airportId[a].category === 'arrival') { %>
+                                                data-arrival_city = "<%= flight[i].airportId[a].city %>"
+                                                data-arrival_citycode = "<%= flight[i].airportId[a].code %>"
+                                                data-arrival_airport = "<%= flight[i].airportId[a].airport %>"
+                                            <% } %>
+                                        <% } %> 
                                         >
                                             <i class="fa fa-edit"></i>
                                             Edit
@@ -76,7 +102,7 @@
                                 <tr class="airport-detail" style="display: none;">
                                     <td colspan="9">
                                         <div class="row p-2">
-                                            <img src="<%= flight[i].icon %>" alt="garuda-indonesia">
+                                            <img src="/images/<%= flight[i].icon %>" alt="garuda-indonesia">
                                         </div>
                                         <hr class="mt-0 mb-2">
                                         <div class="city-code">
@@ -156,13 +182,13 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="flightFormCreate" action="/admin/create-flight" method="post" enctype="">
+                <form id="flightFormCreate" enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-3 col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <label for="nameAirline" class="font-weight-bold"> Name Airline </label>
-                                    <input type="text" class="form-control" name="airlineName" id="nameAirline"
+                                    <input type="text" class="form-control airlineName" name="airlineName" id="nameAirline"
                                         placeholder="add airline name" autocomplete="off">
                                     <div class="errorMessage text-danger"></div>
                                 </div>
@@ -170,7 +196,7 @@
                             <div class="col-lg-3 col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <label for="departureTime" class="font-weight-bold"> Departure Time </label>
-                                    <input type="datetime-local" class="form-control" name="departureTime" id="departureTime"
+                                    <input type="datetime-local" class="form-control departureTime" name="departureTime" id="departureTime"
                                         placeholder="add departure time" autocomplete="off">
                                     <div class="errorMessage text-danger"></div>
                                 </div>  
@@ -178,10 +204,10 @@
                             <div class="col-lg-3 col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <label for="arrivalTime" class="font-weight-bold"> Arrival Time </label>
-                                    <input type="datetime-local" class="form-control" name="arrivalTime" id="arrivalTime"
+                                    <input type="datetime-local" class="form-control arrivalTime" name="arrivalTime" id="arrivalTime"
                                         placeholder="add arrival time" autocomplete="off">
+                                    <div class="errorMessage text-danger"></div>
                                 </div>
-                                <div class="errorMessage text-danger"></div>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-12">
                                 <div class="form-group">
@@ -190,10 +216,10 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">IDR</span>
                                         </div>
-                                        <input type="number" class="form-control" name="price" id="price"
+                                        <input type="number" class="form-control price" name="price" id="price"
                                             placeholder="add price" autocomplete="off">
+                                        <div class="errorMessage text-danger"></div>
                                     </div>
-                                    <div class="errorMessage text-danger"></div>
                                 </div>
                             </div>
                         </div>
@@ -203,7 +229,7 @@
                                     <div class="col-lg-4 col-md-12 col-sm-12">
                                         <div class="form-group">
                                             <label for="iconCreateFlight" class="font-weight-bold"> Icon Airline </label>
-                                            <input type="text" class="form-control" name="icon" id="iconCreateFlight"
+                                            <input type="file" class="form-control icon icon-flight" name="icon" id="iconCreateFlight"
                                                 placeholder="add icon" autocomplete="off">
                                             <div class="errorMessage text-danger"></div>
                                             <div class="errorFile text-danger"></div>
@@ -215,19 +241,19 @@
                                         <div class="form-group">
                                             <label for="duration" class="font-weight-bold"> Duration </label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control" name="duration" id="duration"
+                                                <input type="text" class="form-control duration" name="duration" id="duration"
                                                 placeholder="" readonly>
                                                 <!-- <div class="input-group-append">
                                                     <span class="input-group-text">Minutes</span>
                                                 </div> -->
+                                                <div class="errorMessage text-danger"></div>
                                             </div>
-                                            <div class="errorMessage text-danger"></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-md-12 col-sm-12">
                                         <div class="form-group">
                                             <label for="capacity" class="font-weight-bold"> Capacity </label>
-                                            <input type="number" class="form-control" name="capacity" id="capacity"
+                                            <input type="number" class="form-control capacity" name="capacity" id="capacity"
                                                 placeholder="add capacity" autocomplete="off">
                                             <div class="errorMessage text-danger"></div>
                                         </div>              
@@ -239,7 +265,7 @@
                                     <div class="col-lg-4 col-md-12 col-sm-12">
                                         <div class="form-group">
                                             <label for="flightNumber" class="font-weight-bold"> Flight Number </label>
-                                            <input type="text" class="form-control" name="flightNumber" id="flightNumber"
+                                            <input type="text" class="form-control flightNumber" name="flightNumber" id="flightNumber"
                                                 placeholder="add flight number" autocomplete="off">
                                             <div class="errorMessage text-danger"></div>
                                         </div>
@@ -247,10 +273,10 @@
                                     <div class="col-lg-4 col-md-12 col-sm-12">
                                         <div class="form-group">
                                             <label for="flightClass" class="font-weight-bold"> Flight Class </label>
-                                            <select name="flightClass" class="form-control" id="flightClass">
-                                                <option>--Choose One--</option>
-                                                <option value="Economy"> Ekonomi</option>
-                                                <option value="Businnes"> Bisnis</option>
+                                            <select name="flightClass" class="form-control flightClass" id="flightClass">
+                                                <option value="">--Choose One--</option>
+                                                <option value="Ekonomi"> Ekonomi</option>
+                                                <option value="Bisnis"> Bisnis</option>
                                                 <option value="Premium"> Premium</option>
                                             </select>
                                             <div class="errorMessage text-danger"></div>
@@ -259,9 +285,9 @@
                                     <div class="col-lg-4 col-md-12 col-sm-12">
                                         <div class="form-group">
                                             <label for="flightType" class="font-weight-bold"> Flight Type </label>
-                                            <select name="flightType" class="form-control" id="flightType">
-                                                <option>--Choose One--</option>
-                                                <option value="Direct"> Langsung</option>
+                                            <select name="flightType" class="form-control flightType" id="flightType">
+                                                <option value="">--Choose One--</option>
+                                                <option value="Langsung"> Langsung</option>
                                                 <option value="Transit"> Transit</option>
                                             </select>
                                             <div class="errorMessage text-danger"></div>
@@ -280,7 +306,7 @@
                                         <div class="col-lg-6 col-md-12 col-sm-12">
                                             <div class="form-group">
                                                 <label for="departureCity" class="font-weight-bold"> Departure City </label>
-                                                <input type="text" class="form-control" name="departure_city" id="departureCity"
+                                                <input type="text" class="form-control departure_city" name="departure_city" id="departureCity"
                                                     placeholder="add duration" autocomplete="off">
                                                 <div class="errorMessage text-danger"></div>
                                             </div>
@@ -288,7 +314,7 @@
                                         <div class="col-lg-6 col-md-12 col-sm-12">
                                             <div class="form-group">
                                                 <label for="arrivalCity" class="font-weight-bold"> Arrival City </label>
-                                                <input type="text" class="form-control" name="arrival_city" id="arrivalCity"
+                                                <input type="text" class="form-control arrival_city" name="arrival_city" id="arrivalCity"
                                                     placeholder="add duration" autocomplete="off">
                                                 <div class="errorMessage text-danger"></div>
                                             </div>
@@ -300,7 +326,7 @@
                                         <div class="col-lg-6 col-md-12 col-sm-12">
                                             <div class="form-group">
                                                 <label for="departureCityCode" class="font-weight-bold"> Departure City Code </label>
-                                                <input type="text" class="form-control" name="departure_cityCode" id="departureCityCode"
+                                                <input type="text" class="form-control departure_cityCode" name="departure_cityCode" id="departureCityCode"
                                                     placeholder="add city code" autocomplete="off">
                                                 <div class="errorMessage text-danger"></div>
                                             </div>
@@ -308,7 +334,7 @@
                                         <div class="col-lg-6 col-md-12 col-sm-12">
                                             <div class="form-group">
                                                 <label for="arrivalCityCode" class="font-weight-bold"> Arrival City Code </label>
-                                                <input type="text" class="form-control" name="arrival_cityCode" id="arrivalCityCode"
+                                                <input type="text" class="form-control arrival_cityCode" name="arrival_cityCode" id="arrivalCityCode"
                                                     placeholder="add city code" autocomplete="off">
                                                 <div class="errorMessage text-danger"></div>
                                             </div>
@@ -320,7 +346,7 @@
                                 <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="form-group">
                                         <label for="departureAirport" class="font-weight-bold"> Departure Airport </label>
-                                        <input type="text" class="form-control" name="departure_airport" id="departureAirport"
+                                        <input type="text" class="form-control departure_airport" name="departure_airport" id="departureAirport"
                                             placeholder="add airport" autocomplete="off">
                                         <div class="errorMessage text-danger"></div>
                                     </div>
@@ -328,7 +354,7 @@
                                 <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="form-group">
                                         <label for="arrivalAirport" class="font-weight-bold"> Arrival Airport </label>
-                                        <input type="text" class="form-control" name="arrival_airport" id="arrivalAirport"
+                                        <input type="text" class="form-control arrival_airport" name="arrival_airport" id="arrivalAirport"
                                             placeholder="add airport" autocomplete="off">
                                         <div class="errorMessage text-danger"></div>
                                     </div>
@@ -348,7 +374,7 @@
     </div>
      <!-- Modal Edit -->
      <div class="modal fade" id="editFlight" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header ch text-white">
                     <h5 class="modal-title">Edit Data</h5>
@@ -356,104 +382,178 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="flightFormUpdate" action="" method="" enctype="">
+                <form id="flightFormUpdate" action="/admin/update-flight?_method=put" method="post" enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col">
+                        <input type="text" class="form-control id m-2" name="id" readonly>
+                            <div class="col-lg-3 col-md-6 col-sm-12">
                                 <div class="form-group">
-                                    <label for="airlineName" class="font-weight-bold"> Name Airline </label>
-                                    <input type="text" class="form-control" name="airlineName" id="airlineName"
-                                        placeholder="add airline name" autocomplete="off">
-                                        <div class="errorMessageUpdate text-danger"></div>
+                                    <label for="nameAirline" class="font-weight-bold"> Name Airline </label>
+                                    <input type="text" class="form-control airlineName airline-name" name="airlineName" id="nameAirline"
+                                        placeholder="add airline name" autocomplete="off" readonly>
+                                    <div class="errorMessage text-danger"></div>
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="form-group">
-                                    <label for="iconCreateFlight" class="font-weight-bold"> Icon Airline </label>
-                                    <input type="file" class="form-control" name="icon" id="iconCreateFlight"
-                                        placeholder="add icon" autocomplete="off">
-                                    <div class="errorMessageUpdate text-danger"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
+                            <div class="col-lg-3 col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <label for="departureTime" class="font-weight-bold"> Departure Time </label>
-                                    <input type="datetime" class="form-control" name="departureTime" id="departureTime"
+                                    <input type="datetime-local" class="form-control departureTime departure-time" name="departureTime" id="departureTime"
                                         placeholder="add departure time" autocomplete="off">
-                                    <div class="errorMessageUpdate text-danger"></div>
-                                </div>                                
+                                    <div class="errorMessage text-danger"></div>
+                                </div>  
                             </div>
-                            <div class="col">
+                            <div class="col-lg-3 col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <label for="arrivalTime" class="font-weight-bold"> Arrival Time </label>
-                                    <input type="datetime" class="form-control" name="arrivalTime" id="arrivalTime"
+                                    <input type="datetime-local" class="form-control arrivalTime arrival-time" name="arrivalTime" id="arrivalTime"
                                         placeholder="add arrival time" autocomplete="off">
-                                    <div class="errorMessageUpdate text-danger"></div>
+                                    <div class="errorMessage text-danger"></div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="duration" class="font-weight-bold"> Durasi </label>
-                                    <input type="number" class="form-control" name="duration" id="duration"
-                                        placeholder="add duration" autocomplete="off">
-                                    <div class="errorMessageUpdate text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="capacity" class="font-weight-bold"> Capacity </label>
-                                    <input type="text" class="form-control" name="capacity" id="capacity"
-                                        placeholder="add capacity" autocomplete="off">
-                                    <div class="errorMessageUpdate text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
+                            <div class="col-lg-3 col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <label for="price" class="font-weight-bold"> Price </label>
-                                    <input type="text" class="form-control" name="price" id="price"
-                                        placeholder="add price" autocomplete="off">
-                                <div class="errorMessageUpdate text-danger"></div>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">IDR</span>
+                                        </div>
+                                        <input type="number" class="form-control price price-flight" name="price" id="price"
+                                            placeholder="add price" autocomplete="off">
+                                        <div class="errorMessage text-danger"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="flightNumber" class="font-weight-bold"> Flight Number </label>
-                                    <input type="text" class="form-control" name="flightNumber" id="flightNumber"
-                                        placeholder="add flight number" autocomplete="off">
-                                <div class="errorMessageUpdate text-danger"></div>
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="iconCreateFlight" class="font-weight-bold"> Icon Airline </label>
+                                            <input type="file" class="form-control icon icon-flight" name="icon" id="iconCreateFlight"
+                                                placeholder="add icon" autocomplete="off" readonly>
+                                            <div class="errorMessage text-danger"></div>
+                                            <div class="errorFile text-danger"></div>
+                                            <img src="" class="previewImg mt-1" id="viewImg" width="150vh" alt="preview">
+                                        </div> 
+                                        
+                                    </div>
+                                    <div class="col-lg-4 col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="duration" class="font-weight-bold"> Duration </label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control duration duration-flight" name="duration" id="duration"
+                                                placeholder="" readonly>
+                                                <!-- <div class="input-group-append">
+                                                    <span class="input-group-text">Minutes</span>
+                                                </div> -->
+                                                <div class="errorMessage text-danger"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="capacity" class="font-weight-bold"> Capacity </label>
+                                            <input type="number" class="form-control capacity capacity-flight" name="capacity" id="capacity"
+                                                placeholder="add capacity" autocomplete="off" readonly>
+                                            <div class="errorMessage text-danger"></div>
+                                        </div>              
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="flightClass" class="font-weight-bold"> Flight Class </label>
-                                    <select name="flightClass" class="form-control" id="flightClass">
-                                        <option>--Choose One--</option>
-                                        <option value="ekonomi"> Ekonomi</option>
-                                        <option value="bisnis"> Bisnis</option>
-                                        <option value="premium"> Premium</option>
-                                    </select>
-                                    <div class="errorMessageUpdate text-danger"></div>
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="flightNumber" class="font-weight-bold"> Flight Number </label>
+                                            <input type="text" class="form-control flightNumber flight-number" name="flightNumber" id="flightNumber"
+                                                placeholder="add flight number" autocomplete="off" readonly>
+                                            <div class="errorMessage text-danger"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="flightClass" class="font-weight-bold"> Flight Class </label>
+                                            <select name="flightClass" class="form-control flightClass flight-class" id="flightClass">
+                                            </select>
+                                            <div class="errorMessage text-danger"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="flightType" class="font-weight-bold"> Flight Type </label>
+                                            <select name="flightType" class="form-control flightType flight-type" id="flightType">
+                                            </select>
+                                            <div class="errorMessage text-danger"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="flightType" class="font-weight-bold"> Flight Type </label>
-                                    <select name="flightType" class="form-control" id="flightType">
-                                        <option>--Choose One--</option>
-                                        <option value="langsung"> Langsung</option>
-                                        <option value="transit"> Transit</option>
-                                    </select>
-                                    <div class="errorMessageUpdate text-danger"></div>
+                        </div>
+                        <hr>
+                        <h5 class="font-weight-bold">Airport Station</h5>
+                        <hr>
+                        <div class="bg-light p-3">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label for="departureCity" class="font-weight-bold"> Departure City </label>
+                                                <input type="text" class="form-control departure_city start-city" name="departure_city" id="departureCity"
+                                                    placeholder="add duration" autocomplete="off">
+                                                <div class="errorMessage text-danger"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label for="arrivalCity" class="font-weight-bold"> Arrival City </label>
+                                                <input type="text" class="form-control arrival_city end-city" name="arrival_city" id="arrivalCity"
+                                                    placeholder="add duration" autocomplete="off">
+                                                <div class="errorMessage text-danger"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label for="departureCityCode" class="font-weight-bold"> Departure City Code </label>
+                                                <input type="text" class="form-control departure_cityCode start-citycode" name="departure_cityCode" id="departureCityCode"
+                                                    placeholder="add city code" autocomplete="off">
+                                                <div class="errorMessage text-danger"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label for="arrivalCityCode" class="font-weight-bold"> Arrival City Code </label>
+                                                <input type="text" class="form-control arrival_cityCode end-citycode" name="arrival_cityCode" id="arrivalCityCode"
+                                                    placeholder="add city code" autocomplete="off">
+                                                <div class="errorMessage text-danger"></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <hr>
-
+                            <div class="row">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="departureAirport" class="font-weight-bold"> Departure Airport </label>
+                                        <input type="text" class="form-control departure_airport start-airport" name="departure_airport" id="departureAirport"
+                                            placeholder="add airport" autocomplete="off">
+                                        <div class="errorMessage text-danger"></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="arrivalAirport" class="font-weight-bold"> Arrival Airport </label>
+                                        <input type="text" class="form-control arrival_airport end-airport" name="arrival_airport" id="arrivalAirport"
+                                            placeholder="add airport" autocomplete="off">
+                                        <div class="errorMessage text-danger"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -534,6 +634,84 @@
         // Modal Edit
         $('#dataTable').on('click', '.btn-edit', function(){
             $('#editFlight').modal('show');
+            let id = $(this).data('id');
+            let dt_airline = $(this).data('airline_flight');
+            let dt_depapartureTime = $(this).data('dt_flight');
+            let dt_arrivalTime = $(this).data('at_flight');
+            let dt_price = $(this).data('price_flight');
+            let dt_icon = $(this).data('ic_flight');
+            let imgUrl = "/images/" + dt_icon;
+            let dt_duration = $(this).data('duration_flight');
+            let dt_capacity = $(this).data('capacity_flight');
+            let dt_flightNumber = $(this).data('number_flight');
+            let dt_flightClass = $(this).data('classFlight');
+            let dt_flightType = $(this).data('typeFlight');
+            // console.log(dt_flightNumber);
+            $('.id').val(id);
+            $('.airline-name').val(dt_airline);
+            $('.departure-time').val(dt_depapartureTime);
+
+            let dt_arrivalTimeValue = new Date(dt_arrivalTime);
+
+            // Ambil komponen tanggal dan waktu
+            let year = dt_arrivalTimeValue.getFullYear().toString().padStart(4, '0');
+            let month = (dt_arrivalTimeValue.getMonth() + 1).toString().padStart(2, '0');
+            let day = dt_arrivalTimeValue.getDate().toString().padStart(2, '0');
+            let hours = dt_arrivalTimeValue.getHours().toString().padStart(2, '0');
+            let minutes = dt_arrivalTimeValue.getMinutes().toString().padStart(2, '0');
+
+            // Buat string yang sesuai dengan format datetime-local
+            let datetimeLocalString = `${year}-${month}-${day}T${hours}:${minutes}`;
+
+            $('.arrival-time').val(datetimeLocalString);
+            $('.price-flight').val(dt_price);
+            $('.previewImg').attr('src', imgUrl);
+            $('.duration-flight').val(dt_duration);
+            $('.capacity-flight').val(dt_capacity);
+            $('.flight-number').val(dt_flightNumber);
+
+            let optionFlightType = `<option>--Choose One--</option>`;
+            if (dt_flightType) {
+                optionFlightType += `<option value="Langsung" selected>Langsung</option>`;
+                optionFlightType += `<option value="Transit">Transit</option>`;
+            } else {
+                optionFlightType += `<option value="Langsung">Langsung</option>`;
+                optionFlightType += `<option value="Transit" selected>Transit</option>`;
+            }
+
+            $('.flight-type').html(optionFlightType);
+            
+            let optionFlightClass = `<option>--Choose One--</option>`;
+            if (dt_flightClass) {
+                optionFlightClass += `<option value="Ekonomi" selected>Ekonomi</option>`;
+                optionFlightClass += `<option value="Bisnis">Bisnis</option>`;
+                optionFlightClass += `<option value="Premium">Premium</option>`;
+            } else if (dt_flightClass) {
+                optionFlightClass += `<option value="Ekonomi" selected>Ekonomi</option>`;
+                optionFlightClass += `<option value="Bisnis">Bisnis</option>`;
+                optionFlightClass += `<option value="Premium">Premium</option>`;
+            } else {
+                optionFlightClass += `<option value="Ekonomi" selected>Ekonomi</option>`;
+                optionFlightClass += `<option value="Bisnis">Bisnis</option>`;
+                optionFlightClass += `<option value="Premium">Premium</option>`;
+            }
+
+            $('.flight-class').html(optionFlightClass);
+
+
+            let dep_city = $(this).data('departure_city');
+            let arv_city = $(this).data('arrival_city');
+            let dep_citycode = $(this).data('departure_citycode');
+            let arv_citycode = $(this).data('arrival_citycode');
+            let dep_airport = $(this).data('departure_airport');
+            let arv_airport = $(this).data('arrival_airport');
+
+            $('.start-city').val(dep_city);
+            $('.end-city').val(arv_city);
+            $('.start-citycode').val(dep_citycode);
+            $('.end-citycode').val(arv_citycode);
+            $('.start-airport').val(dep_airport);
+            $('.end-airport').val(arv_airport);
         });
         // Modal Delete
         $('#dataTable').on('click', '.btn-delete', function(){
@@ -559,6 +737,63 @@
                     $('.alert').fadeOut('slow')
                 }, 3000);
             }
+        });
+
+        //display icon create
+        $('#iconCreateFlight').change(function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#viewImage').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
+            $('.errorMessage').empty();
+            $('.errorFile').empty();   
+        });
+
+        // jquery ajax untuk response validasi
+        $('#flightFormCreate').submit(function(event) {
+            event.preventDefault();
+                let formData = new FormData(this);
+                $.ajax({
+                method: 'POST',
+                url: '/admin/create-flight',
+                async: true,
+                data: formData,
+                contentType: false,
+                processData: false,
+                    success: function(response) {
+                        console.log(response);
+                        if( response.errors && response.errors.length > 0) {
+                            $('.errorMessage').empty();
+                            response.errors.forEach(function(error){
+                                $('.form-control.' + error.path).siblings('.errorMessage').text(error.msg);
+                            });
+                        } else {
+                            $('#createDestination').modal('hide');
+                            let alertMsg = response.alertMsg;
+                            let alertStatus = response.alertStatus;
+
+                            $('.flash-messages').html(
+                                `<div class=" alert alert-` + alertStatus + `"role="alert">` +
+                                (alertStatus === 'success' ? `<i class="fas fa-check-square mr-2"></i>` : ` <i class="fas fa-exlamation-triangle"></i>`)
+                                + alertMsg + `</div>`
+                            );
+
+                            const timerAlert = $('.flash-messages').html();
+                            if( timerAlert !== '') {
+                                setTimeout(function(){
+                                    $('.flash-messages').fadeOut('slow')
+                                }, 3000);
+                            }
+                            location.reload();
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.error('Error:', errorThrown);
+                        $('.errorFile').text('Bad, please check again your upload.');
+                    }
+                });
         });
         
     </script>
