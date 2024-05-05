@@ -21,7 +21,7 @@ const {
         validateDestinationBanner, 
         validateAboutBanner, 
         validateTestimonial,
-        validateFlight 
+        validateFlight
     } = require('../middlewares/validation');
 
 /** Dashboard ====================================================================== */
@@ -81,8 +81,9 @@ router.put('/update-about-banner', upload.single('image'),validateAboutBanner, b
 router.delete('/delete-about-banner/:id', bannerAboutController.delete);
 /** Flight ====================================================================== */
 router.get('/flight', flightController.index);
-router.post('/create-flight',upload.single('icon'), validateFlight, flightController.store);
+router.post('/create-flight',upload.single('icon'), flightController.store);
 // router.put('/update-flight', flightController.update);
 router.delete('/delete-flight/:id', flightController.delete);
+router.get('/search-flight', flightController.search);
 
 module.exports = router;

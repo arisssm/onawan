@@ -94,9 +94,9 @@ module.exports = {
         try{
             const { id } = req.params;
             const flight = await Flight.findById(id);
-            const airport_id = flight.airportId.map(airport => airport._id);
+            // const airport_id = flight.airportId.map(airport => airport._id);
             await Flight.deleteOne({ _id: id });
-            await Airport.deleteMany({ _id: { $in: airport_id } });
+            // await Airport.deleteMany({ _id: { $in: airport_id } });
 
             if (flight && flight.icon) {
                 const imagePath = path.join(__dirname, '../public/images', flight.icon);
@@ -109,6 +109,33 @@ module.exports = {
             res.redirect('/admin/flight');
         } catch(error) {
             // console.log(error.message);
+            req.flash('alertMsg', error.message );
+            req.flash('alertStatus', 'danger');
+            res.redirect('/admin/flight');
+        }
+    },
+    search: async (req, res) => {
+        try{
+            const searchDocument = req.query.document || '';
+            
+            const regex = new RegExp(searchDocument, 'i');
+            let flight;
+            if (searchDocument){
+                flight = await Flight.find({airlineName: regex}).populate('airportId');
+            } else {
+                flight = await Flight.find({}).populate('airportId');
+            }
+            const alertMsg = req.flash('alertMsg');
+            const alertStatus = req.flash('alertStatus');
+            const alert = {
+                message: alertMsg,
+                status: alertStatus
+            }
+            res.locals.title = 'Onawan | Flight';
+            res.locals.onPage = 'flight';
+            res.render('pages/flight', { flight, alert });
+        } catch(error) {
+            console.log(error.message);
             req.flash('alertMsg', error.message );
             req.flash('alertStatus', 'danger');
             res.redirect('/admin/flight');

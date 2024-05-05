@@ -14,21 +14,23 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3 ch">
                 <div class="row d-flex">
-                    <div class="col">
+                    <div class="col-8">
                         <h6 class="m-0 font-weight-normal text-white">List Flight</h6>
                     </div>
-                    <div class="col-4">
-                        <div class="text-right">
+                    <div class="col-3 text-right">
+                        <form action="/admin/search-flight" method="get">
                             <div class="input-group input-group-sm">
-                                <input type="text" class="form-control" placeholder="search document">
+                                <input type="text" class="form-control bg-light" name="document" placeholder="search document" autocomplete="off" required>
                                 <div class="input-group-append">
-                                    <button type="button" class="btn btn-sm btn-info"><i class="fas fa-search"></i></button>
-                                    <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#createFlight">
-                                    <i class="fas fa-plus-circle fa-sm text-white"></i> Create Data
-                                    </button>
+                                    <button type="submit" class="btn btn-sm btn-info" id="searchFlight"><i class="fas fa-search"></i></button>
                                 </div>
                             </div>
-                        </div>
+                        </form>
+                    </div>
+                    <div class="col-1 text-right">
+                        <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#createFlight">
+                        <i class="fas fa-plus-circle fa-sm text-white"></i> Create Data
+                        </button>
                     </div>
                 </div>
             </div>
@@ -430,7 +432,7 @@
                                     <div class="col-lg-4 col-md-12 col-sm-12">
                                         <div class="form-group">
                                             <label for="iconCreateFlight" class="font-weight-bold"> Icon Airline </label>
-                                            <input type="file" class="form-control icon icon-flight" name="icon" id="iconCreateFlight"
+                                            <input type="file" class="form-control icon icon-flight d-none" name="icon" id="iconCreateFlight"
                                                 placeholder="add icon" autocomplete="off" readonly>
                                             <div class="errorMessage text-danger"></div>
                                             <div class="errorFile text-danger"></div>
@@ -770,7 +772,7 @@
                                 $('.form-control.' + error.path).siblings('.errorMessage').text(error.msg);
                             });
                         } else {
-                            $('#createDestination').modal('hide');
+                            $('#createFlight').modal('hide');
                             let alertMsg = response.alertMsg;
                             let alertStatus = response.alertStatus;
 
