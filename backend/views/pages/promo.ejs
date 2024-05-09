@@ -1,0 +1,278 @@
+<%- include('../components/head.ejs') %>
+    <div class="container-fluid">
+        <div class="row-cols-1 mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Promo</h1>
+        </div>
+        <div class="row-cols-1">
+            <% if (alert.message != '') { %>
+                <div class="alert alert-<%= alert.status %>" role="alert">
+                    <%- alert.status == 'success' ? `<i class="fas fa-check-square mr-2"></i>`: `<i class="fas fa-exclamation-triangle"></i>` %> 
+                    <%= alert.message %>
+                </div>
+            <% } %>
+        </div>
+        <div class="flash-messages"></div>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 ch">
+                <div class="row d-flex">
+                    <div class="col">
+                        <h6 class="m-0 font-weight-normal text-white">List Promo</h6>
+                    </div>
+                    <!-- <div class="col-3 text-right">
+                        <form action="/admin/search-flight" method="get">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control bg-light" name="document" placeholder="search document" autocomplete="off" required>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-sm btn-info" id="searchPromo"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div> -->
+                    <div class="col-2 text-right">
+                        <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#createPromo">
+                        <i class="fas fa-plus-circle fa-sm text-white"></i> Create Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Headline</th>
+                                <th>Promo</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for( let i = 0; i < documentPromo.length; i++ ) { %>
+                                <tr>
+                                    <td><%= i+1 %></td>
+                                    <td><%= documentPromo[i].headline %></td>
+                                    <td>
+                                        <% documentPromo[i].image.forEach(img => { %>
+                                            <img class="mx-3" src="/images/<%= img %>" alt="Image" width="150vh">
+                                        <% }) %>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm cbg text-white btn-edit"
+                                        data-id = "<%= documentPromo[i]._id %>"
+                                        data-headline = "<%= documentPromo[i].headline %>"
+                                        data-img = "<%= documentPromo[i].image %>"
+                                        >
+                                            <i class="fa fa-edit"></i>
+                                            Edit
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger btn-delete"
+                                        data-id = "<%= documentPromo[i]._id %>"
+                                        >
+                                            <i class="fa fa-trash"></i>
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+     <!-- Modal -->
+     <div class="modal fade" id="createPromo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header ch text-white">
+                    <h5 class="modal-title">Create Data</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/admin/create-promo" method="post" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="headlinePromo" class="font-weight-bold"> Headline </label>
+                            <input type="text" class="form-control" name="headline" id="headlinePromo" placeholder="Add headline" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="image1Promo" class="font-weight-bold"> Promo 1 </label>
+                            <input type="file" class="form-control img-promo1" name="image" id="image1Promo" placeholder="Add promo 1" autocomplete="off">
+                            <div class="errorMessage text-danger"></div>
+                            <div class="errorFile text-danger"></div>
+                            <img src="" class="preview-image1 mt-1" id="viewImageP1" width="150vh" alt="preview">
+                        </div>
+                        <div class="form-group">
+                            <label for="image2Promo" class="font-weight-bold"> Promo 2 </label>
+                            <input type="file" class="form-control img-promo2" name="image" id="image2Promo" placeholder="Add promo 2" autocomplete="off">
+                            <div class="errorMessage text-danger"></div>
+                            <div class="errorFile text-danger"></div>
+                            <img src="" class="preview-image2 mt-1" id="viewImageP2" width="150vh" alt="preview">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Save
+                        </button>
+                    </div>
+                </form>                
+            </div>
+        </div>
+    </div>
+     <!-- Modal Edit -->
+     <div class="modal fade" id="editPromo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header ch text-white">
+                    <h5 class="modal-title">Edit Data</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/admin/update-promo?_method=put" method="post" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <input type="hidden" class="form-control id" name="id" readonly>
+                        <div class="form-group">
+                            <label for="headlinePromo" class="font-weight-bold"> Headline </label>
+                            <input type="text" class="form-control headline headline-promo" name="headline" id="headlinePromo" placeholder="Add headline">
+                        </div>
+                        <div class="form-group">
+                            <label for="image1Promo" class="font-weight-bold"> Promo 1 </label>
+                            <input type="file" class="form-control image img-promo1" name="image" id="imageUpdate1" placeholder="Add promo 1">
+                            <div class="errorMessage text-danger"></div>
+                            <div class="errorFile text-danger"></div>
+                            <img src="" class="preview-image1 mt-1" id="view-ImageP1" width="150vh" alt="preview">
+                        </div>
+                        <div class="form-group">
+                            <label for="image2Promo" class="font-weight-bold"> Promo 2 </label>
+                            <input type="file" class="form-control image img-promo2" name="image" id="imageUpdate2" placeholder="Add promo 2">
+                            <div class="errorMessage text-danger"></div>
+                            <div class="errorFile text-danger"></div>
+                            <img src="" class="preview-image2 mt-1" id="view-ImageP2" width="150vh" alt="preview">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+     <!-- Modal Delete -->
+    <div class="modal fade" id="deletePromo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Confirm Data</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" class="delete-promo">
+                    <div class="modal-body">
+                        <h5> Are you sure for delete this data ?</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa fa-check-circle"></i>
+                            Yes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#dataTable').on('click', '.btn-edit', function(){
+            $('#editPromo').modal('show');
+            let id = $(this).data('id');
+            let data_headline = $(this).data('headline');
+            let data_image = $(this).data('img').split(',');
+            let image1 = data_image[0];
+            let image2 = data_image[1];
+            let imgUrl1 = "/images/" + image1;
+            let imgUrl2 = "/images/" + image2;
+
+            console.log(id);
+            console.log(data_headline);
+            console.log(image1);
+            console.log(image2);
+
+            $('.id').val(id);
+            // $('.image-promo1').val(image1);
+            // $('.image-promo2').val(image2);
+            $('.headline-promo').val(data_headline);
+            $('.preview-image1').attr('src', imgUrl1);
+            $('.preview-image2').attr('src', imgUrl2);
+        });
+        // Modal Delete
+        $('#dataTable').on('click', '.btn-delete', function(){
+            $('#deletePromo').modal('show');   
+            let id = $(this).data('id');
+            // console.log(id);
+            let url = `/admin/delete-promo/${id}?_method=delete`;
+            $('.delete-promo').attr('action', url);         
+        });
+
+        $(document).ready(function(){
+            const timerAlert = $('.alert').text();
+            if( timerAlert !== '') {
+                setTimeout(function(){
+                    $('.alert').fadeOut('slow')
+                }, 3000);
+            }
+        });
+
+        //display image create
+        $('#image1Promo').change(function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#viewImageP1').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
+            $('.errorMessage').empty();
+            $('.errorFile').empty();   
+        });
+
+        $('#image2Promo').change(function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#viewImageP2').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
+            $('.errorMessage').empty();
+            $('.errorFile').empty();   
+        });
+
+        //display image update
+        $('#imageUpdate1').change(function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#view-ImageP1').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
+            $('.errorMessageUpdate').empty();
+            $('.errorFileUpdate').empty();   
+        });
+        $('#imageUpdate2').change(function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#view-ImageP2').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
+            $('.errorMessageUpdate').empty();
+            $('.errorFileUpdate').empty();   
+        });
+        
+    </script>
+<%- include('../components/bottom.ejs')%>
