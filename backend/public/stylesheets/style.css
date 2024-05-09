@@ -11,3 +11,33 @@ a {
   border-color: #ffffff;
   border-style: solid;
 }
+
+.img-login{
+  background: url('../images/assets/img-login.jpg');
+  background-position: center;
+  background-size: cover;
+}
+.bg-login{
+  background: url('../images/assets/bg-login.jpg');
+  background-position: center;
+  background-size: cover;
+}
+
+#login .card {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+#login .form-login {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-color: rgb(28, 116, 172);
+  border-radius: 0;
+  background: none;
+  padding: 0; 
+  margin: 0;
+  outline: none;
+  box-shadow:none;   
+  resize: none;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}

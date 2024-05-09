@@ -3,7 +3,7 @@
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
         <div class="sidebar-brand-icon">
-           <img src="/images/logo.png" width="50vh" alt="">
+           <img src="/images/assets/logo.png" width="50vh" alt="">
         </div>
         <div class="sidebar-brand-text mx-3">Onawan <sup></sup></div>
     </a>
@@ -42,9 +42,9 @@
                     <i class="fas fa-images mr-1"></i>
                     Banner
                 </a> -->
-                <a class="collapse-item collapsed" href="#" data-toggle="collapse" data-target="#bannerSection" aria-expanded="true" aria-controls="bannerSection">
+                <a class="collapse-item collapsed" data-toggle="collapse" data-target="#bannerSection" aria-expanded="true" aria-controls="bannerSection">
                     <i class="fas fa-image mr-1"></i>
-                    <span>Banner</span>
+                    <span>List Banner Page</span>
                 </a>
                 <div id="bannerSection" class="collapse">
                     <div class="collapse-inner rounded py-2">
@@ -56,6 +56,9 @@
                         </a>
                         <a class="collapse-item <%= onPage === 'aboutBanner' ? 'active' : '' %>" href="/admin/about-banner">
                             Banner About
+                        </a>
+                        <a class="collapse-item <%= onPage === 'orderBanner' ? 'active' : '' %>" href="/admin/order-banner">
+                            Banner Order
                         </a>
                     </div>
                 </div>
@@ -70,6 +73,10 @@
                 <a class="collapse-item <%= onPage === 'testimonial' ? 'active' : '' %>" href="/admin/testimonial">
                     <i class="fas fa-comment mr-1"></i>
                     Testimonial
+                </a>
+                <a class="collapse-item <%= onPage === 'payment' ? 'active' : '' %>" href="/admin/payment-method">
+                    <i class="fas fa-wallet mr-1"></i>
+                    Payment
                 </a>
             </div>
         </div>
@@ -105,24 +112,24 @@
                 </a>
             </div>
         </div>
-        <!-- <hr class="sidebar-divider"> -->
-        <!-- <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#transactionData"
+        <hr class="sidebar-divider">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#transactionData"
             aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-handshake"></i>
             <span>Transaction</span>
         </a>
         <div id="transactionData" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item <%= onPage === 'billing' ? 'active' : '' %>" href="/admin/flight">
+                <a class="collapse-item <%= onPage === 'billing' ? 'active' : '' %>" href="/api/billing">
                     <i class="fas fa-money-check mr-1"></i>
                     Billing
                 </a>
-                <a class="collapse-item <%= onPage === 'payment' ? 'active' : '' %>" href="/admin/flight">
-                    <i class="fas fa-wallet mr-1"></i>
-                    Payment
+                <a class="collapse-item <%= onPage === 'order' ? 'active' : '' %>" href="/api/order">
+                    <i class="fas fa-list-alt mr-1"></i>
+                    Order
                 </a>
             </div>
-        </div> -->
+        </div>
     </li>
 
     <!-- Divider -->
