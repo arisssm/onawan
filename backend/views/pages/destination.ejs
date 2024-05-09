@@ -18,18 +18,20 @@
                     <div class="col">
                         <h6 class="m-0 font-weight-bold text-white">List Destinations</h6>
                     </div>
-                    <div class="col-4">
-                        <div class="text-right">
+                    <div class="col-3 text-right">
+                        <form action="/admin/search-destination" method="get">
                             <div class="input-group input-group-sm">
-                                <!-- <input type="text" class="form-control" placeholder="search document"> -->
+                                <input type="text" class="form-control bg-light" name="document" placeholder="search document" autocomplete="off" required>
                                 <div class="input-group-append">
-                                    <!-- <button type="button" class="btn btn-sm btn-info"><i class="fas fa-search"></i></button> -->
-                                    <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#createDestination">
-                                    <i class="fas fa-plus-circle fa-sm text-white-50"></i> Create Data
-                                    </button>
+                                    <button type="submit" class="btn btn-sm btn-info" id="searchDestination"><i class="fas fa-search"></i></button>
                                 </div>
                             </div>
-                        </div>
+                        </form>
+                    </div>
+                    <div class="col-2 text-right">
+                        <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#createDestination">
+                        <i class="fas fa-plus-circle fa-sm text-white"></i> Create Data
+                        </button>
                     </div>
                 </div>
             </div>
@@ -40,7 +42,7 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Id</th>
+                                <!-- <th>Id</th> -->
                                 <th>Image</th>
                                 <th>Name</th>
                                 <th>Location</th>
@@ -55,7 +57,7 @@
                             <% for( let i = 0; i < destination.length; i++ ) { %>
                                 <tr>
                                     <td><%= i+1  %></td>
-                                    <td><%= destination[i]._id %></td>
+                                    <!-- <td><%= destination[i]._id %></td> -->
                                     <td>
                                         <img src="/images/<%= destination[i].image %>" width="150vh" alt="">
                                     </td>
@@ -125,7 +127,7 @@
                         <div class="form-group">
                             <label for="locDestination" class="font-weight-bold"> Location </label>
                             <input type="text" class="form-control location" name="location" id="locDestination"
-                                placeholder="add location" autocomplete="off">
+                                placeholder="add location" autocomplete="off" required>
                                 <div class="errorMessage text-danger"></div>
                         </div>
                         <div class="form-group">

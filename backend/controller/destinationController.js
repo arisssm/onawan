@@ -124,5 +124,32 @@ module.exports = {
             req.flash('alertStatus', 'danger');
             res.redirect('/admin/destination');
         }
+    },
+    search: async (req, res) => {
+        try{
+            const searchDocument = req.query.document || '';
+            
+            const regex = new RegExp(searchDocument, 'i');
+            let destination;
+            if (searchDocument){
+                destination = await Destination.find({name: regex});
+            } else {
+                destination = await Flight.find({});
+            }
+            const alertMsg = req.flash('alertMsg');
+            const alertStatus = req.flash('alertStatus');
+            const alert = {
+                message: alertMsg,
+                status: alertStatus
+            }
+            res.locals.title = 'Onawan | Destination';
+            res.locals.onPage = 'destination';
+            res.render('pages/destination', { destination, alert });
+        } catch(error) {
+            console.log(error.message);
+            req.flash('alertMsg', error.message );
+            req.flash('alertStatus', 'danger');
+            res.redirect('/admin/destination');
+        }
     }
 }
