@@ -33,9 +33,9 @@ module.exports = {
             console.log(req.body);
             console.log(req.files);
 
-                const imageHistory = req.files['imageHistory'][0].filename;
-                const image = req.files['image'][0].filename;
-                const bannerSupport = req.files['bannerSupport'][0].filename;
+            const imageHistory = req.files['imageHistory'][0].filename;
+            const image = req.files['image'][0].filename;
+            const bannerSupport = req.files['bannerSupport'][0].filename;
 
             await About.create({
                 history,
@@ -60,30 +60,33 @@ module.exports = {
     update: async (req, res) => {
         try {
             const { id, history, vision, mission } = req.body;
-            console.log(req.body);
-            console.log(req.files);
     
-            if (req.files) {
-                const imageHistory = req.files['imageHistory'] ? req.files['imageHistory'][0].filename : null;
-                const image = req.files['image'] ? req.files['image'][0].filename : null;
-                const bannerSupport = req.files['bannerSupport'] ? req.files['bannerSupport'][0].filename : null;
+            if (req.files !== undefined && req.files !== null ) {
+                if (req.files['imageHistory'] && req.files['imageHistory'].length > 0 &&
+                    req.files['image'] && req.files['image'].length > 0 &&
+                    req.files['bannerSupport'] && req.files['bannerSupport'].length > 0) {
     
-                await About.findOneAndUpdate(
-                    { _id: id },
-                    {
-                        history: history,
-                        imageHistory: imageHistory,
-                        vision: vision,
-                        image: image,
-                        mission: mission,
-                        bannerSupport: bannerSupport
-                    }
-                );
+                    const updateData = await About.findOneAndUpdate(
+                        { _id: id },
+                        {
+                            history: history,
+                            imageHistory: req.files['imageHistory'][0].filename,
+                            vision: vision,
+                            image: req.files['image'][0].filename,
+                            mission: mission,
+                            bannerSupport: req.files['bannerSupport'][0].filename
+                        }
+                    );
+                    console.log(updateData);
+                } else {
+                    throw new Error("One or more file fields are missing.");
+                }
             } else {
-                await About.findOneAndUpdate(
+                const update = await About.findOneAndUpdate(
                     { _id: id },
                     { history: history, vision: vision, mission: mission }
                 );
+                console.log(update);
             }
     
             req.flash('alertMsg', 'Update document has been saved');
@@ -101,6 +104,7 @@ module.exports = {
             // const data = await About.findOne({_id:id});
             // console.log(data);
             const about = await About.findOneAndDelete({ _id: id });
+            console.log(about);
             if (about) {
                 if (about.image && about.image !== '') {
                     const imagePath = path.join(__dirname, '../public/images', about.image);
@@ -128,6 +132,7 @@ module.exports = {
             }
             res.redirect('/admin/about');
         } catch(error){
+            console.log(error);
             req.flash('alertMsg', error.message );
             req.flash('alertStatus', 'danger');
             res.redirect('/admin/about');
