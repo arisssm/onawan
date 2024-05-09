@@ -18,18 +18,20 @@
                     <div class="col">
                         <h6 class="m-0 font-weight-normal text-white">List Home Banner</h6>
                     </div>
-                    <div class="col-4">
-                        <div class="text-right">
+                    <!-- <div class="col-3 text-right">
+                        <form action="/admin/search-home-banner" method="get">
                             <div class="input-group input-group-sm">
-                                <input type="text" class="form-control" placeholder="search document">
+                                <input type="text" class="form-control bg-light" name="document" placeholder="search document" autocomplete="off" required>
                                 <div class="input-group-append">
-                                    <button type="button" class="btn btn-sm btn-info"><i class="fas fa-search"></i></button>
-                                    <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#createHomeBanner">
-                                    <i class="fas fa-plus-circle fa-sm text-white-50"></i> Create Data
-                                    </button>
+                                    <button type="submit" class="btn btn-sm btn-info" id="searchBanner"><i class="fas fa-search"></i></button>
                                 </div>
                             </div>
-                        </div>
+                        </form>
+                    </div> -->
+                    <div class="col-2 text-right">
+                        <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#createHomeBanner">
+                        <i class="fas fa-plus-circle fa-sm text-white"></i> Create Data
+                        </button>
                     </div>
                 </div>
             </div>
@@ -237,7 +239,7 @@
             $('.errorFile').empty();   
         });
 
-        //display image create
+        //display image update
         $('#imageUpdateHome').change(function(event) {
             const file = event.target.files[0];
             const reader = new FileReader();
@@ -268,7 +270,7 @@
                                 $('.form-control.' + error.path).siblings('.errorMessage').text(error.msg);
                             });
                         } else {
-                            $('#createAirline').modal('hide');
+                            $('#createHomeBanner').modal('hide');
                             let alertMsg = response.alertMsg;
                             let alertStatus = response.alertStatus;
 

@@ -16,7 +16,9 @@ module.exports = {
             res.locals.onPage = 'homeBanner';
             res.render('pages/homeBanner', {alert, dataBanner});
         } catch(error) {
-
+            req.flash('alertMsg','Failed, error code: ' + error.message );
+            req.flash('alertStatus', 'danger');
+            res.redirect('/admin');
         }
     },
     store: async (req, res) => {
@@ -29,14 +31,14 @@ module.exports = {
             });
             req.flash('alertMsg', 'New document has been saved');
             req.flash('alertStatus', 'success');
-            // res.json({ alertMsg: 'New document has been saved.', alertStatus: 'success' });
-            res.redirect('/admin/home-banner');
+            res.json({ alertMsg: 'New document has been saved.', alertStatus: 'success' });
+            // res.redirect('/admin/home-banner');
         } catch(error) {
             console.log(error);
             req.flash('alertMsg','Failed, error code: ' + error.message );
             req.flash('alertStatus', 'danger');
-            // res.json({ alertMsg: 'Failed, error code: ' + error.message, alertStatus: 'danger' });
-            res.redirect('/admin/home-banner');
+            res.json({ alertMsg: 'Failed, error code: ' + error.message, alertStatus: 'danger' });
+            // res.redirect('/admin/home-banner');
         }
     },
     update: async (req, res) => {
