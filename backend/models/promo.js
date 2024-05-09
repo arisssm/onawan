@@ -5,14 +5,10 @@ const promoSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    imageOne: {
+    image: [{
         type: String,
         require: true
-    },
-    imageTwo: {
-        type: String,
-        require: true
-    }
+    }]
 })
 
 module.exports = mongoose.model('promo', promoSchema);
