@@ -1,0 +1,57 @@
+<%- include('../components/head.ejs') %>
+    <div class="container-fluid">
+        <div class="row-cols-1 mb-4">
+            <h1 class="h3 mb-0 text-gray-800">User</h1>
+        </div>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 ch">
+                <div class="row d-flex">
+                    <div class="col">
+                        <h6 class="m-0 font-weight-bold text-white">List User</h6>
+                    </div>
+                    <div class="col-3 text-right">
+                        <form action="/admin/search-user" method="get">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control bg-light" name="document" placeholder="search document" autocomplete="off" required>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-sm btn-info" id="searchUser"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Id User</th>
+                                <th>Full Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Password</th>
+                                <th>Role</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for( let index = 0; index < user.length; index++ ) { %>
+                                <td><%= index+1  %></td>
+                                <td><%= user[index]._id  %></td>
+                                <td><%= user[index].fullname  %></td>
+                                <td><%= user[index].phone  %></td>
+                                <td><%= user[index].email  %></td>
+                                <td><%= user[index].password  %></td>
+                                <td><%= user[index].role  %></td>
+                                <!-- <td></td> -->
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+<%- include('../components/bottom.ejs')%>

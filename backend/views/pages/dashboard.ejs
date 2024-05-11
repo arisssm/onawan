@@ -1,9 +1,26 @@
 <%- include('../components/head.ejs') %>
 <div class="container-fluid">
-
-    <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-    </div>
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
   </div>
+  <div class="row text-right">
+    <% if (alert.message != '') { %>
+    <div class="alert alert-<%= alert.status %>" role="alert">
+      <%- alert.status == 'success' ? `<i class="fas fa-check-square mr-2"></i
+      >`: `<i class="fas fa-exclamation-triangle"></i>` %> <%= alert.message %>
+    </div>
+    <% } %>
+  </div>
+</div>
+<script>
+  $(document).ready(function () {
+    const timerAlert = $(".alert").text();
+    if (timerAlert !== "") {
+      setTimeout(function () {
+        $(".alert").fadeOut("slow");
+      }, 3000);
+    }
+  });
+</script>
 <%- include('../components/bottom.ejs')%>
