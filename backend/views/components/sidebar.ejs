@@ -34,10 +34,6 @@
                     <i class="fas fa-building mr-1"></i>
                     About
                 </a>
-                <a class="collapse-item <%= onPage === 'airline' ? 'active' : '' %>" href="/admin/airline">
-                    <i class="fas fa-plane mr-1"></i>
-                    Airline
-                </a>
                 <!-- <a class="collapse-item" href="buttons.html">
                     <i class="fas fa-images mr-1"></i>
                     Banner
@@ -74,9 +70,9 @@
                     <i class="fas fa-comment mr-1"></i>
                     Testimonial
                 </a>
-                <a class="collapse-item <%= onPage === 'payment' ? 'active' : '' %>" href="/admin/payment-method">
+                <a class="collapse-item <%= onPage === 'paymentMethod' ? 'active' : '' %>" href="/admin/payment-method">
                     <i class="fas fa-wallet mr-1"></i>
-                    Payment
+                    Payment Method
                 </a>
             </div>
         </div>
@@ -106,30 +102,30 @@
                     <i class="fas fa-rocket mr-1"></i>
                     FLight
                 </a>
-                <a class="collapse-item <%= onPage === 'passangers' ? 'active' : '' %>" href="/admin/passanger">
-                    <i class="fas fa-passport mr-1"></i>
-                    Passangers
+                <a class="collapse-item <%= onPage === 'airline' ? 'active' : '' %>" href="/admin/airline">
+                    <i class="fas fa-plane mr-1"></i>
+                    Airline
                 </a>
             </div>
         </div>
         <hr class="sidebar-divider">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#transactionData"
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#customerService"
             aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-handshake"></i>
-            <span>Transaction</span>
+            <span>Service</span>
         </a>
-        <div id="transactionData" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <!-- <div id="customerService" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item <%= onPage === 'billing' ? 'active' : '' %>" href="/api/billing">
-                    <i class="fas fa-money-check mr-1"></i>
-                    Billing
+                <a class="collapse-item <%= onPage === 'booking' ? 'active' : '' %>" href="/admin/booking">
+                    <i class="fas fa-passport mr-1"></i>
+                    Booking
                 </a>
-                <a class="collapse-item <%= onPage === 'order' ? 'active' : '' %>" href="/api/order">
+                <a class="collapse-item <%= onPage === 'payout' ? 'active' : '' %>" href="/api/payout">
                     <i class="fas fa-list-alt mr-1"></i>
-                    Order
+                    Payout
                 </a>
             </div>
-        </div>
+        </div> -->
     </li>
 
     <!-- Divider -->
