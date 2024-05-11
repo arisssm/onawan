@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title><%= title %></title>
+
+    <!-- Custom fonts for this template-->
+    <link href="/sb-admin-2/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+    <link rel="shortcut icon" href="/images/assets/favicon.ico" type="image/x-icon">
+    <!-- Custom styles for this template-->
+    <link href="/sb-admin-2/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="/stylesheets/style.css" rel="stylesheet">
+
+</head>
+
+<body class="bg-login">
+
+    <div class="container">
+        <!-- Outer Row -->
+        <div class="row justify-content-center" id="login">
+            <div class="col-xl-10 col-lg-12 col-md-9">
+                <div class="card o-hidden border-0 shadow-lg my-5" style="max-width: 400px;">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900">Welcome Back!</h1>
+                                        <img src="/images/assets/img-logo.png" alt="logo">
+                                        <h6 class="text-gray-900 my-4">Please login to your account</h6>
+                                    </div>
+                                    <div class="row-cols-1">
+                                        <% if (alert.message != '') { %>
+                                            <div class="alert alert-<%= alert.status %>" role="alert">
+                                                <%- alert.status == 'success' ? `<i class="fas fa-check-square mr-2"></i>`: `<i class="fas fa-exclamation-triangle"></i>` %> 
+                                                <%= alert.message %>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                            <form class="user" action="/admin/auth-login" method="post">
+                                                <div class="form-group row align-items-center">
+                                                    <div class="col-auto mr-0">
+                                                        <span><i class="fas fa-envelope" aria-hidden="true"></i></span>
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control form-control-sm form-login" name="email" id="email" placeholder="Enter email..">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row align-items-center">
+                                                    <div class="col-auto mr-0">
+                                                        <span><i class="fas fa-lock "></i></span>
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="password" class="form-control form-login form-control-sm" name="password" id="exampleInputPassword" placeholder="Enter your password..">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox small">
+                                                        <input type="checkbox" class="custom-control-input" id="customCheck">
+                                                        <label class="custom-control-label" for="customCheck">Remember
+                                                            Me</label>
+                                                    </div>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary btn-user btn-block">
+                                                    Start
+                                                </button>
+                                            </form>
+                                    <hr>
+                                    <div class="text-left">
+                                        <a class="text-danger small font-weight-bold" href="forgot-password.html">Forgot Password?</a>
+                                    </div>
+                                    <div class="text-left">
+                                        <p class="text-gray-900 small font-weight-normal"> Already have an account ? 
+                                            <span>
+                                                <a class="text-danger font-weight-bold" href="/admin/register">Create here!</a>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Bootstrap core JavaScript-->
+    <script src="/sb-admin-2/vendor/jquery/jquery.min.js"></script>
+    <script src="/sb-admin-2/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/sb-admin-2/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/sb-admin-2/js/sb-admin-2.min.js"></script>
+    <script>
+        // function dakBoleh() {
+        //     var tombol = document.getElementById('btnLogin');
+        //     var centang = document.getElementById('customCheck');
+
+        //     if (centang.checked) {
+        //         tombol.removeAttribute('disabled');
+        //     } else {
+        //         tombol.setAttribute('disabled', 'disabled');
+        //     }
+        // }
+        $(document).ready(function(){
+            const timerAlert = $('.alert').text();
+            if( timerAlert !== '') {
+                setTimeout(function(){
+                    $('.alert').fadeOut('slow')
+                }, 3000);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

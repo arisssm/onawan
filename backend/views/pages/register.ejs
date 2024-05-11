@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title><%= title %></title>
+
+    <!-- Custom fonts for this template-->
+    <link href="/sb-admin-2/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+    <link rel="shortcut icon" href="/images/assets/favicon.ico" type="image/x-icon">
+    <!-- Custom styles for this template-->
+    <link href="/sb-admin-2/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="/stylesheets/style.css" rel="stylesheet">
+
+</head>
+
+<body class="bg-register">
+
+    <div class="container" id="register">
+
+        <div class="card o-hidden rounded-3 border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <img src="/images/assets/img-logo.png" alt="logo">
+                                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                            </div>
+                            <div class="row-cols-1">
+                                <% if (alert.message != '') { %>
+                                    <div class="alert alert-<%= alert.status %>" role="alert">
+                                        <%- alert.status == 'success' ? `<i class="fas fa-check-square mr-2"></i>`: `<i class="fas fa-exclamation-triangle"></i>` %> 
+                                        <%= alert.message %>
+                                    </div>
+                                <% } %>
+                            </div>
+                            <form class="user" action="/admin/auth-register" method="post">
+                                <div class="form-group row align-items-center">
+                                    <div class="col-auto mr-0">
+                                        <span><i class="fas fa-address-card"></i></span>
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" class="form-control form-control-sm form-register" 
+                                            name="fullname" id="fullname" placeholder="Enter fullname..">
+                                    </div>
+                                </div>
+                                <div class="form-group row align-items-center">
+                                    <div class="col-auto mr-0">
+                                        <span><i class="fas fa-envelope"></i></span>
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" class="form-control form-control-sm form-register" name="email" id="email" placeholder="Enter email..">
+                                    </div>
+                                </div>
+                                <div class="form-group row align-items-center">
+                                    <div class="col-auto mr-0">
+                                        <span><i class="fas fa-phone-alt"></i></span>
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" class="form-control form-control-sm form-register" name="phone" id="phone" placeholder="Enter phone..">
+                                    </div>
+                                </div>
+                                <div class="form-group row align-items-center">
+                                    <div class="col-auto mr-0">
+                                        <span><i class="fas fa-lock"></i></span>
+                                    </div>
+                                    <div class="col">
+                                        <input type="password" class="form-control form-register form-control-sm" name="password" id="exampleInputPassword" placeholder="Enter your password..">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-user btn-block">
+                                    Register Account
+                                </button>
+                            </form>
+                            <hr>
+                            <div class="text-left">
+                                <p class="text-gray-900 small font-weight-normal"> Already have an account ? 
+                                    <span>
+                                        <a class="text-danger font-weight-bold" href="/admin">Login</a>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 d-none d-lg-block img-register"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="/sb-admin-2/vendor/jquery/jquery.min.js"></script>
+    <script src="/sb-admin-2/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/sb-admin-2/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/sb-admin-2/js/sb-admin-2.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            const timerAlert = $('.alert').text();
+            if( timerAlert !== '') {
+                setTimeout(function(){
+                    $('.alert').fadeOut('slow')
+                }, 3000);
+            }
+        });
+    </script>
+
+</body>
+
+</html>
