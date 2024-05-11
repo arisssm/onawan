@@ -1,0 +1,363 @@
+<%- include('../components/head.ejs') %>
+    <div class="container-fluid">
+        <div class="row-cols-1 mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Payment Method</h1>
+        </div>
+        <div class="row-cols-1">
+            <% if (alert.message != '') { %>
+                <div class="alert alert-<%= alert.status %>" role="alert">
+                    <%- alert.status == 'success' ? `<i class="fas fa-check-square mr-2"></i>`: `<i class="fas fa-exclamation-triangle"></i>` %> 
+                    <%= alert.message %>
+                </div>
+            <% } %>
+        </div>
+        <div class="flash-messages"></div>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 ch">
+                <div class="row d-flex">
+                    <div class="col">
+                        <h6 class="m-0 font-weight-bold text-white">List Payment Method</h6>
+                    </div>
+                    <!-- <div class="col-3 text-right">
+                        <form action="/admin/search-payment-method" method="get">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control bg-light" name="document" placeholder="search document" autocomplete="off" required>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-sm btn-info" id="searchPaymentMethod"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div> -->
+                    <div class="col-2 text-right">
+                        <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#createPaymentMethod">
+                        <i class="fas fa-plus-circle fa-sm text-white"></i> Create Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Name</th>
+                                <th>Logo</th>
+                                <th>Account Number</th>
+                                <th>Account Holder</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for( let i = 0; i < paymentMethod.length; i++ ) { %>
+                            <tr>
+                                <td><%= i+1  %></td>
+                                <td><%= paymentMethod[i].name %></td>
+                                <td>
+                                    <img src="/images/<%= paymentMethod[i].logo %>" width="150vh" alt="">
+                                </td>
+                                <td><%= paymentMethod[i].accountNumber %></td>
+                                <td><%= paymentMethod[i].accountHolder %></td>
+                                <td>
+                                    <button type="button" class="btn btn-sm cbg text-white btn-edit"
+                                    data-id = "<%= paymentMethod[i]._id %>"
+                                    data-name = "<%= paymentMethod[i].name %>"
+                                    data-rekening = "<%= paymentMethod[i].accountNumber %>"
+                                    data-owner = "<%= paymentMethod[i].accountHolder %>"
+                                    data-logo = "<%= paymentMethod[i].logo %>"
+                                    >
+                                        <i class="fa fa-edit"></i>
+                                        Edit
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-danger btn-delete"
+                                    data-id = "<%= paymentMethod[i]._id %>"
+                                    >
+                                        <i class="fa fa-trash"></i>
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+     <!-- Modal Create-->
+    <div class="modal fade" id="createPaymentMethod" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header ch text-white">
+                    <h5 class="modal-title">Create Data</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="paymentMethodFormCreate" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="namePaymentMethod" class="font-weight-bold"> Name </label>
+                            <input type="text" class="form-control name" name="name" id="namePaymentMethod"
+                                placeholder="add name" autocomplete="off">
+                            <div class="errorMessage text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="imageCreatePaymentMethod" class="font-weight-bold"> Logo </label>
+                            <input type="file" class="form-control logo" name="logo" id="imageCreatePaymentMethod"
+                                placeholder="add logo">
+                            <div class="errorMessage text-danger"></div>
+                            <div class="errorFile text-danger"></div>
+                            <img src="" class="preview-image mt-1" id="viewImage" width="150vh" alt="preview">
+                        </div>
+                        <div class="form-group">
+                            <label for="accNumber" class="font-weight-bold"> Account Number </label>
+                            <input type="number" class="form-control accountNumber " name="accountNumber" id="accNumber"
+                                placeholder="add account number" autocomplete="off">
+                            <div class="errorMessage text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="accHolder" class="font-weight-bold"> Account Holder </label>
+                            <input type="text" class="form-control accountHolder" name="accountHolder" id="accHolder"
+                                placeholder="add account holder" autocomplete="off">
+                            <div class="errorMessage text-danger"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+     <!-- Modal Edit -->
+     <div class="modal fade" id="editPaymentMethod" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header ch text-white">
+                    <h5 class="modal-title">Edit Data</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="paymentMethodFormUpdate" action="/admin/update-payment-method?_method=put" method="post" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <input type="hidden" class="form-control id" name="id">
+                        <div class="form-group">
+                            <label for="namePaymentMethod" class="font-weight-bold"> Name </label>
+                            <input type="text" class="form-control name name-paymentMethod" name="name" id="namePaymentMethod"
+                                placeholder="add name payment method" autocomplete="off">
+                            <div class="errorMessageUpdate text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="imageUpdatePaymentMethod" class="font-weight-bold"> Logo </label>
+                            <input type="file" class="form-control logo logo-paymentMethod" name="logo" id="imageUpdatePaymentMethod"
+                                placeholder="add image">
+                            <div class="errorMessageUpdate text-danger"></div>
+                            <div class="errorFileUpdate text-danger"></div>
+                            <img src="" class="previewImg mt-1" id="viewImg" width="150vh" alt="preview">
+                        </div>
+                        <div class="form-group">
+                            <label for="accNumber" class="font-weight-bold"> Account Number </label>
+                            <input type="number" class="form-control accountNumber account-number" name="accountNumber" id="accNumber"
+                                placeholder="add account number" autocomplete="off">
+                            <div class="errorMessageUpdate text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="accHolder" class="font-weight-bold"> Account Holder </label>
+                            <input type="text" class="form-control accountHolder account-holder" name="accountHolder" id="accHolder"
+                                placeholder="add account number" autocomplete="off">
+                            <div class="errorMessageUpdate text-danger"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+        <!-- Modal Delete -->
+    <div class="modal fade" id="deletePaymentMethod" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Confirm Data</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" class="delete-payment-method">
+                    <div class="modal-body">
+                        <h5> Are you sure for delete this data ?</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa fa-check-circle"></i>
+                            Yes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#dataTable').on('click', '.btn-edit', function(){
+            $('#editPaymentMethod').modal('show');
+            let id = $(this).data('id');
+            let data_name = $(this).data('name');
+            let data_accNumber = $(this).data('rekening');
+            let data_accHolder = $(this).data('owner');
+            let data_logo = $(this).data('logo');
+            let data_imgUrl = "/images/" + data_logo;
+            console.log(data_accNumber);
+            console.log(data_accHolder);
+            console.log(data_name);
+            console.log(data_logo);
+
+            $('.id').val(id);
+            $('.name-paymentMethod').val(data_name);
+            $('.account-number').val(data_accNumber);
+            $('.account-holder').val(data_accHolder);
+            $('.previewImg').attr('src', data_imgUrl);
+        });
+        // Modal Delete
+        $('#dataTable').on('click', '.btn-delete', function(){
+            $('#deletePaymentMethod').modal('show');     
+            let id = $(this).data('id');
+            // console.log(id);
+            let url = `/admin/delete-payment-method/${id}?_method=delete`;
+            $('.delete-payment-method').attr('action', url);       
+        });
+
+        $(document).ready(function(){
+            const timerAlert = $('.alert').text();
+            if( timerAlert !== '') {
+                setTimeout(function(){
+                    $('.alert').fadeOut('slow')
+                }, 3000);
+            }
+        });
+
+        //display image create
+        $('#imageCreatePaymentMethod').change(function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#viewImage').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
+            $('.errorMessage').empty();
+            $('.errorFile').empty();   
+        });
+
+        //display image update
+        $('#imageUpdatePaymentMethod').change(function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#viewImg').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
+            $('.errorMessageUpdate').empty();
+            $('.errorFileUpdate').empty();   
+        });
+
+        // jquery ajax untuk response validasi
+        $('#paymentMethodFormCreate').submit(function(event) {
+            event.preventDefault();
+                let formData = new FormData(this);
+                $.ajax({
+                method: 'POST',
+                url: '/admin/create-payment-method',
+                async: true,
+                data: formData,
+                contentType: false,
+                processData: false,
+                    success: function(response) {
+                        console.log(response);
+                        if( response.errors && response.errors.length > 0) {
+                            $('.errorMessage').empty();
+                            response.errors.forEach(function(error){
+                                $('.form-control.' + error.path).siblings('.errorMessage').text(error.msg);
+                            });
+                        } else {
+                            $('#createPaymentMethod').modal('hide');
+                            let alertMsg = response.alertMsg;
+                            let alertStatus = response.alertStatus;
+
+                            $('.flash-messages').html(
+                                `<div class=" alert alert-` + alertStatus + `"role="alert">` +
+                                (alertStatus === 'success' ? `<i class="fas fa-check-square mr-2"></i>` : ` <i class="fas fa-exlamation-triangle"></i>`)
+                                + alertMsg + `</div>`
+                            );
+
+                            const timerAlert = $('.flash-messages').html();
+                            if( timerAlert !== '') {
+                                setTimeout(function(){
+                                    $('.flash-messages').fadeOut('slow')
+                                }, 3000);
+                            }
+                            location.reload();
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.error('Error:', errorThrown);
+                        $('.errorFile').text('Bad, please check again your upload.');
+                    }
+                });
+        });
+
+         // validasi form update
+         $('#paymentMethodFormUpdate').submit(function(event) {
+            event.preventDefault();
+                let formData = new FormData(this);
+                $.ajax({
+                method: 'POST',
+                url: '/admin/update-payment-method?_method=put',
+                async: true,
+                data: formData,
+                contentType: false,
+                processData: false,
+                    success: function(response) {
+                        console.log(response);
+                        if( response.errors && response.errors.length > 0) {
+                            $('.errorMessageUpdate').empty();
+                            response.errors.forEach(function(error){
+                                $('.form-control.' + error.path).siblings('.errorMessageUpdate').text(error.msg);
+                            });
+                        } else {
+                            $('#editPaymentMethod').modal('hide');
+                            let alertMsg = response.alertMsg;
+                            let alertStatus = response.alertStatus;
+
+                            $('.flash-messages').html(
+                                `<div class=" alert alert-` + alertStatus + `"role="alert">` +
+                                (alertStatus === 'success' ? `<i class="fas fa-check-square mr-2"></i>` : ` <i class="fas fa-exlamation-triangle"></i>`)
+                                + alertMsg + `</div>`
+                            );
+
+                            const timerAlert = $('.flash-messages').html();
+                            if( timerAlert !== '') {
+                                setTimeout(function(){
+                                    $('.flash-messages').fadeOut('slow')
+                                }, 3000);
+                            }
+                            location.reload();
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.error('Error:', errorThrown);
+                        $('.errorFileUpdate').text('Bad, please check again your upload.');
+                    }
+                });
+        });
+        
+    </script>
+<%- include('../components/bottom.ejs')%>
