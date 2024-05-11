@@ -71,7 +71,7 @@ module.exports = {
             await promo.save();
             // console.log(req.body);
             // console.log(req.files);
-            // console.log(images);
+            console.log(images);
             req.flash('alertMsg', 'document has been updated');
             req.flash('alertStatus', 'success');
             res.redirect('/admin/promo');
