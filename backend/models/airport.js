@@ -15,7 +15,7 @@ const airportSchema = new mongoose.Schema({
     },
     category:  {
         type: String,
-        enum: ['departure','arrival'],   
+        enum: ['departure','arrival']   
     },
     flightId: {
         type: ObjectId,
