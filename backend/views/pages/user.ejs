@@ -3,6 +3,14 @@
         <div class="row-cols-1 mb-4">
             <h1 class="h3 mb-0 text-gray-800">User</h1>
         </div>
+        <div class="row-cols-1">
+            <% if (alert.message != '') { %>
+                <div class="alert alert-<%= alert.status %>" role="alert">
+                    <%- alert.status == 'success' ? `<i class="fas fa-check-square mr-2"></i>`: `<i class="fas fa-exclamation-triangle"></i>` %> 
+                    <%= alert.message %>
+                </div>
+            <% } %>
+        </div>  
         <div class="card shadow mb-4">
             <div class="card-header py-3 ch">
                 <div class="row d-flex">
@@ -12,7 +20,7 @@
                     <div class="col-3 text-right">
                         <form action="/admin/search-user" method="get">
                             <div class="input-group input-group-sm">
-                                <input type="text" class="form-control bg-light" name="document" placeholder="search document" autocomplete="off" required>
+                                <input type="text" class="form-control bg-light" name="document" placeholder="search user" autocomplete="off" required>
                                 <div class="input-group-append">
                                     <button type="submit" class="btn btn-sm btn-info" id="searchUser"><i class="fas fa-search"></i></button>
                                 </div>
@@ -32,21 +40,39 @@
                                 <th>Full Name</th>
                                 <th>Phone</th>
                                 <th>Email</th>
-                                <th>Password</th>
                                 <th>Role</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <% for( let index = 0; index < user.length; index++ ) { %>
-                                <td><%= index+1  %></td>
-                                <td><%= user[index]._id  %></td>
-                                <td><%= user[index].fullname  %></td>
-                                <td><%= user[index].phone  %></td>
-                                <td><%= user[index].email  %></td>
-                                <td><%= user[index].password  %></td>
-                                <td><%= user[index].role  %></td>
-                                <!-- <td></td> -->
+                            <% for( let i = 0; i < user.length; i++ ) { %>
+                            <tr>
+                                <td><%= i+1  %></td>
+                                <td><%= user[i]._id  %></td>
+                                <td><%= user[i].fullname  %></td>
+                                <td><%= user[i].phone  %></td>
+                                <td><%= user[i].email  %></td>
+                                <td><%= user[i].role  %></td>
+                                <td class="d-flex">
+                                    <button type="button" class="btn btn-sm cbg text-white btn-edit"
+                                    data-id = "<%= user[i]._id %>"
+                                    data-fullname = "<%= user[i].fullname %>"
+                                    data-email = "<%= user[i].fullname %>"
+                                    data-password = "<%= user[i].password %>"
+                                    data-phone = "<%= user[i].phone %>"
+                                    data-role = "<%= user[i].role %>"
+                                    >
+                                        <i class="fa fa-edit"></i>
+                                        Edit
+                                    </button>
+                                    <!-- <button type="button" class="btn btn-sm btn-danger btn-delete"
+                                    data-id = "<%= user[i]._id %>"
+                                    >
+                                        <i class="fa fa-trash"></i>
+                                        Delete
+                                    </button> -->
+                                </td>
+                            </tr>
                             <% } %>
                         </tbody>
                     </table>
@@ -54,4 +80,96 @@
             </div>
         </div>
     </div>
+    <!-- Modal Edit -->
+    <div class="modal fade" id="editUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header ch text-white">
+                    <h5 class="modal-title">Edit Data</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="userFormUpdate" action="/admin/update-user?_method=put" method="post">
+                    <div class="modal-body">
+                        <input type="hidden" class="form-control id" name="id">
+                        <div class="form-group">
+                            <label for="fullname" class="font-weight-bold"> Full Name </label>
+                            <input type="text" class="form-control fullname user-fullname" name="fullname" id="fullname"
+                                placeholder="add fullname" autocomplete="off">
+                            <div class="errorMessageUpdate text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="font-weight-bold"> Email </label>
+                            <input type="text" class="form-control email user-email" name="email" id="email"
+                                placeholder="add email" autocomplete="off">
+                            <div class="errorMessageUpdate text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" class="font-weight-bold"> Phone </label>
+                            <input type="text" class="form-control phone user-phone" name="phone" id="phone"
+                                placeholder="add phone" autocomplete="off">
+                            <div class="errorMessageUpdate text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="font-weight-bold"> Password </label>
+                            <input type="text" class="form-control password user-password" name="password" id="password"
+                                placeholder="add password" autocomplete="off" disabled>
+                            <div class="errorMessageUpdate text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="role" class="font-weight-bold"> Role </label>
+                            <input type="text" class="form-control role user-role" name="role" id="role"
+                                placeholder="add role" autocomplete="off" disabled>
+                            <div class="errorMessageUpdate text-danger"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Delete -->
+    <div class="modal fade" id="deleteUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Confirm Data</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" class="delete-user">
+                    <div class="modal-body">
+                        <h5> Are you sure for delete this data ?</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa fa-check-circle"></i>
+                            Yes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#dataTable').on('click', '.btn-edit', function(){
+            $('#editUser').modal('show');
+
+        });
+
+        $('#dataTable').on('click', '.btn-delete', function(){
+            $('#deleteUser').modal('show');     
+            let id = $(this).data('id');
+            console.log(id);
+            let url = `/admin/delete-user/${id}?_method=delete`;
+            $('.delete-user').attr('action', url);       
+        });
+    </script>
 <%- include('../components/bottom.ejs')%>

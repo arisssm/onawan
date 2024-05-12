@@ -50,28 +50,28 @@ module.exports = {
             console.log(error);
             req.flash('alertMsg', 'Failed, error code: ' + error.message); 
             req.flash('alertStatus', 'danger');
-            res.redirect('/admin/login');
+            res.redirect('/admin');
         }
     },
     authLogin: async (req, res) => {
         try {
             const { email, password } = req.body;
             const user = await User.findOne({ email:email });
-            if(!user){
-                req.flash('alertMsg', 'User email not found!'); 
+            if(!user) {
+                req.flash('alertMsg', 'User email not found. Please check again !!');
                 req.flash('alertStatus', 'danger');
-                res.redirect('/admin');
+                return res.redirect('/admin')
             }
             const isPasswordMatch = await bcrypt.compare(password, user.password);
             if(!isPasswordMatch){
-                req.flash('alertMsg', 'User password not match!'); 
+                req.flash('alertMsg', 'User password not found. Please check again !!');
                 req.flash('alertStatus', 'danger');
-                res.redirect('/admin');
+                return res.redirect('/admin')
             }
-            if (user.role !== 'Admin') {
-                req.flash('alertMsg', 'Sorry, you are not admin!!'); 
+            if( user.role != 'Admin' ){
+                req.flash('alertMsg', ' What are you doing here? You are not admin !!');
                 req.flash('alertStatus', 'danger');
-                res.redirect('/admin');
+                return res.redirect('/admin')
             }
 
             req.session.user = {
@@ -80,8 +80,7 @@ module.exports = {
                 email: user.email,
                 phone: user.phone
             }
-
-            req.flash('alertMsg', 'Hello, welcome to admin page. Good Luck!'); 
+            req.flash('alertMsg', 'Hello, welcome '+ user.fullname +'. Good luck for today !!');
             req.flash('alertStatus', 'success');
             res.redirect('/admin/dashboard');
         } catch(error){
@@ -99,13 +98,14 @@ module.exports = {
                 message: alertMsg,
                 status: alertStatus
             }
+            const userSession = req.session.user;
             res.locals.title = 'Onawan | User Account';
             res.locals.onPage = 'user';
-            res.render('pages/user', {alert, user});
+            res.render('pages/user', {alert, user, userSession});
         } catch(error){
             console.log(error);
             req.flash('alertMsg', 'Failed, error code: ' + error.message); 
-            req.flash('alertStatus', 'success');
+            req.flash('alertStatus', 'danger');
             res.redirect('/admin/dashboard');
         }
     }

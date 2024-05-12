@@ -16,7 +16,7 @@ const bannerAboutController = require('../controller/bannerAboutController');
 const bannerOrderController = require('../controller/bannerOrderController');
 const paymentMethodController = require('../controller/paymentMethodController');
 const { upload } = require('../middlewares/multer');
-// const { checkLogin } = require('../middlewares/auth');
+const { checkLogin } = require('../middlewares/auth');
 const { 
         validateDestination, 
         validateAirline, 
@@ -32,13 +32,13 @@ const {
     } = require('../middlewares/validation');
 
 /** Register ====================================================================== */
-// router.get('/register', userController.register);
-// router.post('/auth-register', userController.postRegister);
+router.get('/register', userController.register);
+router.post('/auth-register', userController.postRegister);
 
 // /** Login ====================================================================== */
-// router.get('/', userController.login);
-// router.post('/auth-login', userController.authLogin);
-// router.use(checkLogin);
+router.get('/', userController.login);
+router.post('/auth-login', userController.authLogin);
+router.use(checkLogin);
 /** Dashboard ====================================================================== */
 router.get('/dashboard', dashboardController.index);
 /** Destination ====================================================================== */
@@ -69,7 +69,6 @@ router.put('/update-testimonial', upload.single('image'), validateTestimonial, t
 router.delete('/delete-testimonial/:id', testimonialController.delete);
 /** User ====================================================================== */
 router.get('/user', userController.index);
-// router.post('/create-user', userController.store);
 // router.put('/update-user', userController.update);
 // router.delete('/delete-user/:id', userController.delete);
 /** Banner Home ====================================================================== */
