@@ -384,7 +384,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="flightFormUpdate" action="/admin/update-flight?_method=put" method="post" enctype="multipart/form-data">
+                <form id="flightFormUpdate" enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="row">
                         <input type="text" class="form-control id m-2" name="id" readonly>
@@ -393,7 +393,7 @@
                                     <label for="nameAirline" class="font-weight-bold"> Name Airline </label>
                                     <input type="text" class="form-control airlineName airline-name" name="airlineName" id="nameAirline"
                                         placeholder="add airline name" autocomplete="off" readonly>
-                                    <div class="errorMessage text-danger"></div>
+                                    <div class="errorMessageUpdate text-danger"></div>
                                 </div>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-12">
@@ -401,7 +401,7 @@
                                     <label for="departureTime" class="font-weight-bold"> Departure Time </label>
                                     <input type="datetime-local" class="form-control departureTime departure-time" name="departureTime" id="departureTime"
                                         placeholder="add departure time" autocomplete="off">
-                                    <div class="errorMessage text-danger"></div>
+                                    <div class="errorMessageUpdate text-danger"></div>
                                 </div>  
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-12">
@@ -409,7 +409,7 @@
                                     <label for="arrivalTime" class="font-weight-bold"> Arrival Time </label>
                                     <input type="datetime-local" class="form-control arrivalTime arrival-time" name="arrivalTime" id="arrivalTime"
                                         placeholder="add arrival time" autocomplete="off">
-                                    <div class="errorMessage text-danger"></div>
+                                    <div class="errorMessageUpdate text-danger"></div>
                                 </div>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-12">
@@ -421,7 +421,7 @@
                                         </div>
                                         <input type="number" class="form-control price price-flight" name="price" id="price"
                                             placeholder="add price" autocomplete="off">
-                                        <div class="errorMessage text-danger"></div>
+                                        <div class="errorMessageUpdate text-danger"></div>
                                     </div>
                                 </div>
                             </div>
@@ -449,7 +449,7 @@
                                                 <!-- <div class="input-group-append">
                                                     <span class="input-group-text">Minutes</span>
                                                 </div> -->
-                                                <div class="errorMessage text-danger"></div>
+                                                <div class="errorMessageUpdate text-danger"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -458,7 +458,7 @@
                                             <label for="capacity" class="font-weight-bold"> Capacity </label>
                                             <input type="number" class="form-control capacity capacity-flight" name="capacity" id="capacity"
                                                 placeholder="add capacity" autocomplete="off" readonly>
-                                            <div class="errorMessage text-danger"></div>
+                                            <div class="errorMessageUpdate text-danger"></div>
                                         </div>              
                                     </div>
                                 </div>
@@ -470,7 +470,7 @@
                                             <label for="flightNumber" class="font-weight-bold"> Flight Number </label>
                                             <input type="text" class="form-control flightNumber flight-number" name="flightNumber" id="flightNumber"
                                                 placeholder="add flight number" autocomplete="off" readonly>
-                                            <div class="errorMessage text-danger"></div>
+                                            <div class="errorMessageUpdate text-danger"></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-md-12 col-sm-12">
@@ -478,7 +478,7 @@
                                             <label for="flightClass" class="font-weight-bold"> Flight Class </label>
                                             <select name="flightClass" class="form-control flightClass flight-class" id="flightClass">
                                             </select>
-                                            <div class="errorMessage text-danger"></div>
+                                            <div class="errorMessageUpdate text-danger"></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-md-12 col-sm-12">
@@ -486,7 +486,7 @@
                                             <label for="flightType" class="font-weight-bold"> Flight Type </label>
                                             <select name="flightType" class="form-control flightType flight-type" id="flightType">
                                             </select>
-                                            <div class="errorMessage text-danger"></div>
+                                            <div class="errorMessageUpdate text-danger"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -504,7 +504,7 @@
                                                 <label for="departureCity" class="font-weight-bold"> Departure City </label>
                                                 <input type="text" class="form-control departure_city start-city" name="departure_city" id="departureCity"
                                                     placeholder="add duration" autocomplete="off">
-                                                <div class="errorMessage text-danger"></div>
+                                                <div class="errorMessageUpdate text-danger"></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-12 col-sm-12">
@@ -512,7 +512,7 @@
                                                 <label for="arrivalCity" class="font-weight-bold"> Arrival City </label>
                                                 <input type="text" class="form-control arrival_city end-city" name="arrival_city" id="arrivalCity"
                                                     placeholder="add duration" autocomplete="off">
-                                                <div class="errorMessage text-danger"></div>
+                                                <div class="errorMessageUpdate text-danger"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -524,7 +524,7 @@
                                                 <label for="departureCityCode" class="font-weight-bold"> Departure City Code </label>
                                                 <input type="text" class="form-control departure_cityCode start-citycode" name="departure_cityCode" id="departureCityCode"
                                                     placeholder="add city code" autocomplete="off">
-                                                <div class="errorMessage text-danger"></div>
+                                                <div class="errorMessageUpdate text-danger"></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-12 col-sm-12">
@@ -532,7 +532,7 @@
                                                 <label for="arrivalCityCode" class="font-weight-bold"> Arrival City Code </label>
                                                 <input type="text" class="form-control arrival_cityCode end-citycode" name="arrival_cityCode" id="arrivalCityCode"
                                                     placeholder="add city code" autocomplete="off">
-                                                <div class="errorMessage text-danger"></div>
+                                                <div class="errorMessageUpdate text-danger"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -544,7 +544,7 @@
                                         <label for="departureAirport" class="font-weight-bold"> Departure Airport </label>
                                         <input type="text" class="form-control departure_airport start-airport" name="departure_airport" id="departureAirport"
                                             placeholder="add airport" autocomplete="off">
-                                        <div class="errorMessage text-danger"></div>
+                                        <div class="errorMessageUpdate text-danger"></div>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-12 col-sm-12">
@@ -552,7 +552,7 @@
                                         <label for="arrivalAirport" class="font-weight-bold"> Arrival Airport </label>
                                         <input type="text" class="form-control arrival_airport end-airport" name="arrival_airport" id="arrivalAirport"
                                             placeholder="add airport" autocomplete="off">
-                                        <div class="errorMessage text-danger"></div>
+                                        <div class="errorMessageUpdate text-danger"></div>
                                     </div>
                                 </div>
                             </div>
@@ -651,21 +651,34 @@
             // console.log(dt_flightNumber);
             $('.id').val(id);
             $('.airline-name').val(dt_airline);
-            $('.departure-time').val(dt_depapartureTime);
+            // $('.departure-time').val(dt_depapartureTime);
 
             let dt_arrivalTimeValue = new Date(dt_arrivalTime);
 
             // Ambil komponen tanggal dan waktu
-            let year = dt_arrivalTimeValue.getFullYear().toString().padStart(4, '0');
-            let month = (dt_arrivalTimeValue.getMonth() + 1).toString().padStart(2, '0');
-            let day = dt_arrivalTimeValue.getDate().toString().padStart(2, '0');
-            let hours = dt_arrivalTimeValue.getHours().toString().padStart(2, '0');
-            let minutes = dt_arrivalTimeValue.getMinutes().toString().padStart(2, '0');
+            let year_a = dt_arrivalTimeValue.getFullYear().toString().padStart(4, '0');
+            let month_a = (dt_arrivalTimeValue.getMonth() + 1).toString().padStart(2, '0');
+            let day_a = dt_arrivalTimeValue.getDate().toString().padStart(2, '0');
+            let hours_a = dt_arrivalTimeValue.getHours().toString().padStart(2, '0');
+            let minutes_a = dt_arrivalTimeValue.getMinutes().toString().padStart(2, '0');
 
             // Buat string yang sesuai dengan format datetime-local
-            let datetimeLocalString = `${year}-${month}-${day}T${hours}:${minutes}`;
+            let datetimeLocal_a = `${year_a}-${month_a}-${day_a}T${hours_a}:${minutes_a}`;
 
-            $('.arrival-time').val(datetimeLocalString);
+            let dt_departureTimeValue = new Date(dt_depapartureTime);
+
+            // Ambil komponen tanggal dan waktu
+            let year_d = dt_departureTimeValue.getFullYear().toString().padStart(4, '0');
+            let month_d = (dt_departureTimeValue.getMonth() + 1).toString().padStart(2, '0');
+            let day_d = dt_departureTimeValue.getDate().toString().padStart(2, '0');
+            let hours_d = dt_departureTimeValue.getHours().toString().padStart(2, '0');
+            let minutes_d = dt_departureTimeValue.getMinutes().toString().padStart(2, '0');
+
+            // Buat string yang sesuai dengan format datetime-local
+            let datetimeLocal_d = `${year_d}-${month_d}-${day_d}T${hours_d}:${minutes_d}`;
+
+            $('.departure-time').val(datetimeLocal_d);
+            $('.arrival-time').val(datetimeLocal_a);
             $('.price-flight').val(dt_price);
             $('.previewImg').attr('src', imgUrl);
             $('.duration-flight').val(dt_duration);
@@ -798,5 +811,49 @@
                 });
         });
         
+        // validasi form update
+        $('#flightFormUpdate').submit(function(event) {
+            event.preventDefault();
+                let formData = new FormData(this);
+                $.ajax({
+                method: 'POST',
+                url: '/admin/update-flight?_method=put',
+                async: true,
+                data: formData,
+                contentType: false,
+                processData: false,
+                    success: function(response) {
+                        console.log(response);
+                        if( response.errors && response.errors.length > 0) {
+                            $('.errorMessageUpdate').empty();
+                            response.errors.forEach(function(error){
+                                $('.form-control.' + error.path).siblings('.errorMessageUpdate').text(error.msg);
+                            });
+                        } else {
+                            $('#editFlight').modal('hide');
+                            let alertMsg = response.alertMsg;
+                            let alertStatus = response.alertStatus;
+
+                            $('.flash-messages').html(
+                                `<div class=" alert alert-` + alertStatus + `"role="alert">` +
+                                (alertStatus === 'success' ? `<i class="fas fa-check-square mr-2"></i>` : ` <i class="fas fa-exlamation-triangle"></i>`)
+                                + alertMsg + `</div>`
+                            );
+
+                            const timerAlert = $('.flash-messages').html();
+                            if( timerAlert !== '') {
+                                setTimeout(function(){
+                                    $('.flash-messages').fadeOut('slow')
+                                }, 3000);
+                            }
+                            location.reload();
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.error('Error:', errorThrown);
+                        $('.errorFileUpdate').text('Bad, please check again your upload.');
+                    }
+                });
+        });
     </script>
 <%- include('../components/bottom.ejs')%>

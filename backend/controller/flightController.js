@@ -141,5 +141,81 @@ module.exports = {
             req.flash('alertStatus', 'danger');
             res.redirect('/admin/flight');
         }
+    },
+    update: async (req, res) => {
+        try {
+            const {
+                id,
+                airlineName,
+                departureTime,
+                arrivalTime,
+                duration,
+                capacity,
+                price,
+                flightNumber,
+                flightClass,
+                flightType,
+                departure_city,
+                departure_cityCode,
+                departure_airport,
+                arrival_city,
+                arrival_cityCode,
+                arrival_airport
+            } = req.body;
+    
+            const flight = await Flight.findOne({_id: id});
+            if (!flight) {
+                req.flash('alertMsg', 'Flight not found');
+                req.flash('alertStatus', 'danger');
+                return res.redirect('/admin/flight');
+            }
+    
+            flight.airlineName = airlineName;
+            flight.departureTime = departureTime;
+            flight.arrivalTime = arrivalTime;
+            flight.duration = duration;
+            flight.capacity = capacity;
+            flight.price = price;
+            flight.flightNumber = flightNumber;
+            flight.flightClass = flightClass;
+            flight.flightType = flightType;
+    
+            if (req.file) {
+                const iconPath = path.join(__dirname, '../public/images', flight.icon);
+                if (fs.existsSync(iconPath)) {
+                    fs.unlinkSync(iconPath);
+                }
+                flight.icon = req.file.filename;
+            }
+    
+            const departureAirport = await Airport.findOne({ _id: flight.airportId[0] });
+            const arrivalAirport = await Airport.findOne({ _id: flight.airportId[1] });
+    
+            if (departureAirport) {
+                departureAirport.city = departure_city;
+                departureAirport.code = departure_cityCode;
+                departureAirport.airport = departure_airport;
+                await departureAirport.save();
+            }
+    
+            if (arrivalAirport) {
+                arrivalAirport.city = arrival_city;
+                arrivalAirport.code = arrival_cityCode;
+                arrivalAirport.airport = arrival_airport;
+                await arrivalAirport.save();
+            }
+    
+            await flight.save();
+            req.flash('alertMsg', 'Document has been updated');
+            req.flash('alertStatus', 'success');
+            res.json({ alertMsg: 'Document has been updated', alertStatus: 'success' });
+            // res.redirect('/admin/flight');
+        } catch (error) {
+            console.log(error);
+            req.flash('alertMsg', 'Failed, error code: ' + error.message);
+            req.flash('alertStatus', 'danger');
+            res.json({ alertMsg: 'Failed, error code: ' + error.message, alertStatus: 'danger' });
+            // res.redirect('/admin/flight');
+        }    
     }
 }

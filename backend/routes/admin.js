@@ -117,7 +117,7 @@ router.delete('/delete-support-banner/:id', bannerSupportController.delete);
 /** Flight ====================================================================== */
 router.get('/flight', flightController.index);
 router.post('/create-flight',upload.single('icon'), validateFlight, flightController.store);
-// router.put('/update-flight', validateFlight, flightController.update);
+router.put('/update-flight', upload.single('icon'), flightController.update);
 router.delete('/delete-flight/:id', flightController.delete);
 router.get('/search-flight', flightController.search);
 /** Payment ====================================================================== */
