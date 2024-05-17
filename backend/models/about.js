@@ -20,11 +20,11 @@ const aboutSchema = new mongoose.Schema ({
     image: {
         type: String,
         require: true
-    },
-    bannerSupport: {
-        type: String,
-        require: true
     }
+    // bannerSupport: {
+    //     type: String,
+    //     require: true
+    // }
 });
 
 module.exports = mongoose.model('about', aboutSchema);

@@ -7,6 +7,7 @@ const destinationController = require('../controller/destinationController');
 const aboutController = require('../controller/aboutController');
 const airlineController = require('../controller/airlineController');
 const promoController = require('../controller/promoController');
+// const promotionController = require('../controller/promotionController');
 const testimonialController = require('../controller/testimonialController');
 const userController = require('../controller/userController');
 const flightController = require('../controller/flightController');
@@ -14,6 +15,8 @@ const bannerHomeController = require('../controller/bannerHomeController');
 const bannerDestinationController = require('../controller/bannerDestinationController');
 const bannerAboutController = require('../controller/bannerAboutController');
 const bannerOrderController = require('../controller/bannerOrderController');
+const bannerAirlineController = require('../controller/bannerAirlineController');
+const bannerSupportController = require('../controller/bannerSupportController');
 const paymentMethodController = require('../controller/paymentMethodController');
 const { upload } = require('../middlewares/multer');
 const { checkLogin } = require('../middlewares/auth');
@@ -24,8 +27,12 @@ const {
         validateDestinationBanner, 
         validateAboutBanner,
         validateOrderBanner, 
+        validateAbout,
         validateTestimonial,
         validatePaymentMethod,
+        validatePromotion,
+        validateAirlineBanner,
+        validateSupportBanner,
         validateFlight
 
         
@@ -38,7 +45,7 @@ router.post('/auth-register', userController.postRegister);
 // /** Login ====================================================================== */
 router.get('/', userController.login);
 router.post('/auth-login', userController.authLogin);
-router.use(checkLogin);
+// router.use(checkLogin);
 /** Dashboard ====================================================================== */
 router.get('/dashboard', dashboardController.index);
 /** Destination ====================================================================== */
@@ -49,8 +56,8 @@ router.delete('/delete-destination/:id', destinationController.delete);
 router.get('/search-destination', destinationController.search);
 /** About ====================================================================== */
 router.get('/about', aboutController.index);
-router.post('/create-about',upload.fields([{ name: 'imageHistory' },{ name: 'image' },{ name: 'bannerSupport' }]), aboutController.store);
-router.put('/update-about', upload.fields([{ name: 'imageHistory' },{ name: 'image' },{ name: 'bannerSupport' }]), aboutController.update);
+router.post('/create-about',upload.fields([{ name: 'imageHistory', maxCount: 1 },{ name: 'image', maxCount: 1 }]), validateAbout, aboutController.store);
+router.put('/update-about', upload.fields([{ name: 'imageHistory', maxCount: 1 },{ name: 'image', maxCount: 1 }]), aboutController.update);
 router.delete('/delete-about/:id', aboutController.delete);
 /** Airline ====================================================================== */
 router.get('/airline', airlineController.index);
@@ -62,6 +69,11 @@ router.get('/promo', promoController.index);
 router.post('/create-promo',upload.array('image', 2), promoController.store);
 router.put('/update-promo',upload.array('image', 2), promoController.update);
 router.delete('/delete-promo/:id', promoController.delete);
+
+// router.get('/promotion', promotionController.index);
+// router.post('/create-promotion',upload.single('image'), validatePromotion, promotionController.store);
+// router.put('/update-promotion', upload.single('image'), validatePromotion, promotionController.update);
+// router.delete('/delete-promotion/:id', promotionController.delete);
 /** Testimonial ====================================================================== */
 router.get('/testimonial', testimonialController.index);
 router.post('/create-testimonial', upload.single('image'), validateTestimonial, testimonialController.store);
@@ -69,8 +81,9 @@ router.put('/update-testimonial', upload.single('image'), validateTestimonial, t
 router.delete('/delete-testimonial/:id', testimonialController.delete);
 /** User ====================================================================== */
 router.get('/user', userController.index);
-// router.put('/update-user', userController.update);
-// router.delete('/delete-user/:id', userController.delete);
+router.put('/update-user', userController.update);
+router.delete('/delete-user/:id', userController.delete);
+router.get('/search-user', userController.search);
 /** Banner Home ====================================================================== */
 router.get('/home-banner', bannerHomeController.index);
 router.post('/create-home-banner', upload.single('image'),validateHomeBanner, bannerHomeController.store);
@@ -91,10 +104,20 @@ router.get('/order-banner', bannerOrderController.index);
 router.post('/create-order-banner', upload.single('image'),validateOrderBanner, bannerOrderController.store);
 router.put('/update-order-banner', upload.single('image'),validateOrderBanner, bannerOrderController.update);
 router.delete('/delete-order-banner/:id', bannerOrderController.delete);
+// /** Banner Airline ====================================================================== */
+router.get('/airline-banner', bannerAirlineController.index);
+router.post('/create-airline-banner', upload.single('image'),validateAirlineBanner, bannerAirlineController.store);
+router.put('/update-airline-banner', upload.single('image'),validateAirlineBanner, bannerAirlineController.update);
+router.delete('/delete-airline-banner/:id', bannerAirlineController.delete);
+// /** Banner Support ====================================================================== */
+router.get('/support-banner', bannerSupportController.index);
+router.post('/create-support-banner', upload.single('image'),validateSupportBanner, bannerSupportController.store);
+router.put('/update-support-banner', upload.single('image'),validateSupportBanner, bannerSupportController.update);
+router.delete('/delete-support-banner/:id', bannerSupportController.delete);
 /** Flight ====================================================================== */
 router.get('/flight', flightController.index);
-router.post('/create-flight',upload.single('icon'), flightController.store);
-// router.put('/update-flight', flightController.update);
+router.post('/create-flight',upload.single('icon'), validateFlight, flightController.store);
+// router.put('/update-flight', validateFlight, flightController.update);
 router.delete('/delete-flight/:id', flightController.delete);
 router.get('/search-flight', flightController.search);
 /** Payment ====================================================================== */
@@ -103,5 +126,6 @@ router.post('/create-payment-method', upload.single('logo'), validatePaymentMeth
 router.put('/update-payment-method', upload.single('logo'),validatePaymentMethod, paymentMethodController.update);
 router.delete('/delete-payment-method/:id', paymentMethodController.delete);
 
-// router.get('/logout', userController.logout);
+router.get('/logout', userController.logout);
+
 module.exports = router;

@@ -6,6 +6,7 @@ module.exports = {
     index: async (req, res) => {
         try {
             const about = await About.find();
+            const userSession = req.session.user;
             const alertMsg = req.flash('alertMsg');
             const alertStatus = req.flash('alertStatus');
             const alert = {
@@ -14,15 +15,13 @@ module.exports = {
             }
             res.locals.title = 'Onawan | About Us';
             res.locals.onPage = 'about';
-            res.render('pages/about', {about, alert});
+            res.render('pages/about', {about, alert, userSession});
         } catch(error) {
-            // console.log(error.message);
             req.flash('alertMsg', error.message );
             req.flash('alertStatus', 'danger');
             res.redirect('/admin/dashboard');
         }
     },
-
     store: async (req, res) => {
         try {
             const { 
@@ -32,63 +31,60 @@ module.exports = {
             } = req.body;
             console.log(req.body);
             console.log(req.files);
-
             const imageHistory = req.files['imageHistory'][0].filename;
             const image = req.files['image'][0].filename;
-            const bannerSupport = req.files['bannerSupport'][0].filename;
-
             await About.create({
                 history,
                 imageHistory,
                 vision,
                 image,
-                mission,
-                bannerSupport
+                mission
             });
             req.flash('alertMsg', 'New document has been saved');
             req.flash('alertStatus', 'success');
-            res.redirect('/admin/about');
-            // res.json({ alertMsg: 'New document has been saved.', alertStatus: 'success' });
+            // res.redirect('/admin/about');
+            res.json({ alertMsg: 'New document has been saved.', alertStatus: 'success' });
         } catch(error){
             console.log(error);
             req.flash('alertMsg','Failed, error code: ' + error.message );
             req.flash('alertStatus', 'danger');
-            res.redirect('/admin/about');
-            // res.json({ alertMsg: 'Failed, error code: ' + error.message, alertStatus: 'danger' });
+            // res.redirect('/admin/about');
+            res.json({ alertMsg: 'Failed, error code: ' + error.message, alertStatus: 'danger' });
         }
     },
     update: async (req, res) => {
         try {
             const { id, history, vision, mission } = req.body;
-    
-            if (req.files !== undefined && req.files !== null ) {
-                if (req.files['imageHistory'] && req.files['imageHistory'].length > 0 &&
-                    req.files['image'] && req.files['image'].length > 0 &&
-                    req.files['bannerSupport'] && req.files['bannerSupport'].length > 0) {
-    
-                    const updateData = await About.findOneAndUpdate(
-                        { _id: id },
-                        {
-                            history: history,
-                            imageHistory: req.files['imageHistory'][0].filename,
-                            vision: vision,
-                            image: req.files['image'][0].filename,
-                            mission: mission,
-                            bannerSupport: req.files['bannerSupport'][0].filename
-                        }
-                    );
-                    console.log(updateData);
-                } else {
-                    throw new Error("One or more file fields are missing.");
-                }
-            } else {
-                const update = await About.findOneAndUpdate(
-                    { _id: id },
-                    { history: history, vision: vision, mission: mission }
-                );
-                console.log(update);
+            const about = await About.findOne({_id: id});
+            if (!about) {
+                req.flash('alertMsg', 'Failed, data not found');
+                req.flash('alertStatus', 'danger');
+                return res.redirect('/admin/about');
             }
-    
+            about.history = history;
+            about.vision = vision;
+            about.mission = mission;
+            if (req.files['imageHistory']) {
+                const newImageHistory = req.files['imageHistory'][0].filename;
+                if (about.imageHistory) {
+                    const imageHistoryPath = path.join(__dirname, '../public/images', about.imageHistory);
+                    if (fs.existsSync(imageHistoryPath)) {
+                        fs.unlinkSync(imageHistoryPath);
+                    }
+                }
+                about.imageHistory = newImageHistory;
+            }
+            if (req.files['image']) {
+                const newImage = req.files['image'][0].filename;
+                if (about.image) {
+                    const imagePath = path.join(__dirname, '../public/images', about.image);
+                    if (fs.existsSync(imagePath)) {
+                        fs.unlinkSync(imagePath);
+                    }
+                }
+                about.image = newImage;
+            }
+            await about.save();
             req.flash('alertMsg', 'Update document has been saved');
             req.flash('alertStatus', 'success');
             res.redirect('/admin/about');
@@ -101,8 +97,6 @@ module.exports = {
     delete: async (req, res) => {
         try{
             const { id } = req.params;
-            // const data = await About.findOne({_id:id});
-            // console.log(data);
             const about = await About.findOneAndDelete({ _id: id });
             console.log(about);
             if (about) {
@@ -116,12 +110,6 @@ module.exports = {
                     const imageHistoryPath = path.join(__dirname, '../public/images', about.imageHistory);
                     if (fs.existsSync(imageHistoryPath)) {
                         fs.unlinkSync(imageHistoryPath);
-                    }
-                }
-                if (about.bannerSupport && about.bannerSupport !== '') {
-                    const bannerSupportPath = path.join(__dirname, '../public/images', about.bannerSupport);
-                    if (fs.existsSync(bannerSupportPath)) {
-                        fs.unlinkSync(bannerSupportPath);
                     }
                 }
                 req.flash('alertMsg', 'Warning, document has been deleted.');

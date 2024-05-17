@@ -21,7 +21,7 @@ exports.validateDestination = [
 
     body('price')
     .notEmpty().withMessage('Price is required') 
-    .isNumeric().withMessage('Price must be a numeric')
+    // .isNumeric().withMessage('Price must be a numeric')
     .custom((value) => {
         if (value < 100000 || value > 5000000) {
             throw new Error('Price must be between 100.000 IDR until 5.000.000 IDR');
@@ -177,6 +177,75 @@ exports.validateOrderBanner = [
         next();
     }
 ];
+exports.validateAirlineBanner = [
+    body('headline')
+    .notEmpty().withMessage('Headline is required')
+    .isLength({ min:4, max:100}).withMessage('Headline must be between 5 until 100 characters'),
+    body('subHeadline')
+    .notEmpty().withMessage('subHeadline is required')
+    .isLength({ min:4, max:100}).withMessage('subHeadline must be between 5 until 100 characters'),
+    // body('image').custom((value, { req }) => {
+    //     if (!req.file) {
+    //         throw new Error('Image is required');
+    //     }
+    //     return true;
+    // }),
+    
+    // handling error validation
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({ errors: errors.array() });
+        }
+        next();
+    }
+];
+exports.validateSupportBanner = [
+    body('image').custom((value, { req }) => {
+        if (!req.file) {
+            throw new Error('Image is required');
+        }
+        return true;
+    }),
+    
+    // handling error validation
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({ errors: errors.array() });
+        }
+        next();
+    }
+];
+
+exports.validateAbout = [
+    body('history')
+    .notEmpty().withMessage('History is required'),
+    body('vision')
+    .notEmpty().withMessage('Vision is required'),
+    body('mission')
+    .notEmpty().withMessage('Mission is required'),
+    body('image').custom((value, { req }) => {
+        if (!req.file) {
+            throw new Error('Image is required');
+        }
+        return true;
+    }),
+    body('imageHistory').custom((value, { req }) => {
+        if (!req.file) {
+            throw new Error('Image History is required');
+        }
+        return true;
+    }),
+    // handling error validation
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({ errors: errors.array() });
+        }
+        next();
+    }
+];
 
 exports.validateTestimonial = [
     body('fullname')
@@ -295,6 +364,26 @@ exports.validateFlight = [
     .notEmpty().withMessage('Departure city code is required'),
     body('arrival_airport')
     .notEmpty().withMessage('Departure airport is required'),
+    
+    // handling error validation
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({ errors: errors.array() });
+        }
+        next();
+    }
+];
+exports.validatePromotion = [
+    body('name')
+    .notEmpty().withMessage('Name promo is required')
+    .isLength({ min:4, max:100}).withMessage('Name promo must be between 5 until 100 characters'),
+    // body('image').custom((value, { req }) => {
+    //     if (!req.file) {
+    //         throw new Error('Image is required');
+    //     }
+    //     return true;
+    // }),
     
     // handling error validation
     (req, res, next) => {
