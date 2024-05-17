@@ -7,6 +7,7 @@ module.exports = {
     index: async (req, res) => {
         try {
             const flight = await Flight.find().populate('airportId');
+            const userSession = req.session.user;
             const alertMsg = req.flash('alertMsg');
             const alertStatus = req.flash('alertStatus');
             const alert = {
@@ -15,7 +16,7 @@ module.exports = {
             }
             res.locals.title = 'Onawan | Flight';
             res.locals.onPage = 'flight';
-            res.render('pages/flight', { flight, alert });
+            res.render('pages/flight', { flight, alert, userSession });
         } catch(error) {
             // console.log(error.message);
             req.flash('alertMsg', error.message );
@@ -116,8 +117,8 @@ module.exports = {
     },
     search: async (req, res) => {
         try{
+            const userSession = req.session.user;
             const searchDocument = req.query.document || '';
-            
             const regex = new RegExp(searchDocument, 'i');
             let flight;
             if (searchDocument){
@@ -133,7 +134,7 @@ module.exports = {
             }
             res.locals.title = 'Onawan | Flight';
             res.locals.onPage = 'flight';
-            res.render('pages/flight', { flight, alert });
+            res.render('pages/flight', { flight, alert, userSession });
         } catch(error) {
             console.log(error.message);
             req.flash('alertMsg', error.message );

@@ -108,5 +108,73 @@ module.exports = {
             req.flash('alertStatus', 'danger');
             res.redirect('/admin/dashboard');
         }
+    },
+    update: async(req, res) => {
+        try {
+            const { id, fullname, email, phone, password } = req.body;
+            await User.updateOne({ _id:id}, {
+                fullname: fullname,
+                email: email,
+                phone: phone,
+                password: password
+            });
+            req.flash('alertMsg', 'Done, your account has been updated!'); 
+            req.flash('alertStatus', 'success');
+            res.redirect('/admin/user');
+        } catch(error) {
+            console.log(error);
+            req.flash('alertMsg', 'Failed, error code: ' + error.message); 
+            req.flash('alertStatus', 'danger');
+            res.redirect('/admin/user');
+        }
+    },
+    delete: async (req, res) => {
+        try {
+            const { id } = req.params;
+            await User.deleteOne({_id:id});
+            req.flash('alertMsg', 'Warning, your account has been deleted!'); 
+            req.flash('alertStatus', 'warning');
+            res.redirect('/admin/user');
+        } catch(error){
+            console.log(error);
+            req.flash('alertMsg', 'Failed, error code: ' + error.message); 
+            req.flash('alertStatus', 'danger');
+            res.redirect('/admin/user');
+        }
+    },
+    logout: async (req, res) => {
+        try{
+            req.session.destroy();
+            res.redirect('/admin');
+        } catch(error){
+            console.log(error);
+        }
+    },
+    search: async (req, res) => {
+        try{
+            const userSession = req.session.user;
+            const searchDocument = req.query.document || '';
+            const regex = new RegExp(searchDocument, 'i');
+            let user;
+            if (searchDocument){
+                user = await User.find({fullname: regex});
+            } else {
+                user = await User.find({});
+            }
+            const alertMsg = req.flash('alertMsg');
+            const alertStatus = req.flash('alertStatus');
+            const alert = {
+                message: alertMsg,
+                status: alertStatus
+            }
+            res.locals.title = 'Onawan | Search User';
+            res.locals.onPage = 'user';
+            res.render('pages/user', { user, alert, userSession });
+        } catch(error) {
+            console.log(error.message);
+            req.flash('alertMsg', error.message );
+            req.flash('alertStatus', 'danger');
+            res.redirect('/admin/user');
+        }
     }
 }

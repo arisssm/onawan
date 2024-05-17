@@ -6,6 +6,7 @@ module.exports = {
     index: async (req, res) => {
         try {
             const destination = await Destination.find();
+            const userSession = req.session.user;
             const alertMsg = req.flash('alertMsg');
             const alertStatus = req.flash('alertStatus');
             const alert = {
@@ -14,7 +15,7 @@ module.exports = {
             }
             res.locals.title = 'Onawan | Destination';
             res.locals.onPage = 'destination';
-            res.render('pages/destination', {destination, alert});
+            res.render('pages/destination', {destination, alert, userSession});
         } catch(error) {
             req.flash('alertMsg', error.message );
             req.flash('alertStatus', 'danger');
@@ -127,14 +128,14 @@ module.exports = {
     },
     search: async (req, res) => {
         try{
+            const userSession = req.session.user;
             const searchDocument = req.query.document || '';
-            
             const regex = new RegExp(searchDocument, 'i');
             let destination;
             if (searchDocument){
                 destination = await Destination.find({name: regex});
             } else {
-                destination = await Flight.find({});
+                destination = await Destination.find({});
             }
             const alertMsg = req.flash('alertMsg');
             const alertStatus = req.flash('alertStatus');
@@ -144,7 +145,7 @@ module.exports = {
             }
             res.locals.title = 'Onawan | Destination';
             res.locals.onPage = 'destination';
-            res.render('pages/destination', { destination, alert });
+            res.render('pages/destination', { destination, alert, userSession });
         } catch(error) {
             console.log(error.message);
             req.flash('alertMsg', error.message );

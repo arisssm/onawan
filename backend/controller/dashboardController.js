@@ -9,9 +9,11 @@ module.exports = {
                 message: alertMsg,
                 status: alertStatus
             }
+            const userSession = req.session.user;
+            console.log(userSession);
             res.locals.title = 'Onawan | Dashboard';
             res.locals.onPage = 'dashboard';
-            res.render('pages/dashboard', {alert, user});
+            res.render('pages/dashboard', {alert, user, userSession});
         } catch(error) {
             console.log(error.message);
             req.flash('alertMsg', error.message );

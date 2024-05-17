@@ -6,6 +6,7 @@ module.exports = {
     index: async (req, res) => {
         try {
             const dataBanner = await bannerOrder.find();
+            const userSession = req.session.user;
             const alertMsg = req.flash('alertMsg');
             const alertStatus = req.flash('alertStatus');
             const alert = {
@@ -14,7 +15,7 @@ module.exports = {
             }
             res.locals.title = 'Onawan | Banner Order';
             res.locals.onPage = 'orderBanner';
-            res.render('pages/orderBanner', {alert, dataBanner});
+            res.render('pages/orderBanner', {alert, dataBanner, userSession});
         } catch(error) {
             req.flash('alertMsg','Failed, error code: ' + error.message );
             req.flash('alertStatus', 'danger');

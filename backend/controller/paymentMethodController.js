@@ -6,6 +6,7 @@ module.exports = {
     index: async (req, res) => {
         try {
             const paymentMethod = await PaymentMethod.find();
+            const userSession = req.session.user;
             const alertMsg = req.flash('alertMsg');
             const alertStatus = req.flash('alertStatus');
             const alert = {
@@ -14,7 +15,7 @@ module.exports = {
             }
             res.locals.title = 'Onawan | Payment Method ';
             res.locals.onPage = 'paymentMethod';
-            res.render('pages/paymentMethod', { paymentMethod, alert});
+            res.render('pages/paymentMethod', { paymentMethod, alert, userSession});
         } catch(error) {
             // console.log(error);
             req.flash('alertMsg','Failed, error code: ' + error.message );

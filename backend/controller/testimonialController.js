@@ -5,6 +5,7 @@ module.exports = {
     index: async (req, res) => {
         try {
             const testimonial = await DocumentTestimonial.find();
+            const userSession = req.session.user;
             const alertMsg = req.flash('alertMsg');
             const alertStatus = req.flash('alertStatus');
             const alert = {
@@ -13,7 +14,7 @@ module.exports = {
             }
             res.locals.title = 'Onawan | Testimonial';
             res.locals.onPage = 'testimonial';
-            res.render('pages/testimonial', {alert, testimonial});
+            res.render('pages/testimonial', {alert, testimonial, userSession});
         } catch(error) {
             // console.log(error);
             req.flash('alertMsg','Failed, error code: ' + error.message );
