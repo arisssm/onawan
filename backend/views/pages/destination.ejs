@@ -42,7 +42,6 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <!-- <th>Id</th> -->
                                 <th>Image</th>
                                 <th>Name</th>
                                 <th>Location</th>
@@ -57,7 +56,6 @@
                             <% for( let i = 0; i < destination.length; i++ ) { %>
                                 <tr>
                                     <td><%= i+1  %></td>
-                                    <!-- <td><%= destination[i]._id %></td> -->
                                     <td>
                                         <img src="/images/<%= destination[i].image %>" width="150vh" alt="">
                                     </td>
@@ -132,7 +130,7 @@
                         </div>
                         <div class="form-group">
                             <label for="priceDestination" class="font-weight-bold"> Price </label>
-                            <input type="number" class="form-control price" name="price" id="priceDestination"
+                            <input type="text" class="form-control price" name="price" id="priceDestination"
                                 placeholder="add price" autocomplete="off">
                                 <div class="errorMessage text-danger"></div>
                         </div>
@@ -209,7 +207,7 @@
                         </div>
                         <div class="form-group">
                             <label for="priceDestination" class="font-weight-bold"> Price </label>
-                            <input type="number" class="form-control price price-destination" name="price" id="priceDestination"
+                            <input type="text" class="form-control price price-destination" name="price" id="priceDestination"
                                 placeholder="please add price.." autocomplete="off">
                             <div class="errorMessageUpdate text-danger"></div>    
                         </div>
@@ -281,11 +279,6 @@
             let recommend = $(this).data('recommended');
             let indonesia = $(this).data('idn');
             let international = $(this).data('inter');
-            // console.log(price);
-            // console.log(recommend);
-            // console.log(indonesia);
-            // console.log(international);
-
             $('.id').val(id);
             $('.name-destination').val(name);
             $('.location-destination').val(location);

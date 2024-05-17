@@ -57,13 +57,14 @@
                                     <button type="button" class="btn btn-sm cbg text-white btn-edit"
                                     data-id = "<%= user[i]._id %>"
                                     data-fullname = "<%= user[i].fullname %>"
-                                    data-email = "<%= user[i].fullname %>"
+                                    data-email = "<%= user[i].email %>"
                                     data-password = "<%= user[i].password %>"
                                     data-phone = "<%= user[i].phone %>"
                                     data-role = "<%= user[i].role %>"
                                     >
-                                        <i class="fa fa-edit"></i>
-                                        Edit
+                                    <i class="fa fa-edit"></i>
+                                    Edit
+
                                     </button>
                                     <!-- <button type="button" class="btn btn-sm btn-danger btn-delete"
                                     data-id = "<%= user[i]._id %>"
@@ -159,11 +160,23 @@
         </div>
     </div>
     <script>
+        //edit user
         $('#dataTable').on('click', '.btn-edit', function(){
             $('#editUser').modal('show');
-
+            let data_id = $(this).data('id');
+            let data_fullname = $(this).data('fullname');
+            let data_email = $(this).data('email');
+            let data_password = $(this).data('password');
+            let data_phone = $(this).data('phone');
+            let data_role = $(this).data('role');
+            console.log(data_fullname);
+            $('.user-fullname').val(data_fullname);
+            $('.user-email').val(data_email);
+            $('.user-phone').val(data_phone);
+            $('.user-password').val(data_password);
+            $('.user-role').val(data_role);
         });
-
+        //delete user
         $('#dataTable').on('click', '.btn-delete', function(){
             $('#deleteUser').modal('show');     
             let id = $(this).data('id');
@@ -171,5 +184,14 @@
             let url = `/admin/delete-user/${id}?_method=delete`;
             $('.delete-user').attr('action', url);       
         });
+        //alert timeout
+        $(document).ready(function () {
+            const timerAlert = $(".alert").text();
+            if (timerAlert !== "") {
+                setTimeout(function () {
+                $(".alert").fadeOut("slow");
+                }, 5000);
+            }
+            });
     </script>
 <%- include('../components/bottom.ejs')%>
