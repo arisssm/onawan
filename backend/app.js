@@ -8,6 +8,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
+var apiRouter = require('./routes/api');
 /** =========================================== */
 
 
@@ -55,6 +56,7 @@ app.use('/admin-lte',express.static(path.join(__dirname,'node_modules/admin-lte'
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/admin', adminRouter);
+app.use('/api', apiRouter);
 /** ============================================== */
 
 /** ====== Menangkap dan meneruskan ke bagian error handler ======*/
