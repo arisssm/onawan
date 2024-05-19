@@ -1,0 +1,342 @@
+<%- include('../components/head.ejs') %>
+    <div class="container-fluid">
+        <div class="row-cols-1 mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Airports</h1>
+        </div>
+        <div class="row-cols-1">
+            <% if (alert.message != '') { %>
+                <div class="alert alert-<%= alert.status %>" role="alert">
+                    <%- alert.status == 'success' ? `<i class="fas fa-check-square mr-2"></i>`: `<i class="fas fa-exclamation-triangle"></i>` %> 
+                    <%= alert.message %>
+                </div>
+            <% } %>
+        </div>
+        <div class="flash-messages"></div>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 ch">
+                <div class="row d-flex">
+                    <div class="col">
+                        <h6 class="m-0 font-weight-normal text-white">List Of Airports</h6>
+                    </div>
+                    <!-- <div class="col-3 text-right">
+                        <form action="/admin/search-airports" method="get">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control bg-light" name="document" placeholder="search airports" autocomplete="off" required>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-sm btn-info" id="searchAirport"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div> -->
+                    <div class="col-2 text-right">
+                        <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#createAirport">
+                        <i class="fas fa-plus-circle fa-sm text-white"></i> Create Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>City</th>
+                                <th>Code</th>
+                                <th>Airport</th>
+                                <th>Category</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for( let i = 0; i < airports.length; i++ ) { %>
+                                <tr>
+                                    <td><%= i+1  %></td>
+                                    <td><%= airports[i].city %></td>
+                                    <td><%= airports[i].code %></td>
+                                    <td><%= airports[i].airport %></td>
+                                    <td><%= airports[i].category %></td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm cbg text-white btn-edit"
+                                        data-id = "<%= airports[i]._id %>"
+                                        data-city = "<%= airports[i].city %>"
+                                        data-code = "<%= airports[i].code %>"
+                                        data-airport = "<%= airports[i].airport %>"
+                                        data-category = "<%= airports[i].category %>"
+                                        >
+                                            <i class="fa fa-edit"></i>
+                                            Edit
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger btn-delete"
+                                        data-id = "<%= airports[i]._id %>"
+                                        >
+                                            <i class="fa fa-trash"></i>
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Create -->
+    <div class="modal fade" id="createAirport" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header ch text-white">
+                    <h5 class="modal-title">Create Data</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="airportFormCreate" action="/admin/create-airport" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="cityAirport" class="font-weight-bold"> City </label>
+                            <input type="text" class="form-control city" name="city" id="cityAirport"
+                                placeholder="add airport city" autocomplete="off">
+                            <div class="errorMessage text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="codeAirport" class="font-weight-bold"> Code </label>
+                            <input type="text" class="form-control code" name="code" id="codeAirport"
+                                placeholder="add airport code" autocomplete="off">
+                            <div class="errorMessage text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="airport" class="font-weight-bold"> Name Airport </label>
+                            <input type="text" class="form-control airport" name="airport" id="airport"
+                                placeholder="add airport" autocomplete="off">
+                            <div class="errorMessage text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="category" class="font-weight-bold"> Category </label>
+                            <select name="category" class="form-control category" id="category">
+                                <option value="">--Choose One--</option>
+                                <option value="departure"> Departure</option>
+                                <option value="arrival"> Arrival</option>
+                            </select>
+                            <div class="errorMessage text-danger"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+        <!-- Modal Edit -->
+    <div class="modal fade" id="editAirport" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header ch text-white">
+                    <h5 class="modal-title">Edit Data</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="airportFormUpdate" action="/admin/update-airport?_method=put" method="post">
+                    <div class="modal-body">
+                        <input type="text" class="form-control id" name="id" readonly>
+                        <div class="form-group">
+                            <label for="cityAirport" class="font-weight-bold"> City </label>
+                            <input type="text" class="form-control city city-airport" name="city" id="cityAirport"
+                                placeholder="add airport city" autocomplete="off">
+                            <div class="errorMessage text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="codeAirport" class="font-weight-bold"> Code </label>
+                            <input type="text" class="form-control code code-airport" name="code" id="codeAirport"
+                                placeholder="add airport code" autocomplete="off">
+                            <div class="errorMessage text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="airport" class="font-weight-bold"> Code </label>
+                            <input type="text" class="form-control airport name-airport" name="airport" id="airport"
+                                placeholder="add airport" autocomplete="off">
+                            <div class="errorMessage text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="category" class="font-weight-bold"> Category </label>
+                            <select name="category" class="form-control category ctg-airport" id="category">
+                                <option value="">--Choose One--</option>
+                            </select>
+                            <div class="errorMessage text-danger"></div>
+                        </div>
+                    </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-save"></i>
+                        Save
+                    </button>
+                </div>
+                </form>
+        </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Delete -->
+    <div class="modal fade" id="deleteAirport" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Confirm Data</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" class="delete-airport">
+                    <div class="modal-body">
+                        <h5> Are you sure for delete this data ?</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa fa-check-circle"></i>
+                            Yes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $('#dataTable').on('click', '.btn-edit', function(){
+            $('#editAirport').modal('show');
+            let id = $(this).data('id');
+            let city = $(this).data('city');
+            let code = $(this).data('code');
+            let airport = $(this).data('airport');
+            let category = $(this).data('category');
+            let optionCategory = `<option>--Choose One--</option>`;
+            if (category) {
+                optionCategory += `<option value="departure" selected>Departure</option>`;
+                optionCategory += `<option value="arrival">Arrival</option>`;
+            } else {
+                optionCategory += `<option value="departure">Departure</option>`;
+                optionCategory += `<option value="arrival" selected>Arrival</option>`;
+            }
+            console.log(id);
+            $('.id').val(id);
+            $('.city-airport').val(city);
+            $('.code-airport').val(code);
+            $('.name-airport').val(airport);
+            $('.ctg-airport').html(optionCategory);
+        });
+        // Modal Delete
+        $('#dataTable').on('click', '.btn-delete', function(){
+            $('#deleteAirport').modal('show');
+            let id = $(this).data('id');
+            // console.log(id);
+            let url = `/admin/delete-airport/${id}?_method=delete`;
+            $('.delete-airport').attr('action', url);
+            
+        });
+
+        $(document).ready(function(){
+            const timerAlert = $('.alert').text();
+            if( timerAlert !== '') {
+                setTimeout(function(){
+                    $('.alert').fadeOut('slow')
+                }, 3000);
+            }
+        });
+
+        // // jquery ajax untuk response validasi
+        // $('#airportFormCreate').submit(function(event) {
+        //     event.preventDefault();
+        //         let formData = new FormData(this);
+        //         $.ajax({
+        //         method: 'POST',
+        //         url: '/admin/create-airport',
+        //         async: true,
+        //         data: formData,
+        //         contentType: false,
+        //         processData: false,
+        //             success: function(response) {
+        //                 console.log(response);
+        //                 if( response.errors && response.errors.length > 0) {
+        //                     $('.errorMessage').empty();
+        //                     response.errors.forEach(function(error){
+        //                         $('.form-control.' + error.path).siblings('.errorMessage').text(error.msg);
+        //                     });
+        //                 } else {
+        //                     $('#createAirport').modal('hide');
+        //                     let alertMsg = response.alertMsg;
+        //                     let alertStatus = response.alertStatus;
+
+        //                     $('.flash-messages').html(
+        //                         `<div class=" alert alert-` + alertStatus + `"role="alert">` +
+        //                         (alertStatus === 'success' ? `<i class="fas fa-check-square mr-2"></i>` : ` <i class="fas fa-exlamation-triangle"></i>`)
+        //                         + alertMsg + `</div>`
+        //                     );
+
+        //                     const timerAlert = $('.flash-messages').html();
+        //                     if( timerAlert !== '') {
+        //                         setTimeout(function(){
+        //                             $('.flash-messages').fadeOut('slow')
+        //                         }, 3000);
+        //                     }
+        //                     location.reload();
+        //                 }
+        //             },
+        //             error: function(xhr, textStatus, errorThrown) {
+        //                 console.error('Error:', errorThrown);
+        //                 $('.errorFile').text('Bad, please check again your upload.');
+        //             }
+        //         });
+        // });
+        //  // validasi form update
+        //  $('#airportFormUpdate').submit(function(event) {
+        //     event.preventDefault();
+        //         let formData = new FormData(this);
+        //         $.ajax({
+        //         method: 'POST',
+        //         url: '/admin/update-airport?_method=put',
+        //         async: true,
+        //         data: formData,
+        //         contentType: false,
+        //         processData: false,
+        //             success: function(response) {
+        //                 console.log(response);
+        //                 if( response.errors && response.errors.length > 0) {
+        //                     $('.errorMessageUpdate').empty();
+        //                     response.errors.forEach(function(error){
+        //                         $('.form-control.' + error.path).siblings('.errorMessageUpdate').text(error.msg);
+        //                     });
+        //                 } else {
+        //                     $('#editAirport').modal('hide');
+        //                     let alertMsg = response.alertMsg;
+        //                     let alertStatus = response.alertStatus;
+
+        //                     $('.flash-messages').html(
+        //                         `<div class=" alert alert-` + alertStatus + `"role="alert">` +
+        //                         (alertStatus === 'success' ? `<i class="fas fa-check-square mr-2"></i>` : ` <i class="fas fa-exlamation-triangle"></i>`)
+        //                         + alertMsg + `</div>`
+        //                     );
+
+        //                     const timerAlert = $('.flash-messages').html();
+        //                     if( timerAlert !== '') {
+        //                         setTimeout(function(){
+        //                             $('.flash-messages').fadeOut('slow')
+        //                         }, 3000);
+        //                     }
+        //                     location.reload();
+        //                 }
+        //             },
+        //             error: function(xhr, textStatus, errorThrown) {
+        //                 console.error('Error:', errorThrown);
+        //                 $('.errorFileUpdate').text('Bad, please check again your upload.');
+        //             }
+        //         });
+        // });
+    </script>
+
+<%- include('../components/bottom.ejs')%>
