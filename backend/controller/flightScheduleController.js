@@ -1,5 +1,6 @@
 const FlightSchedule = require('../models/flightSchedule');
 const AirportList = require('../models/airportList');
+const Airlines = require('../models/airline');
 const fs = require('fs');
 const path = require('path');
 
@@ -8,8 +9,10 @@ module.exports = {
         try {
             const flightSchedule = await FlightSchedule.find()
             .populate('departureAirportId')
-            .populate('arrivalAirportId');
+            .populate('arrivalAirportId')
+            .populate('airlineId');
             const airports = await AirportList.find();
+            const airlines = await Airlines.find();
             const userSession = req.session.user;
             const alertMsg = req.flash('alertMsg');
             const alertStatus = req.flash('alertStatus');
@@ -23,7 +26,8 @@ module.exports = {
                 flightSchedule,
                 airports, 
                 alert,
-                userSession 
+                userSession,
+                airlines 
             });
         } catch(error) {
             // console.log(error.message);
@@ -35,7 +39,7 @@ module.exports = {
     store: async (req, res) => {
         try {
             const { 
-                airlineName, 
+                airlineId, 
                 departureTime, 
                 arrivalTime, 
                 duration, 
@@ -50,7 +54,7 @@ module.exports = {
             // console.log(req.body);
             // console.log(req.file);
             const flight = new FlightSchedule({
-                airlineName,
+                airlineId,
                 icon: req.file.filename,
                 departureTime,
                 arrivalTime,
@@ -134,7 +138,7 @@ module.exports = {
         try {
             const {
                 id,
-                airlineName,
+                airlineId,
                 departureTime,
                 arrivalTime,
                 duration,
@@ -166,7 +170,7 @@ module.exports = {
                 icon = req.file.filename;
             }
     
-            flightSchedule.airlineName = airlineName;
+            flightSchedule.airlineId = airlineId;
             flightSchedule.departureTime = departureTime;
             flightSchedule.arrivalTime = arrivalTime;
             flightSchedule.duration = duration;

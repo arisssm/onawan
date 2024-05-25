@@ -32,13 +32,6 @@ module.exports = {
                 category
             });
             await newAirport.save();
-
-            // await AirportList.create({
-            //     city,
-            //     code,
-            //     airport,
-            //     category
-            // });
             req.flash('alertMsg', 'New document has been saved');
             req.flash('alertStatus', 'success');
             res.redirect('/admin/airport');

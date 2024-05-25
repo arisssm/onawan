@@ -7,7 +7,7 @@ const destinationController = require('../controller/destinationController');
 const aboutController = require('../controller/aboutController');
 const airlineController = require('../controller/airlineController');
 const promoController = require('../controller/promoController');
-// const promotionController = require('../controller/promotionController');
+const promotionController = require('../controller/promotionController');
 const testimonialController = require('../controller/testimonialController');
 const userController = require('../controller/userController');
 const flightController = require('../controller/flightController');
@@ -18,6 +18,9 @@ const bannerOrderController = require('../controller/bannerOrderController');
 const bannerAirlineController = require('../controller/bannerAirlineController');
 const bannerSupportController = require('../controller/bannerSupportController');
 const paymentMethodController = require('../controller/paymentMethodController');
+const airportController = require('../controller/airportListController');
+const flightScheduleController = require('../controller/flightScheduleController');
+const reservationController = require('../controller/reservationController');
 const { upload } = require('../middlewares/multer');
 const { checkLogin } = require('../middlewares/auth');
 const { 
@@ -70,10 +73,10 @@ router.post('/create-promo',upload.array('image', 2), promoController.store);
 router.put('/update-promo',upload.array('image', 2), promoController.update);
 router.delete('/delete-promo/:id', promoController.delete);
 
-// router.get('/promotion', promotionController.index);
-// router.post('/create-promotion',upload.single('image'), validatePromotion, promotionController.store);
-// router.put('/update-promotion', upload.single('image'), validatePromotion, promotionController.update);
-// router.delete('/delete-promotion/:id', promotionController.delete);
+router.get('/promotion', promotionController.index);
+router.post('/create-promotion',upload.single('image'), validatePromotion, promotionController.store);
+router.put('/update-promotion', upload.single('image'), validatePromotion, promotionController.update);
+router.delete('/delete-promotion/:id', promotionController.delete);
 /** Testimonial ====================================================================== */
 router.get('/testimonial', testimonialController.index);
 router.post('/create-testimonial', upload.single('image'), validateTestimonial, testimonialController.store);
@@ -125,7 +128,22 @@ router.get('/payment-method', paymentMethodController.index);
 router.post('/create-payment-method', upload.single('logo'), validatePaymentMethod, paymentMethodController.store);
 router.put('/update-payment-method', upload.single('logo'),validatePaymentMethod, paymentMethodController.update);
 router.delete('/delete-payment-method/:id', paymentMethodController.delete);
-
+/** Airport ====================================================================== */
+router.get('/airport', airportController.index);
+router.post('/create-airport', airportController.store);
+router.put('/update-airport', airportController.update);
+router.delete('/delete-airport/:id', airportController.delete);
+// /** Flight Schedule ====================================================================== */
+router.get('/flight-schedule', flightScheduleController.index);
+router.post('/create-flight-schedule',upload.single('icon'), flightScheduleController.store);
+router.put('/update-flight-schedule', upload.single('icon'), flightScheduleController.update);
+router.delete('/delete-flight-schedule/:id', flightScheduleController.delete);
+router.get('/search-flight-schedule', flightScheduleController.search);
+router.delete('/delete-airport/:id', airportController.delete);
+// /** Reservation ====================================================================== */
+router.get('/reservation', reservationController.index);
+// router.get('/search-reservation', reservationController.search);
+/** Logout ====================================================================== */
 router.get('/logout', userController.logout);
 
 module.exports = router;

@@ -52,14 +52,16 @@
                             <% for( let i = 0; i < flightSchedule.length; i++ ) { %>
                                 <tr>
                                     <td><%= i+1 %></td>
-                                    <td><%= flightSchedule[i].airlineName %></td>
+                                    <td>
+                                        <%= flightSchedule[i].airlineId.name %>
+                                    </td>
                                     <td><%= flightSchedule[i].departureTime %></td>
                                     <td><%= flightSchedule[i].arrivalTime %></td>
                                     <td><span">IDR </span><%= flightSchedule[i].price %></td>
                                     <td>
                                         <button type="button" class="btn btn-sm cbg text-white btn-edit"
                                         data-id = "<%= flightSchedule[i]._id %>"
-                                        data-airline_flight = "<%= flightSchedule[i].airlineName %>"
+                                        data-airline_flight = "<%= flightSchedule[i].airlineId.name %>"
                                         data-dt_flight = "<%= flightSchedule[i].departureTime %>"
                                         data-at_flight = "<%= flightSchedule[i].arrivalTime %>"
                                         data-ic_flight = "<%= flightSchedule[i].icon %>"
@@ -95,7 +97,7 @@
                                 <tr class="airport-detail" style="display: none;">
                                     <td colspan="9">
                                         <div class="row p-2">
-                                            <img src="/images/<%= flightSchedule[i].icon %>" alt="icon-flight">
+                                            <img src="/images/<%= flightSchedule[i].icon %>" alt="icon-flight" width="150vh">
                                         </div>
                                         <hr class="mt-0 mb-2">
                                         <div class="city-code">
@@ -168,8 +170,12 @@
                                 <div class="col-lg-3 col-md-6 col-sm-12">
                                     <div class="form-group">
                                         <label for="nameAirline" class="font-weight-bold"> Name Airline </label>
-                                        <input type="text" class="form-control airlineName" name="airlineName" id="nameAirline"
-                                            placeholder="add airline name" autocomplete="off">
+                                        <select id="airlineId" class="form-control airlineName" name="airlineId">
+                                            <option value="" disabled selected>Choose Airline</option>
+                                            <% airlines.forEach(airline => { %>
+                                                <option value="<%= airline._id %>"><%= airline.name %></option>
+                                            <% }) %>
+                                        </select>
                                         <div class="errorMessage text-danger"></div>
                                     </div>
                                 </div>
@@ -342,9 +348,13 @@
                                 <input type="hidden" class="form-control id mb-2" name="id" id="id" readonly>
                                 <div class="col-lg-3 col-md-6 col-sm-12">
                                     <div class="form-group">
-                                        <label for="nameAirline" class="font-weight-bold"> Name Airline </label>
-                                        <input type="text" class="form-control airlineName airline-name" name="airlineName" id="nameAirline"
-                                            placeholder="add airline name" autocomplete="off">
+                                        <label for="airlineId" class="font-weight-bold"> Name Airline </label>
+                                        <select id="airlineId" class="form-control airlineName" name="airlineId">
+                                            <option value="" disabled selected>Choose Airline</option>
+                                            <% airlines.forEach(airline => { %>
+                                                <option value="<%= airline._id %>"><%= airline.name %></option>
+                                            <% }) %>
+                                        </select>
                                         <div class="errorMessageUpdate text-danger"></div>
                                     </div>
                                 </div>
@@ -539,8 +549,8 @@
 
                 const val_duration = (arrivalTime - departureTime) / (1000 * 60);
                 const jam = Math.floor(val_duration / 60);
-                const menit = Math.floor(val_duration % 60);
-                document.getElementById('duration').value = jam + ' jam ' + menit + ' menit ';
+                // const menit = Math.floor(val_duration % 60);
+                document.getElementById('duration').value = jam + ' jam ';
             }
         }
         // Modal Edit
@@ -552,7 +562,7 @@
             let dt_arrivalTime = $(this).data('at_flight');
             let dt_price = $(this).data('price_flight');
             let dt_icon = $(this).data('ic_flight');
-            console.log(dt_icon);
+            console.log(dt_airline);
             let imgUrl = "/images/" + dt_icon;
             let dt_duration = $(this).data('duration_flight');
             let dt_capacity = $(this).data('capacity_flight');

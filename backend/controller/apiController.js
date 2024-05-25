@@ -1,30 +1,80 @@
-const Destination = require ('../models/destination');
-const Airline = require('../models/airline');
+const jwt = require ('jsonwebtoken');
+const bcrypt = require ('bcryptjs');
 const About = require('../models/about');
-const BannerHome = require ('../models/homeBanner');
-const BannerDestination = require ('../models/destinationBanner');
-const BannerOrder = require ('../models/orderBanner');
+const Airline = require('../models/airline');
+const AirportList = require ('../models/airportList');
 const BannerAbout = require ('../models/aboutBanner');
-const Promo = require ('../models/promo');
-const Testimonial = require ('../models/testimonial');
-const Flight = require ('../models/flight');
+const BannerAirline = require ('../models/airlineBanner');
+const BannerDestination = require ('../models/destinationBanner');
+const BannerHome = require ('../models/homeBanner');
+const BannerOrder = require ('../models/orderBanner');
+const BannerSupport = require ('../models/supportBanner');
+const Destination = require ('../models/destination');
+const FlightSchedule = require ('../models/flightSchedule');
+// const Payment = require ('../models/payment);
 const PaymentMethod = require ('../models/paymentMethod');
+const Promo = require ('../models/promo');
+const Promotion = require ('../models/promotion');
+// const Reservation = require ('../models/reservation');
+const Testimonial = require ('../models/testimonial');
 const User = require ('../models/user');
 
 
 module.exports = {
     registerUser: async (req, res) => {
         try {
-
-        } catch(error) {
-
+            const { fullname, email, phone, password } = req.body;
+            const user = await User.create({
+                fullname, email, phone, password, role: 'Customer'
+            });
+            res.status(200).json({
+                message: 'Success, your account has been registered!', 
+                user
+            });
+        } catch(error){
+            res.status(400).json({
+                message: 'Failed',
+                error: error.message
+            });
         }
     },
     loginUser: async (req, res) => {
         try {
-            
-        } catch(error) {
+            const { email, password } = req.body;
+            const user = await User.findOne({email: email});
+            if(!user){
+                res.status(400).json({message:'User email not found!'})
+            }
+            const isPasswordMatch = await bcrypt.compare(password, user.password);
+            if(!isPasswordMatch){
+                res.status(400).json({message:'User password not found!'})
+            }
+            if ( user.role != 'Customer'){
+                res.status(400).json({message:'Sorry, customer only!'})
+            }
 
+            const token = jwt.sign({
+                id: user._id,
+                fullname: user.fullname,
+                email: user.email,
+                phone: user.phone
+            },
+                "RANDOM-TOKEN", 
+                {
+                    expiresIn : "12h"
+                }
+            );
+            res.status(200).json({
+                token, 
+                fullname: user.fullname,
+                email: user.email,
+                phone: user.phone
+            });
+        } catch(error){
+            res.status(400).json({
+                message: 'Failed',
+                error: error.message
+            });
         }
     },
     indexDestination: async (req, res) => {
@@ -35,7 +85,7 @@ module.exports = {
             // console.log(error.message);
             res.status(400).json({
                 message: 'Failed',
-                error
+                error: error.message
             });
         }
     },
@@ -47,7 +97,19 @@ module.exports = {
             // console.log(error.message);
             res.status(400).json({
                 message: 'Failed',
-                error
+                error: error.message
+            });
+        }
+    },
+    indexAirport: async ( req, res ) => {
+        try {
+            const airports = await AirportList.find();
+            res.status(200).json({message: 'Success', airports })
+        } catch(error) {
+            // console.log(error.message);
+            res.status(400).json({
+                message: 'Failed',
+                error: error.message
             });
         }
     },
@@ -59,7 +121,7 @@ module.exports = {
             // console.log(error.message);
             res.status(400).json({
                 message: 'Failed',
-                error
+                error: error.message
             });
         }
     },
@@ -71,7 +133,7 @@ module.exports = {
             // console.log(error.message);
             res.status(400).json({
                 message: 'Failed',
-                error
+                error: error.message
             });
         }
     },
@@ -83,7 +145,7 @@ module.exports = {
             // console.log(error.message);
             res.status(400).json({
                 message: 'Failed',
-                error
+                error: error.message
             });
         }
     },
@@ -95,7 +157,7 @@ module.exports = {
             // console.log(error.message);
             res.status(400).json({
                 message: 'Failed',
-                error
+                error: error.message
             });
         }
     },
@@ -107,7 +169,31 @@ module.exports = {
             // console.log(error.message);
             res.status(400).json({
                 message: 'Failed',
-                error
+                error: error.message
+            });
+        }
+    },
+    indexAirlineBanner: async ( req, res ) => {
+        try {
+            const airlineBanner = await BannerAirline.find();
+            res.status(200).json({message: 'Success', airlineBanner })
+        } catch(error) {
+            // console.log(error.message);
+            res.status(400).json({
+                message: 'Failed',
+                error: error.message
+            });
+        }
+    },
+    indexSupportBanner: async ( req, res ) => {
+        try {
+            const supportBanner = await BannerSupport.find();
+            res.status(200).json({message: 'Success', supportBanner })
+        } catch(error) {
+            // console.log(error.message);
+            res.status(400).json({
+                message: 'Failed',
+                error: error.message
             });
         }
     },
@@ -119,19 +205,34 @@ module.exports = {
             // console.log(error.message);
             res.status(400).json({
                 message: 'Failed',
-                error
+                error: error.message
             });
         }
     },
-    indexFlight: async ( req, res ) => {
+    indexPromotion: async ( req, res ) => {
         try {
-            const flight = await Flight.find();
-            res.status(200).json({message: 'Success', flight })
+            const promotion = await Promotion.find();
+            res.status(200).json({message: 'Success', promotion })
         } catch(error) {
             // console.log(error.message);
             res.status(400).json({
                 message: 'Failed',
-                error
+                error: error.message
+            });
+        }
+    },
+    indexFlightSchedule: async (req, res) => {
+        try {
+            const flightSchedule = await FlightSchedule.find()
+                .populate('departureAirportId')
+                .populate('arrivalAirportId')
+                .populate('airlineId');
+            res.status(200).json({ message: 'Success', flightSchedule });
+        } catch (error) {
+            console.log(error.message);
+            res.status(400).json({
+                message: 'Failed',
+                error: error.message
             });
         }
     },
@@ -143,7 +244,7 @@ module.exports = {
             // console.log(error.message);
             res.status(400).json({
                 message: 'Failed',
-                error
+                error: error.message
             });
         }
     },
@@ -155,7 +256,19 @@ module.exports = {
             // console.log(error.message);
             res.status(400).json({
                 message: 'Failed',
-                error
+                error: error.message
+            });
+        }
+    },
+    indexPaymentMethod: async ( req, res ) => {
+        try {
+            const paymentmethod = await PaymentMethod.find();
+            res.status(200).json({message: 'Success', paymentmethod })
+        } catch(error) {
+            // console.log(error.message);
+            res.status(400).json({
+                message: 'Failed',
+                error: error.message
             });
         }
     },
@@ -172,41 +285,94 @@ module.exports = {
         } catch(error){
             res.status(400).json({
                 message: 'Failed',
-                error
-            });
-        }
-    },
-    logoutUser: async (req, res) => {
-        try {
-
-        } catch(error) {
-
-        }
-    },
-    indexPaymentMethod: async ( req, res ) => {
-        try {
-            const paymentmethod = await PaymentMethod.find();
-            res.status(200).json({message: 'Success', paymentmethod })
-        } catch(error) {
-            // console.log(error.message);
-            res.status(400).json({
-                message: 'Failed',
-                error
+                error: error.message
             });
         }
     },
     searchFlight: async (req, res) => {
         try {
+            const { 
+                departureCity, 
+                arrivalCity, 
+                totalPassangers, 
+                flightClass, 
+                departureDate 
+            } = req.body;
 
+            const departureAirport = await AirportList.findOne({ city: departureCity, category: 'departure' });
+            const arrivalAirport = await AirportList.findOne({ city: arrivalCity, category: 'arrival' });
+            console.log(departureAirport);
+            console.log(arrivalAirport);
+            if (!departureAirport || !arrivalAirport) {
+                return res.status(404).json({
+                    message: 'departure or arrival airport not found'
+                });
+            }
+
+            const searchFlight = {
+                departureAirportId: departureAirport._id,
+                arrivalAirportId: arrivalAirport._id,
+                flightClass: flightClass,
+                capacity: { $gte: totalPassangers },
+                departureTime: {
+                    $gte: new Date(departureDate),
+                    $lt: new Date(new Date(departureDate).setDate(new Date(departureDate).getDate() + 1))
+                }
+            };
+            const flights = await FlightSchedule.find(searchFlight)
+                .populate('departureAirportId')
+                .populate('arrivalAirportId')
+                .populate('airlineId');
+
+            const totalFlights = flights.length;
+
+            res.status(200).json({
+                message: 'Success',
+                flights: flights,
+                totalflights: totalFlights,
+                searchFlight: req.body
+            });
         } catch(error) {
-
+            res.status(400).json({
+                message: 'Failed',
+                error: error.message
+            });
+        }
+    },
+    selectFlight: async (req, res) => {
+        try { 
+            const { flight } = req.body;
+            req.session.selectedFlight = flight;
+            res.status(200).json({ message: 'Flight selected success' });
+        } catch(error){
+            res.status(400).json({
+                message: 'Failed to get!',
+                error: error.message
+            });
+        }
+    },
+    getSelectFlight: async (req, res) => {
+        try { 
+            if (req.session.selectedFlight) {
+                res.status(200).json({ flight: req.session.selectedFlight });
+            } else {
+                res.status(404).json({ message: 'No flight selected' });
+            }
+        } catch(error){
+            res.status(400).json({
+                message: 'Failed to get this data',
+                error: error.message
+            });
         }
     },
     postReservation: async (req, res) => {
         try {
-
-        } catch(error) {
-
+           
+        } catch (error) {
+            res.status(400).json({
+                message: 'Failed to reservation',
+                error: error.message
+            });
         }
     },
     postPayment: async (req, res) => {

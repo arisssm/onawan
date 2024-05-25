@@ -18,4 +18,4 @@ const airportListSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('AirportList', airportListSchema);
+module.exports = mongoose.model('airportList', airportListSchema);

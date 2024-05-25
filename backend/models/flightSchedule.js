@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Schema;
 const flightScheduleSchema = new mongoose.Schema({
-    airlineName: {
-        type: String,
+    airlineId: {
+        type: ObjectId,
+        ref: 'airline',
         require: true
     },
     icon: {
@@ -43,14 +44,14 @@ const flightScheduleSchema = new mongoose.Schema({
     },
     departureAirportId: {
         type: ObjectId,
-        ref: 'AirportList',
+        ref: 'airportList',
         required: true
     },
     arrivalAirportId: {
         type: ObjectId,
-        ref: 'AirportList',
+        ref: 'airportList',
         required: true
     }
 });
 
-module.exports = mongoose.model('FlightSchedule', flightScheduleSchema);
+module.exports = mongoose.model('flightSchedule', flightScheduleSchema);

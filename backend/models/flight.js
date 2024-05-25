@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Airport = require('./airport');
-const { ObjectId } = mongoose.Schema;4
+const { ObjectId } = mongoose.Schema;
 
 const flightSchema = new mongoose.Schema({
     airlineName: {
