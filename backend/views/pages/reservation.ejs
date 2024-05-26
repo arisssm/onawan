@@ -1,0 +1,96 @@
+<%- include('../components/head.ejs') %>
+    <div class="container-fluid">
+        <div class="row-cols-1 mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Payment Status</h1>
+        </div>
+        <div class="row-cols-1">
+            <% if (alert.message != '') { %>
+                <div class="alert alert-<%= alert.status %>" role="alert">
+                    <%- alert.status == 'success' ? `<i class="fas fa-check-square mr-2"></i>`: `<i class="fas fa-exclamation-triangle"></i>` %> 
+                    <%= alert.message %>
+                </div>
+            <% } %>
+        </div>
+        <div class="flash-messages"></div>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 ch">
+                <div class="row d-flex">
+                    <div class="col">
+                        <h6 class="m-0 font-weight-normal text-white">List Reservation</h6>
+                    </div>
+                    <div class="col-3 text-right">
+                        <form action="/admin/search-reservation" method="get">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control bg-light" name="document" placeholder="search reservation" autocomplete="off" required>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-sm btn-info" id="searchReservation"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Id Ticket</th>
+                                <th>Customer Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Airline</th>
+                                <th>Arrival City</th>
+                                <!-- <th>Departure Schedule</th> -->
+                                <th>Date Reservation</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for( let r = 0; r < reservation.length; r++ ) { %>
+                                <tr>
+                                    <td><%= r+1  %></td>
+                                    <td><%= reservation[r]._id %></td>
+                                    <td><%= reservation[r].userId.fullname %></td>
+                                    <td><%= reservation[r].userId.email %></td>
+                                    <td><%= reservation[r].userId.phone %></td>
+                                    <td><%= reservation[r].flightId.airlineId.name %></td>
+                                    <td><%= reservation[r].flightId.arrivalAirportId.city %></td>
+                                    <!-- <td>
+                                        <%= reservation[r].flightId.departureTime.toISOString().split('T')[0] %>
+                                    -
+                                        <%= reservation[r].flightId.departureTime.toISOString().split('T')[1].split('.')[0] %>
+                                    </td> -->
+                                    <td>
+                                        <%= reservation[r].reservationDate.toISOString().split('T')[0] %>
+                                        -
+                                        <%= reservation[r].reservationDate.toISOString().split('T')[1].split('.')[0] %>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm bg-info text-white btn-detail"
+                                        >
+                                            <i class="fa fa-rocket"></i>
+                                            Detail
+                                        </button>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            const timerAlert = $('.alert').text();
+            if( timerAlert !== '') {
+                setTimeout(function(){
+                    $('.alert').fadeOut('slow')
+                }, 3000);
+            }
+        });
+    </script>
+
+<%- include('../components/bottom.ejs')%>

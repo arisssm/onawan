@@ -17,6 +17,7 @@ const bannerAboutController = require('../controller/bannerAboutController');
 const bannerOrderController = require('../controller/bannerOrderController');
 const bannerAirlineController = require('../controller/bannerAirlineController');
 const bannerSupportController = require('../controller/bannerSupportController');
+const paymentController = require('../controller/paymentController');
 const paymentMethodController = require('../controller/paymentMethodController');
 const airportController = require('../controller/airportListController');
 const flightScheduleController = require('../controller/flightScheduleController');
@@ -143,6 +144,11 @@ router.delete('/delete-airport/:id', airportController.delete);
 // /** Reservation ====================================================================== */
 router.get('/reservation', reservationController.index);
 // router.get('/search-reservation', reservationController.search);
+
+// /** Payment ====================================================================== */
+router.get('/payment', paymentController.index);
+// router.get('/search-payment', paymentController.search);
+router.put('/update-payment', paymentController.update);
 /** Logout ====================================================================== */
 router.get('/logout', userController.logout);
 

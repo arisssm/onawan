@@ -11,11 +11,11 @@ const BannerOrder = require ('../models/orderBanner');
 const BannerSupport = require ('../models/supportBanner');
 const Destination = require ('../models/destination');
 const FlightSchedule = require ('../models/flightSchedule');
-// const Payment = require ('../models/payment);
+const Payment = require ('../models/payment');
 const PaymentMethod = require ('../models/paymentMethod');
 const Promo = require ('../models/promo');
 const Promotion = require ('../models/promotion');
-// const Reservation = require ('../models/reservation');
+const Reservation = require ('../models/reservation');
 const Testimonial = require ('../models/testimonial');
 const User = require ('../models/user');
 
@@ -367,19 +367,166 @@ module.exports = {
     },
     postReservation: async (req, res) => {
         try {
-           
+            const { 
+                userId,
+                userTitle,
+                reservationDate,
+                totalPayment,
+                passengers,
+                flightId
+            } = req.body;
+            // console.log(req.body);
+            const flight = await FlightSchedule.findOne({ _id: flightId });
+            const user = await User.findOne({ _id: userId });
+    
+            if (!user || !flight) {
+                return res.status(400).json({
+                    message: 'Sorry, you do not have to access.'
+                });
+            }
+    
+            const document = await Reservation.create({
+                userId,
+                userTitle,
+                reservationDate,
+                totalPayment,
+                passengers,
+                flightId
+            });
+    
+            return res.status(200).json({
+                message: 'Success. Reservation has been created',
+                reservation: document
+            });
         } catch (error) {
             res.status(400).json({
-                message: 'Failed to reservation',
+                message: 'Failed to make reservation',
+                error: error.message
+            });
+        }
+    },
+    indexReservation: async (req, res) => {
+        try {
+            const reservation = await Reservation.find()
+            .populate('userId')
+            .populate({
+                path: 'flightId',
+                populate: [
+                    { path: 'departureAirportId', model: 'airportList' },
+                    { path: 'arrivalAirportId', model: 'airportList' },
+                    { path: 'airlineId', model: 'airline' }
+                ]
+            });
+            res.status(200).json({
+                message: 'Success', 
+                reservation: reservation })
+        } catch(error) {
+            // console.log(error.message);
+            res.status(400).json({
+                message: 'Failed',
+                error: error.message
+            });
+        }
+    },
+    showReservation: async (req, res) => {
+        try {
+            const {id} = req.params;
+            const reservation = await Reservation.findOne({_id: id})
+            .populate('userId')
+            .populate('flightId');
+
+            res.status(200).json({
+                message: 'Success to get Reservation',
+                reservation: reservation
+            })
+        } catch (error) {
+            res.status(400).json({
+                message: 'Failed',
                 error: error.message
             });
         }
     },
     postPayment: async (req, res) => {
         try {
+            const { reservationId, paymentMethodId, deadline } = req.body;
+            const document_reservation = await Reservation.findOne({ _id: reservationId});
+            const document_paymentMethod = await PaymentMethod.findOne({_id: paymentMethodId });
+            // console.log(document_reservation);
+
+            if(!document_reservation || !document_paymentMethod) {
+                return res.status(400).json({
+                    message: "Sorry, you do not have to access."
+                });
+            }
+
+            const payment = await Payment.create({
+                reservationId,
+                paymentMethodId,
+                deadline,
+                status: 'belum bayar'
+            });
+
+            res.status(200).json({
+                message: 'Success, payment has been created.',
+                data: payment
+            });
 
         } catch(error) {
+            console.log(error);
+            res.status(400).json({
+                message: 'Failed',
+                error: error.message
+            });
+        }
+    },
+    indexPayment: async (req, res) => {
+        try {
+            const payment = await Payment.find()
+            .populate({
+                path: 'reservationId',
+                populate: [
+                    { 
+                        path: 'flightId', model: 'flightSchedule'
+                    }
+                ]
+            })
+            .populate('paymentMethodId');
 
+            res.status(200).json({
+                message: 'Success to get payment.',
+                data: payment
+            });
+        } catch (error) {
+            // console.log(error);
+            res.status(400).json({
+                message: 'Failed',
+                error: error.message
+            });
+        }
+    },
+    showPayment: async (req, res) => {
+        try {
+            const {id} = req.params;
+            const payment = await Payment.findOne({_id:id})
+            .populate({
+                path: 'reservationId',
+                populate: [
+                    { 
+                        path: 'flightId', model: 'flightSchedule'
+                    }
+                ]
+            })
+            .populate('paymentMethodId');
+
+            res.status(200).json({
+                message: 'Success to get one payment.',
+                data: payment
+            });
+        } catch (error) {
+            res.status(400).json({
+                message: 'Failed',
+                error: error.message
+            });
         }
     },
 }

@@ -1,0 +1,179 @@
+<%- include('../components/head.ejs') %>
+    <div class="container-fluid">
+        <div class="row-cols-1 mb-4">
+            <h1 class="h3 mb-0 text-gray-800">payment Ticket</h1>
+        </div>
+        <div class="row-cols-1">
+            <% if (alert.message != '') { %>
+                <div class="alert alert-<%= alert.status %>" role="alert">
+                    <%- alert.status == 'success' ? `<i class="fas fa-check-square mr-2"></i>`: `<i class="fas fa-exclamation-triangle"></i>` %> 
+                    <%= alert.message %>
+                </div>
+            <% } %>
+        </div>
+        <div class="flash-messages"></div>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 ch">
+                <div class="row d-flex">
+                    <div class="col">
+                        <h6 class="m-0 font-weight-normal text-white">List Payment</h6>
+                    </div>
+                    <div class="col-3 text-right">
+                        <form action="/admin/search-payment" method="get">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control bg-light" name="document" placeholder="search payment" autocomplete="off" required>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-sm btn-info" id="searchPayment"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Id Payment</th>
+                                <th>Id Reservation</th>
+                                <th>Id Payment Method</th>
+                                <th>Payment Method</th>
+                                <th>Status</th>
+                                <th>Deadline</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for( let r = 0; r < payment.length; r++ ) { %>
+                                <tr>
+                                    <td><%= r+1  %></td>
+                                    <td><%= payment[r]._id %></td>
+                                    <td><%= payment[r].reservationId._id %></td>
+                                    <td><%= payment[r].paymentMethodId._id %></td>
+                                    <td><%= payment[r].paymentMethodId.name %></td>
+                                    <td>
+                                        <span class="badge badge-pill badge-primary">
+                                            <%= payment[r].status %>
+                                        </span>
+                                    </td>
+                                   
+                                    <td>
+                                        <%= payment[r].deadline.toISOString().split('T')[0] %>
+                                        -
+                                        <%= payment[r].deadline.toISOString().split('T')[1].split('.')[0] %>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm bg-info text-white btn-edit"
+                                        data-id = "<%= payment[r]._id %>"
+                                        data-reservation = "<%= payment[r].reservationId._id %>"
+                                        data-paymentmethod = "<%= payment[r].paymentMethodId._id %>"
+                                        data-deadline = "<%= payment[r].deadline %>"
+                                        data-status = "<%= payment[r].status %>"
+                                        >
+                                            <i class="fa fa-edit"></i>
+                                            Edit
+                                        </button>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+     <!-- Modal Edit -->
+     <div class="modal fade" id="editPayment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header ch text-white">
+                    <h5 class="modal-title">Edit Data</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="paymentFormUpdate" action="/admin/update-payment?_method=put" method="post">
+                    <div class="modal-body">
+                        <input type="hidden" class="form-control id mb-2" name="id">
+                        <div class="form-group">
+                            <label for="reservationId" class="font-weight-bold"> Reservasi Id </label>
+                            <input type="text" class="form-control reservationId reservation-id" name="reservationId" id="reservationId" readonly>
+                            <div class="errorMessageUpdate text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="paymentMethodId" class="font-weight-bold"> Payment Method Id </label>
+                            <input type="text" class="form-control paymentMethodId paymentMethod-id" name="paymentMethodId" id="paymentMethodId" readonly>
+                            <div class="errorMessageUpdate text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="deadline" class="font-weight-bold"> Deadline </label>
+                            <input type="text" class="form-control deadline deadline-payment" name="deadline" id="deadline" readonly>
+                            <div class="errorMessageUpdate text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="status" class="font-weight-bold"> Status </label>
+                            <select name="status" class="form-control status status-payment" id="status">
+                            </select>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            const timerAlert = $('.alert').text();
+            if( timerAlert !== '') {
+                setTimeout(function(){
+                    $('.alert').fadeOut('slow')
+                }, 3000);
+            }
+        });
+
+        $('#dataTable').on('click', '.btn-edit', function(){
+            $('#editPayment').modal('show');
+            let id = $(this).data('id');
+            let data_reservationId = $(this).data('reservation');
+            let data_paymentMethodId = $(this).data('paymentmethod');
+            let data_deadline = $(this).data('deadline');
+            let data_status = $(this).data('status');
+            // console.log(data_reservationId);
+
+            let optionStatus = `<option>--Choose One--</option>`;
+            if (data_status === "belum bayar") {
+                optionStatus+= `<option value="belum bayar" selected>Belum Bayar</option>`;
+                optionStatus+= `<option value="lunas">Lunas</option>`;
+                optionStatus+= `<option value="selesai">Selesai</option>`;
+            } else if (data_status === "lunas") {
+                optionStatus+= `<option value="belum bayar">Belum Bayar</option>`;
+                optionStatus+= `<option value="lunas"selected>Lunas</option>`;
+                optionStatus+= `<option value="selesai">Selesai</option>`;
+            } else if (data_status === "selesai") {
+                optionStatus+= `<option value="belum bayar">Belum Bayar</option>`;
+                optionStatus+= `<option value="lunas">Lunas</option>`;
+                optionStatus+= `<option value="selesai" selected>Selesai</option>`;
+            } else {
+                optionStatus+= `<option value="belum bayar">Belum Bayar</option>`;
+                optionStatus+= `<option value="lunas">Lunas</option>`;
+                optionStatus+= `<option value="selesai">Selesai</option>`;
+            }
+
+            $('.id').val(id);
+            $('.reservation-id').val(data_reservationId);
+            $('.paymentMethod-id').val(data_paymentMethodId);
+            $('.deadline-payment').val(data_deadline);
+            $('.status-payment').html(optionStatus);
+        });
+
+    </script>
+
+<%- include('../components/bottom.ejs')%>
