@@ -43,17 +43,17 @@ router.get('/search-flight', apiController.searchFlight);
 /**====================================================================== */
 router.get('/airport', apiController.indexAirport);
 /**====================================================================== */
-router.get('/payment-method', apiController.indexPaymentMethod);
+router.get('/payment-method',authJWT, apiController.indexPaymentMethod);
 /**====================================================================== */
 router.get('/user', apiController.indexUser);
 router.put('/update-user', authJWT, apiController.updateUser);
 /**====================================================================== */
-router.post('/post-reservation', apiController.postReservation);
-router.get('/reservation', apiController.indexReservation);
-router.get('/reservation/:id', apiController.showReservation);
+router.post('/post-reservation',authJWT, apiController.postReservation);
+router.get('/reservation',authJWT, apiController.indexReservation);
+router.get('/reservation/:id',authJWT, apiController.showReservation);
 /**====================================================================== */
-router.post('/post-payment', apiController.postPayment);
-router.get('/payment', apiController.indexPayment);
-router.get('/payment/:id', apiController.showPayment);
+router.post('/post-payment',authJWT, apiController.postPayment);
+router.get('/payment',authJWT, apiController.indexPayment);
+router.get('/payment/:id',authJWT, apiController.showPayment);
 /**====================================================================== */
 module.exports = router;

@@ -49,7 +49,7 @@ router.post('/auth-register', userController.postRegister);
 // /** Login ====================================================================== */
 router.get('/', userController.login);
 router.post('/auth-login', userController.authLogin);
-// router.use(checkLogin);
+router.use(checkLogin);
 /** Dashboard ====================================================================== */
 router.get('/dashboard', dashboardController.index);
 /** Destination ====================================================================== */

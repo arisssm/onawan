@@ -15,7 +15,7 @@ module.exports = {
             .populate('paymentMethodId');
             const userSession = req.session.user;
             const alertMsg = req.flash('alertMsg');
-        const alertStatus = req.flash('alertStatus');
+            const alertStatus = req.flash('alertStatus');
             const alert = {
                 message: alertMsg,
                 status: alertStatus
