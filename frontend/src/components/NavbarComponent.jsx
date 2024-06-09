@@ -2,6 +2,7 @@ import {Navbar, Container, Nav, NavLink, Button} from 'react-bootstrap';
 import logo from "../assets/img-logo.png"
 
 const NavbarComponent = () => {
+    
     return (
         <>
             <Navbar expand="lg">
