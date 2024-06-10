@@ -1,5 +1,5 @@
 import { useState } from "react";
-import NavComponent from "../components/NavComponent";
+import NavbarComponent from "../components/NavbarComponent";
 import { Container, Row, Col, Nav, Card, Button } from "react-bootstrap";
 import FooterComponent from "../components/FooterComponent";
 
@@ -45,7 +45,7 @@ const bayarPage = () => {
     return (
         <>
             <div className="bayar">
-                <NavComponent />
+                <NavbarComponent />
                 <Container>
                     <Row>
                         <Col lg={8}>

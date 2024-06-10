@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Card, Button } from "react-bootstrap";
-import NavComponent from "../components/NavComponent";
+import NavbarComponent from "../components/NavbarComponent";
 import FooterComponent from "../components/FooterComponent";
 
 const infoPage = () => {
@@ -14,7 +14,7 @@ const infoPage = () => {
     return (
         <>
             <div className="info">
-                <NavComponent />
+                <NavbarComponent />
                 <div className="detail-info">
                     <Container>
                         <div className="title">

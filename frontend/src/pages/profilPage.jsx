@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Container, Modal, Card, Row, Col, Button, Form, Nav } from "react-bootstrap";
 import FooterComponent from "../components/FooterComponent";
-import NavComponent from "../components/NavComponent";
+import NavbarComponent from "../components/NavbarComponent";
 import maskapai from "../assets/ic-lionair.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const ProfilPage = () => {
     const [show, setShow] = useState(false);
@@ -44,8 +44,15 @@ const ProfilPage = () => {
         setActiveKey(selectedKey);
     };
 
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        navigate('/')
+    }
+
     const renderContent = () => {
         return (
+            
             <Card className="riwayat">
                 <Row>
                     <Col lg={4}>
@@ -98,7 +105,7 @@ const ProfilPage = () => {
 
     return (
         <div className="profil">
-            <NavComponent />
+            <NavbarComponent />
             <Container>
                 <h5 className="mt-5 mb-3">Informasi Profil</h5>
                 <Card>
@@ -181,7 +188,7 @@ const ProfilPage = () => {
                     <Button variant="secondary" onClick={handleCloseLogoutModal}>
                         Batal
                     </Button>
-                    <Button variant="danger" href="/" onClick={handleCloseLogoutModal}>
+                    <Button variant="danger" onClick={handleLogout}>
                         Ya, Keluar
                     </Button>
                 </Modal.Footer>

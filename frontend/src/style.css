@@ -47,11 +47,11 @@ body .btn-utama:hover {
 }
 
 /* beranda */
-.beranda .hero {
+/* .beranda .hero {
     background-image: url(../src/assets/img-hero-beranda.png);
     background-size: cover;
     height: 580px;
-}
+} */
 
 .beranda .hero .deskripsi-hero {
     margin-top: 30%;
@@ -126,11 +126,11 @@ body .btn-utama:hover {
 }
 
 /* destinasi */
-.destinasi .hero-destinasi {
+/* .destinasi .hero-destinasi {
     background-image: url(../src/assets/img-hero-destinasi.png);
     background-size: cover;
     height: 580px;
-}
+} */
 
 
 .destinasi .card a {
@@ -183,11 +183,11 @@ body .btn-utama:hover {
 }
 
 /* about */
-.about .hero-about {
+/* .about .hero-about {
     background-image: url(../src/assets/img-hero-about.png);
     background-size: cover;
     height: 580px;
-}
+} */
 .about .deskripsi-hero {
     margin-top: 20%;
 }
@@ -274,11 +274,11 @@ body .btn-utama:hover {
 }
 
 /* order */
-.order .hero-order {
+/* .order .hero-order {
     background-image: url(../src/assets/img-hero-pesantiket.png);
     background-size: cover;
     height: 580px;
-}
+} */
 .order .deskripsi-hero {
     margin-top: 20%;
 }

@@ -3,28 +3,84 @@ import { Container, Row, Col, Button, Card } from "react-bootstrap";
 import NavbarComponent from "../components/NavbarComponent";
 import PromoComponent from "../components/PromoComponent";
 import FooterComponent from "../components/FooterComponent";
-
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axios from 'axios';
+import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const destinasiPage = () => {
+    const [destinationBanner, setDestinationBanner] = useState([]);
+    const [login, setLogin] = useState(false);
+    const [user, setUser] = useState('');
+    const navigate = useNavigate();
+    const getDestinationBanner = async() => {
+        try {
+            const response = await axios.get('http://127.0.0.1:3000/api/destination-banner');
+            setDestinationBanner(await response.data.destinationBanner);
+            // console.log(response.data);
+        } catch (error) {
+            console.error('Cek lagi kode bagian ini!', error);
+        }
+    }
+    const getUser = () => {
+        try {
+        const token = localStorage.getItem('token');
+        if(token){
+            const userDecode = jwtDecode(token);
+            setUser(userDecode);
+            setLogin(true)
+            } else {
+                setLogin(false);
+            }        
+        } catch (error) {
+            console.error('Invalid Token', error);
+            setLogin(true);
+        }
+    }
+
+    useEffect(()=> {
+        getDestinationBanner();
+        getUser();
+    }, [])
     return (
         <>
             <div className="destinasi">
-                <div className="hero-destinasi">
-                    <NavbarComponent />
-                    <Container>
-                        <Row>
-                            <Col lg={5}>
-                                <div className="deskripsi-hero">
-                                    <h1>Kami rekomendasikan destinasi wisata terbaik.</h1>
-                                    <p>Destinasi wisata dengan fasilitas dan pemandangan yang indah untuk menyegarkan pikiran.</p>
-                                    <Button href="/masuk" variant="outline-dark">Pesan Sekarang</Button>
-                                </div>
-                            </Col>
-                        </Row>
-                    </Container>
-                </div>
+                <NavbarComponent />
+                {destinationBanner.map((data, index)=>(
+                    <div className="hero-destinasi" key={index}
+                        style={{
+                            background: `url(http://127.0.0.1:3000/images/${data.image})`,
+                            backgroundSize:' cover',
+                            height: '580px'
+                        }}
+                    >
+                        <Container>
+                            <Row>
+                                <Col lg={5}>
+                                    <div className="deskripsi-hero">
+                                        <h1>{data.headline}</h1>
+                                        <p>{data.subHeadline}</p>
+                                        { 
+                                            login ? 
+                                            (
+                                                <Link to="/pesan">
+                                                    <Button variant="outline-dark">Pesan Sekarang</Button>
+                                                </Link>
+                                            ) :
+                                            
+                                            (
+                                                <Link to="/masuk">
+                                                    <Button variant="outline-dark">Pesan Sekarang</Button>
+                                                </Link>
+                                            )
+                                        }
+                                    </div>
+                                </Col>
+                            </Row>
+                        </Container>
+                    </div>
+                ))}
 
                 <div className="tempat-indo">
                     <Container>

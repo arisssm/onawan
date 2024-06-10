@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import html2pdf from 'html2pdf.js'; // Import html2pdf
 
 import FooterComponent from "../components/FooterComponent";
-import NavComponent from "../components/NavComponent";
+import NavbarComponent from "../components/NavbarComponent";
 import logo from "../assets/img-logo.png";
 import maskapai from "../assets/ic-lionair.png";
 
@@ -28,7 +28,7 @@ const CetakPage = () => {
 
     return (
         <div className="cetak">
-            <NavComponent />
+            <NavbarComponent />
             <Container>
                 <Row>
                     <Col lg={8}>

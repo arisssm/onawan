@@ -1,28 +1,75 @@
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 
-import NavComponent from "../components/NavComponent";
+import NavbarComponent from "../components/NavbarComponent";
 import PromoComponent from "../components/PromoComponent";
 import FooterComponent from "../components/FooterComponent";
-
+import { useState, useEffect } from "react";
+import axios from 'axios';
+// import { Link, useNavigate } from "react-router-dom";
+// import { jwtDecode } from "jwt-decode";
 
 const orderPage = () => {
+    const [orderBanner, setOrderBanner] =useState([]);
+    // const [user, setUser] = useState('');
+    // const [login, setLogin] = useState(false);
+
+    const getOrderBanner = async() => {
+        try {
+            const response = await axios.get('http://127.0.0.1:3000/api/order-banner');
+            setOrderBanner(await response.data.orderBanner);
+            // console.log(response.data);
+        } catch (error) {
+            console.error('Cek lagi kode bagian ini!', error);
+        }
+    }
+
+    // const getUser = () => {
+    //     try {
+    //         const token = localStorage.getItem('token');
+    //         if(token){
+    //             const userDecode = jwtDecode(token);
+    //             setUser(userDecode);
+    //             setLogin(true)
+    //             } else {
+    //                 setLogin(false);
+    //             }        
+    //         } catch (error) {
+    //             console.error('Invalid Token', error);
+    //             setLogin(true);
+    //     }
+    // }
+
+    useEffect(()=>{
+        getOrderBanner();
+        // getUser();
+    }, [])
 
     return (
         <>
             <div className="order">
-                <div className="hero-order">
-                    <NavComponent />
-                    <Container>
-                        <Row>
-                            <Col lg={4}>
-                                <div className="deskripsi-hero">
-                                    <h1>Cek harga tiket pesawat terbaik!</h1>
-                                    <p>Cek harga tiket pesawat ke tujuan yang kamu ingin!</p>
-                                </div>
-                            </Col>
-                        </Row>
-                    </Container>
-                </div>
+                <NavbarComponent />
+                {orderBanner.map((data, index)=> (
+                    <div 
+                        className="hero-order"
+                        key={index}
+                        style={{
+                            background: `url(http://127.0.0.1:3000/images/${data.image})`,
+                            backgroundSize:' cover',
+                            height: '580px'
+                        }}
+                    >
+                        <Container>
+                            <Row>
+                                <Col lg={4}>
+                                    <div className="deskripsi-hero">
+                                        <h1>{data.headline}</h1>
+                                        <p>{data.subHeadline}</p>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </Container>
+                    </div>
+                ))}
 
                 <div className="pesan-tiket">
                     <Container>

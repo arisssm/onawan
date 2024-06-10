@@ -1,7 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap"
 import { Link } from "react-router-dom";
-
-import NavComponent from "../components/NavComponent";
+import NavbarComponent from "../components/NavbarComponent";
 import FooterComponent from "../components/FooterComponent";
 
 
@@ -9,7 +8,7 @@ const searchPage = () => {
     return (
         <>
             <div className="search">
-                <NavComponent />
+                <NavbarComponent />
                 <Container>
                     {/*Hasil pencarian */}
                     <div className="cari">

@@ -1,27 +1,87 @@
 import { Container, Row, Col, Button } from "react-bootstrap";
-// import {Link} from "react-router-dom";
 
 import NavbarComponent from "../components/NavbarComponent";
 import FooterComponent from "../components/FooterComponent";
+import { useState, useEffect } from "react";
+import axios from 'axios';
+import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const aboutPage = () => {
+    const [aboutBanner, setAboutBanner] =useState([]);
+    const [user, setUser] = useState('');
+    const [login, setLogin] = useState(false);
+    const getAboutBanner = async() => {
+        try {
+            const response = await axios.get('http://127.0.0.1:3000/api/about-banner');
+            setAboutBanner(await response.data.aboutBanner);
+            // console.log(response.data);
+        } catch (error) {
+            console.error('Cek lagi kode bagian ini!', error);
+        }
+    }
+
+    const getUser = () => {
+        try {
+            const token = localStorage.getItem('token');
+            if(token){
+                const userDecode = jwtDecode(token);
+                setUser(userDecode);
+                setLogin(true)
+                } else {
+                    setLogin(false);
+                }        
+            } catch (error) {
+                console.error('Invalid Token', error);
+                setLogin(true);
+        }
+    }
+
+    useEffect(()=>{
+        getAboutBanner();
+        getUser();
+    }, [])
     return (
         <>
             <div className="about">
-                <div className="hero-about">
-                    <NavbarComponent />
-                    <Container>
-                        <Row>
-                            <Col lg={6}>
-                                <div className="deskripsi-hero">
-                                    <h1>Kami membantu semua orang agar bisa travelling dengan nyaman.</h1>
-                                    <p>Kami memiliki visi dan misi yang bertujuan untuk memberikan kenyamanan dalam pemesanan tiket pesawat.</p>
-                                    <Button href="/masuk" variant="outline-dark">Pesan Sekarang</Button>
-                                </div>
-                            </Col>
-                        </Row>
-                    </Container>
-                </div>
+                <NavbarComponent />
+                {aboutBanner.map((data, index)=> (
+                    <div 
+                        className="hero-about"
+                        key={index}
+                        style={{
+                            background: `url(http://127.0.0.1:3000/images/${data.image})`,
+                            backgroundSize:' cover',
+                            height: '580px'
+                        }}
+                    
+                    >
+                        <Container>
+                            <Row>
+                                <Col lg={6}>
+                                    <div className="deskripsi-hero">
+                                        <h1>{data.headline}</h1>
+                                        <p>{data.subHeadline}</p>
+                                        { 
+                                            login ? 
+                                            (
+                                                <Link to="/pesan">
+                                                    <Button variant="outline-dark">Pesan Sekarang</Button>
+                                                </Link>
+                                            ) :
+                                            
+                                            (
+                                                <Link to="/masuk">
+                                                    <Button variant="outline-dark">Pesan Sekarang</Button>
+                                                </Link>
+                                            )
+                                        }
+                                    </div>
+                                </Col>
+                            </Row>
+                        </Container>
+                    </div>
+                ))}
                 <Container>
                 {/* <div className="sejarah"> */}
                     {/* <Container> */}

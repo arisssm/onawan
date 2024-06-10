@@ -1,4 +1,4 @@
-import NavComponent from "../components/NavComponent";
+import NavbarComponent from "../components/NavbarComponent";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -9,7 +9,7 @@ const konfirmasiPage = () => {
     return (
         <>
             <div className="konfirmasi">
-                <NavComponent/>
+                <NavbarComponent/>
                 <Container>
                     <Row>
                         <Col lg={8}>
