@@ -78,12 +78,12 @@ exports.validateAirline = [
 exports.validateHomeBanner = [
     body('headline')
     .notEmpty().withMessage('Headline is required')
-    .isLength({ min:4, max:100}).withMessage('Headline must be between 5 until 100 characters')
-    .matches(/^[a-zA-Z\s]+$/).withMessage('Headline must only contain letters and spaces'),
+    .isLength({ min:4, max:100}).withMessage('Headline must be between 5 until 100 characters'),
+    // .matches(/^[a-zA-Z\s]+$/).withMessage('Headline must only contain letters and spaces'),
     body('subHeadline')
     .notEmpty().withMessage('subHeadline is required')
-    .isLength({ min:4, max:100}).withMessage('subHeadline must be between 5 until 100 characters')
-    .matches(/^[a-zA-Z\s]+$/).withMessage('subHeadline must only contain letters and spaces'),
+    .isLength({ min:4, max:100}).withMessage('subHeadline must be between 5 until 100 characters'),
+    // .matches(/^[a-zA-Z\s]+$/).withMessage('subHeadline must only contain letters and spaces'),
     // body('image').custom((value, { req }) => {
     //     if (!req.file) {
     //         throw new Error('Image is required');
@@ -104,12 +104,12 @@ exports.validateHomeBanner = [
 exports.validateDestinationBanner = [
     body('headline')
     .notEmpty().withMessage('Headline is required')
-    .isLength({ min:4, max:100}).withMessage('Headline must be between 5 until 100 characters')
-    .matches(/^[a-zA-Z\s]+$/).withMessage('Headline must only contain letters and spaces'),
+    .isLength({ min:4, max:100}).withMessage('Headline must be between 5 until 100 characters'),
+    // .matches(/^[a-zA-Z\s]+$/).withMessage('Headline must only contain letters and spaces'),
     body('subHeadline')
     .notEmpty().withMessage('subHeadline is required')
-    .isLength({ min:4, max:100}).withMessage('subHeadline must be between 5 until 100 characters')
-    .matches(/^[a-zA-Z\s]+$/).withMessage('subHeadline must only contain letters and spaces'),
+    .isLength({ min:4, max:100}).withMessage('subHeadline must be between 5 until 100 characters'),
+    // .matches(/^[a-zA-Z\s]+$/).withMessage('subHeadline must only contain letters and spaces'),
     // body('image').custom((value, { req }) => {
     //     if (!req.file) {
     //         throw new Error('Image is required');
@@ -129,13 +129,13 @@ exports.validateDestinationBanner = [
 
 exports.validateAboutBanner = [
     body('headline')
-    .notEmpty().withMessage('Headline is required')
-    .isLength({ min:4, max:100}).withMessage('Headline must be between 5 until 100 characters')
-    .matches(/^[a-zA-Z\s]+$/).withMessage('Headline must only contain letters and spaces'),
+    .notEmpty().withMessage('Headline is required'),
+    // .isLength({ min:4, max:100}).withMessage('Headline must be between 5 until 100 characters'),
+    // .matches(/^[a-zA-Z\s]+$/).withMessage('Headline must only contain letters and spaces'),
     body('subHeadline')
     .notEmpty().withMessage('subHeadline is required')
-    .isLength({ min:4, max:100}).withMessage('subHeadline must be between 5 until 100 characters')
-    .matches(/^[a-zA-Z\s]+$/).withMessage('subHeadline must only contain letters and spaces'),
+    .isLength({ min:4, max:100}).withMessage('subHeadline must be between 5 until 100 characters'),
+    // .matches(/^[a-zA-Z\s]+$/).withMessage('subHeadline must only contain letters and spaces'),
     // body('image').custom((value, { req }) => {
     //     if (!req.file) {
     //         throw new Error('Image is required');

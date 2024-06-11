@@ -13,6 +13,7 @@ router.use((req, res, next) => {
 
 router.post('/register', apiController.registerUser);
 router.post('/login', apiController.loginUser);
+
 /**====================================================================== */
 router.get('/destination', apiController.indexDestination);
 /**====================================================================== */
@@ -48,9 +49,9 @@ router.get('/payment-method',authJWT, apiController.indexPaymentMethod);
 router.get('/user', apiController.indexUser);
 router.put('/update-user', authJWT, apiController.updateUser);
 /**====================================================================== */
-router.post('/post-reservation',authJWT, apiController.postReservation);
-router.get('/reservation',authJWT, apiController.indexReservation);
-router.get('/reservation/:id',authJWT, apiController.showReservation);
+router.post('/post-reservation', apiController.postReservation);
+router.get('/reservation', apiController.indexReservation);
+router.get('/reservation/:id', apiController.showReservation);
 /**====================================================================== */
 router.post('/post-payment',authJWT, apiController.postPayment);
 router.get('/payment',authJWT, apiController.indexPayment);
