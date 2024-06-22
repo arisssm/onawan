@@ -8,7 +8,7 @@ const MaskapaiComponent = () => {
         try {
             const response = await axios.get('http://127.0.0.1:3000/api/airline-banner');
             setAirlineBanner( await response.data.airlineBanner);
-            console.log(response.data);
+            // console.log(response.data);
         } catch (error) {
             console.error('Cek lagi kode bagian ini!', error);
         }
@@ -19,7 +19,7 @@ const MaskapaiComponent = () => {
         try {
             const response = await axios.get('http://127.0.0.1:3000/api/airline');
             setDataAirline( await response.data.airline);
-            console.log(response.data);
+            // console.log(response.data);
         } catch (error) {
             console.error('Cek lagi kode bagian ini!', error);
         }
@@ -48,7 +48,7 @@ const MaskapaiComponent = () => {
                 </Container>
                 ))
             }
-            <Container>
+            {/* <Container>
                 <Row>
                     <Col>
                         <h5>Maskapai penerbangan terpercaya</h5>
@@ -62,7 +62,7 @@ const MaskapaiComponent = () => {
                     </Col>
                 ))}
                 </Row>
-            </Container>
+            </Container> */}
         </div>
     );
 }

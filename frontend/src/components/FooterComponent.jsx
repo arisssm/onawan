@@ -10,7 +10,7 @@ const FooterComponent = () => {
                         <Col lg={6}>
                             <h5>link cepat</h5>
                             <Link to="/">Beranda</Link>
-                            <Link to="/about">Tentang Kami</Link>
+                            <Link to="/tentang-kami">Tentang Kami</Link>
                             <Link to="/destinasi">Destinasi</Link>
                         </Col>
                         <Col lg={6}>

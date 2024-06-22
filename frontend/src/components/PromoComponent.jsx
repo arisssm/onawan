@@ -28,7 +28,7 @@ const PromoComponent = () => {
         try {
             const response = await axios.get('http://127.0.0.1:3000/api/promo');
             setPromo( await response.data.promo);
-            console.log(response.data);
+            // console.log(response.data);
         } catch (error) {
             console.error('Cek lagi kode bagian ini!', error);
         }
@@ -38,7 +38,7 @@ const PromoComponent = () => {
         try {
             const response = await axios.get('http://127.0.0.1:3000/api/promotion');
             setPromotion( await response.data.promotion);
-            console.log(response.data);
+            // console.log(response.data);
         } catch (error) {
             console.error('Cek lagi kode bagian ini!', error);
         }
@@ -73,7 +73,7 @@ const PromoComponent = () => {
     return (
         <div className="promo">
             <Container>
-                <Row>
+                {/* <Row>
                     <Col lg={4}>
                         <img src="../src/assets/ic-promo.png" alt="" className="ic-promo"/>
                         <h1>Promo terbaik <br /> untuk bepergian</h1>
@@ -95,7 +95,7 @@ const PromoComponent = () => {
                             <img src={`http://127.0.0.1:3000/images/${data.image}`} alt="" />
                         </Col>
                     ))}
-                </Row>
+                </Row> */}
                 {/* ========================================== */}
                 { dataPromo.map((data, index)=>(
                     <Row key={index}>
