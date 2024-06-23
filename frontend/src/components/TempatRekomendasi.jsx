@@ -16,7 +16,7 @@ const TempatRekomendasi = () => {
         try {
             const response = await axios.get('http://127.0.0.1:3000/api/destination');
             setRecommended(response.data.destination);
-            console.log(response.data.destination);
+            // console.log(response.data.destination);
         } catch (error) {
             console.error('Cek lagi kode disini', error);
         }

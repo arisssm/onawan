@@ -8,12 +8,27 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 const destinasiPage = () => {
     const [destinationBanner, setDestinationBanner] = useState([]);
+    const [dataRecommended, setRecommended] = useState([]);
     const [login, setLogin] = useState(false);
     const [user, setUser] = useState('');
     const navigate = useNavigate();
+
+    const getRecommended = async() => {
+        try {
+            const response = await axios.get('http://127.0.0.1:3000/api/destination');
+            setRecommended(response.data.destination);
+            // console.log(response.data.destination);
+        } catch (error) {
+            console.error('Cek lagi kode disini', error);
+        }
+    }
+
     const getDestinationBanner = async() => {
         try {
             const response = await axios.get('http://127.0.0.1:3000/api/destination-banner');
@@ -40,6 +55,7 @@ const destinasiPage = () => {
     }
 
     useEffect(()=> {
+        getRecommended();
         getDestinationBanner();
         getUser();
     }, [])
@@ -96,77 +112,26 @@ const destinasiPage = () => {
                                         }
                                     }}
                                 >
-                                    <SwiperSlide>
+                                {dataRecommended.filter(data => data.idnRecommendation).map((data, index) =>(
+                                    <SwiperSlide key={index}>
                                         <Card>
-                                            <Card.Img variant="top" src="../src/assets/img-rajaAmpat.png" />
+                                            <Card.Img variant="top" src={`http://127.0.0.1:3000/images/${data.image}`}/>
                                             <Card.Body>
                                                 <Row>
                                                     <Col lg={6}>
-                                                        <Link to="/order">Raja Ampat</Link>
-                                                        <Card.Text>Indonesia</Card.Text>
+                                                        <Link to="/pesan">{data.name}</Link>
+                                                        <Card.Text>{data.location}</Card.Text>
                                                     </Col>
                                                     <Col lg={6}>
                                                         <Card.Text>Mulai dari</Card.Text>
-                                                        <Card.Title className="cost">IDR 200K</Card.Title>
+                                                        <Card.Title className="cost">IDR {data.price}</Card.Title>
                                                     </Col>
                                                 </Row>
                                             </Card.Body>
                                         </Card>
                                     </SwiperSlide>
-
-                                    <SwiperSlide>
-                                        <Card>
-                                            <Card.Img variant="top" src="../src/assets/img-palembang.png" />
-                                            <Card.Body>
-                                                <Row>
-                                                    <Col lg={6}>
-                                                        <Link to="/order">Palembang</Link>
-                                                        <Card.Text>Indonesia</Card.Text>
-                                                    </Col>
-                                                    <Col lg={6}>
-                                                        <Card.Text>Mulai dari</Card.Text>
-                                                        <Card.Title className="cost">IDR 500K</Card.Title>
-                                                    </Col>
-                                                </Row>
-                                            </Card.Body>
-                                        </Card>
-                                    </SwiperSlide>
-
-                                    <SwiperSlide>
-                                        <Card>
-                                            <Card.Img variant="top" src="../src/assets/img-batam.png" />
-                                            <Card.Body>
-                                                <Row>
-                                                    <Col lg={6}>
-                                                        <Link to="/order">Batam</Link>
-                                                        <Card.Text>Indonesia</Card.Text>
-                                                    </Col>
-                                                    <Col lg={6}>
-                                                        <Card.Text>Mulai dari</Card.Text>
-                                                        <Card.Title className="cost">IDR 900K</Card.Title>
-                                                    </Col>
-                                                </Row>
-                                            </Card.Body>
-                                        </Card>
-                                    </SwiperSlide>
-
-                                    <SwiperSlide>
-                                        <Card>
-                                            <Card.Img variant="top" src="../src/assets/img-yogyakarta.png" />
-                                            <Card.Body>
-                                                <Row>
-                                                    <Col lg={6}>
-                                                        <Link to="/order">Yogyakarta</Link>
-                                                        <Card.Text>Indonesia</Card.Text>
-                                                    </Col>
-                                                    <Col lg={6}>
-                                                        <Card.Text>Mulai dari</Card.Text>
-                                                        <Card.Title className="cost">IDR 1500K</Card.Title>
-                                                    </Col>
-                                                </Row>
-                                            </Card.Body>
-                                        </Card>
-                                    </SwiperSlide>
+                                    ))
+                                }
                                 </Swiper>
                             </Col>
                         </Row>
@@ -187,77 +152,26 @@ const destinasiPage = () => {
                                         }
                                     }}
                                 >
-                                    <SwiperSlide>
-                                        <Card>
-                                            <Card.Img variant="top" src="../src/assets/img-london.png" />
-                                            <Card.Body>
-                                                <Row>
-                                                    <Col lg={6}>
-                                                        <Link to="/order">London</Link>
-                                                        <Card.Text>Inggris</Card.Text>
-                                                    </Col>
-                                                    <Col lg={6}>
-                                                        <Card.Text>Mulai dari</Card.Text>
-                                                        <Card.Title className="cost">IDR 200K</Card.Title>
-                                                    </Col>
-                                                </Row>
-                                            </Card.Body>
-                                        </Card>
-                                    </SwiperSlide>
-
-                                    <SwiperSlide>
-                                        <Card>
-                                            <Card.Img variant="top" src="../src/assets/img-kyoto.png" />
-                                            <Card.Body>
-                                                <Row>
-                                                    <Col lg={6}>
-                                                        <Link to="/order">Kyoto</Link>
-                                                        <Card.Text>Jepang</Card.Text>
-                                                    </Col>
-                                                    <Col lg={6}>
-                                                        <Card.Text>Mulai dari</Card.Text>
-                                                        <Card.Title className="cost">IDR 500K</Card.Title>
-                                                    </Col>
-                                                </Row>
-                                            </Card.Body>
-                                        </Card>
-                                    </SwiperSlide>
-
-                                    <SwiperSlide>
-                                        <Card>
-                                            <Card.Img variant="top" src="../src/assets/img-dubai.png" />
-                                            <Card.Body>
-                                                <Row>
-                                                    <Col lg={6}>
-                                                        <Link to="/order">Dubai</Link>
-                                                        <Card.Text>Uni Emirat Arab</Card.Text>
-                                                    </Col>
-                                                    <Col lg={6}>
-                                                        <Card.Text>Mulai dari</Card.Text>
-                                                        <Card.Title className="cost">IDR 900K</Card.Title>
-                                                    </Col>
-                                                </Row>
-                                            </Card.Body>
-                                        </Card>
-                                    </SwiperSlide>
-
-                                    <SwiperSlide>
-                                        <Card>
-                                            <Card.Img variant="top" src="../src/assets/img-paris.png" />
-                                            <Card.Body>
-                                                <Row>
-                                                    <Col lg={6}>
-                                                        <Link to="/order">Paris</Link>
-                                                        <Card.Text>Perancis</Card.Text>
-                                                    </Col>
-                                                    <Col lg={6}>
-                                                        <Card.Text>Mulai dari</Card.Text>
-                                                        <Card.Title className="cost">IDR 1500K</Card.Title>
-                                                    </Col>
-                                                </Row>
-                                            </Card.Body>
-                                        </Card>
-                                    </SwiperSlide>
+                                    {dataRecommended.filter(data => data.interRecommendation).map((data, index) =>(
+                                        <SwiperSlide key={index}>
+                                            <Card>
+                                                <Card.Img variant="top" src={`http://127.0.0.1:3000/images/${data.image}`}/>
+                                                <Card.Body>
+                                                    <Row>
+                                                        <Col lg={6}>
+                                                            <Link to="/pesan">{data.name}</Link>
+                                                            <Card.Text>{data.location}</Card.Text>
+                                                        </Col>
+                                                        <Col lg={6}>
+                                                            <Card.Text>Mulai dari</Card.Text>
+                                                            <Card.Title className="cost">IDR {data.price}</Card.Title>
+                                                        </Col>
+                                                    </Row>
+                                                </Card.Body>
+                                            </Card>
+                                        </SwiperSlide>
+                                        ))
+                                    }
                                 </Swiper>
                             </Col>
                         </Row>

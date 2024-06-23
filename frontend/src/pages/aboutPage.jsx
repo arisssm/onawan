@@ -9,13 +9,38 @@ import { jwtDecode } from "jwt-decode";
 
 const aboutPage = () => {
     const [aboutBanner, setAboutBanner] =useState([]);
+    const [supportBanner, setSupportBanner] =useState([]);
+    const [dataAbout, setDataAbout] = useState([]);
+
     const [user, setUser] = useState('');
     const [login, setLogin] = useState(false);
+
     const getAboutBanner = async() => {
         try {
             const response = await axios.get('http://127.0.0.1:3000/api/about-banner');
             setAboutBanner(await response.data.aboutBanner);
             // console.log(response.data);
+        } catch (error) {
+            console.error('Cek lagi kode bagian ini!', error);
+        }
+    }
+
+    const getDataAbout = async() => {
+        try {
+            const response = await axios.get('http://127.0.0.1:3000/api/about');
+            setDataAbout(await response.data.about);
+            // console.log(response.data.about);
+        } catch (error) {
+            console.error('Cek lagi kode bagian ini!', error);
+        }
+    }
+
+
+    const getSupportBanner = async() => {
+        try {
+            const response = await axios.get('http://127.0.0.1:3000/api/support-banner');
+            setSupportBanner(await response.data.supportBanner);
+            // console.log(response.data.supportBanner);
         } catch (error) {
             console.error('Cek lagi kode bagian ini!', error);
         }
@@ -38,6 +63,8 @@ const aboutPage = () => {
     }
 
     useEffect(()=>{
+        getSupportBanner();
+        getDataAbout();
         getAboutBanner();
         getUser();
     }, [])
@@ -82,58 +109,51 @@ const aboutPage = () => {
                         </Container>
                     </div>
                 ))}
-                <Container>
-                {/* <div className="sejarah"> */}
-                    {/* <Container> */}
+                {dataAbout.map((data, index)=> (
+                    <Container key={index}>
                         <Row className="sejarah">
                             <Col lg={6}>
                                 <h5>Sejarah Singkat</h5>
                                 <h6>2020 - Awal Perjalanan:</h6>
-                                <p>Onawan lahir dari gagasan untuk memberikan solusi inovatif dalam pemesanan tiket pesawat. Pada tahun 2020, pendiri kami, Jhon, memiliki visi untuk menciptakan platform yang tidak hanya memudahkan proses pemesanan tiket pesawat tetapi juga memberikan pengalaman perjalanan yang tak terlupakan.</p>
+                                <div>{data.history}</div>
                             </Col>
                             <Col lg={6}>
-                                <img src="../src/assets/img-about-sejarah.png" alt="" />
+                                <img src={`http://127.0.0.1:3000/images/${data.imageHistory}`} alt="sejarah" />
                             </Col>
                         </Row>
-                    {/* </Container> */}
-                {/* </div> */}
-
-                {/* <div className="visimisi"> */}
-                    {/* <Container> */}
                         <Row className="visimisi">
                             <Col lg={6}>
                                 <div className="visi">
                                     <img src="../src/assets/ic-visi.png" alt="" className="ic-visi" />
                                     <h2>Visi Kami</h2>
-                                    <p>Menjadi platform pemesanan tiket pesawat terkemuka yang memberikan pengalaman perjalanan yang tak terlupakan dan memberikan nilai tambah bagi setiap pelanggan kami.</p>
+                                    <div>{data.vision}</div>
                                 </div>
                                 <div className="misi mt-5">
                                     <img src="../src/assets/ic-misi.png" alt="" className="ic-misi" />
                                     <h2>Misi Kami</h2>
-                                    <h5>1. Kepuasan Pelanggan:</h5>
-                                    <p>Menempatkan kepuasan pelanggan sebagai prioritas utama dengan menyediakan layanan pelanggan yang responsif, ramah, dan berkomitmen.</p>
-                                    <h5>2. Memberikan Kemudahan dan Keamanan:</h5>
-                                    <p>Menghadirkan layanan pemesanan tiket pesawat yang mudah, cepat, dan aman.</p>
-                                    <h5>3. Harga Terjangkau:</h5>
-                                    <p>Menawarkan harga tiket pesawat yang kompetitif dan transparan, serta memberikan promo dan diskon.</p>
+                                    <div>
+                                        {data.mission.split('\n').map((step,index )=> (
+                                            <div key={index}>{step}</div>
+                                        ))}
+                                    </div>
                                 </div>
                             </Col>
                             <Col lg={6}>
-                                <img src="../src/assets/img-about-visimisi.png" alt="" className="img-visimisi" />
+                                <img src={`http://127.0.0.1:3000/images/${data.image}`} alt="image" className="img-visimisi" />
                             </Col>
                         </Row>
-                    {/* </Container> */}
-                {/* </div> */}
-
-                {/* <div className="bantuan"> */}
-                    {/* <Container> */}
-                        <Row className="bantuan">
-                            <Col>
-                                <img src="../src/assets/img-about-cta.png" alt="" />
+                    </Container>
+                    ))
+                }
+                <Container>
+                    <Row className="bantuan">
+                        {supportBanner.map((data, index) => (
+                            <Col key={index}>
+                                <img src={`http://127.0.0.1:3000/images/${data.image}`} alt="support-banner" />
                             </Col>
-                        </Row>
-                    {/* </Container> */}
-                {/* </div> */}
+                            ))
+                        }
+                    </Row>
                 </Container>
                 <FooterComponent/>
             </div>

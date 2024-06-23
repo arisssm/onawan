@@ -13,7 +13,8 @@ const TestimoniComponent = () => {
     const getTestimonial = async() => {
         try {
             const response = await axios.get('http://127.0.0.1:3000/api/testimonial');
-            console.log(response.data.testimonial);
+            setTestimoni(response.data.testimonial);
+            // console.log(response.data.testimonial);
         } catch(error){
             console.error('Cek lagi kode disini', error);
         }
@@ -21,7 +22,7 @@ const TestimoniComponent = () => {
     };
     useEffect(()=> {
         getTestimonial();
-    });
+    }, []);
     return (
         <div className="testimoni">
             <Container>
@@ -39,23 +40,26 @@ const TestimoniComponent = () => {
                             slidesPerView: 3
                         }
                     }}
-                >
-                    <SwiperSlide>
-                        <Card>
-                            <Row>
-                                <Col md={6}>
-                                    <img src="../src/assets/testi1.png" className="img-fluid rounded-start" alt="..." />
-                                </Col>
-                                <Col md={6}>
-                                    <CardBody>
-                                        <p className="card-text">“Jaman sekarang udah ga perlu repot lagi, gue pesen tiket serasa masak mi instan, prosesnya cepet”</p>
-                                        <h6 className="card-title">Aldoe Rahardian</h6>
-                                        <p className="card-text"><small className="text-body-secondary">Karyawan</small></p>
-                                    </CardBody>
-                                </Col>
-                            </Row>
-                        </Card>
-                    </SwiperSlide>
+                >   
+                    {dataTestimoni.map((data, index)=> (
+                        <SwiperSlide key={index}>
+                            <Card>
+                                <Row>
+                                    <Col md={6}>
+                                        <img src={`http://127.0.0.1:3000/images/${data.image}`} className="img-fluid rounded-start" alt="..." />
+                                    </Col>
+                                    <Col md={6}>
+                                        <CardBody>
+                                            <p className="card-text">{data.content}</p>
+                                            <h6 className="card-title">{data.fullname}</h6>
+                                            <p className="card-text"><small className="text-body-secondary">{data.status}</small></p>
+                                        </CardBody>
+                                    </Col>
+                                </Row>
+                            </Card>
+                        </SwiperSlide>
+                        ))
+                    }
                 </Swiper>
             </Container>
         </div>

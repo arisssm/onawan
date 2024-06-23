@@ -1,18 +1,67 @@
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
-
 import NavbarComponent from "../components/NavbarComponent";
 import PromoComponent from "../components/PromoComponent";
 import FooterComponent from "../components/FooterComponent";
 import { useState, useEffect } from "react";
 import axios from 'axios';
-// import { Link, useNavigate } from "react-router-dom";
-// import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
 
 const orderPage = () => {
+    const navigate = useNavigate();
     const [orderBanner, setOrderBanner] =useState([]);
-    // const [user, setUser] = useState('');
-    // const [login, setLogin] = useState(false);
+    const [access, setAccess] = useState(true);
+    const MySwal = withReactContent(Swal);
+    const showAlert = ( title, text, icon) => {
+        MySwal.fire({
+            title: title,
+            text: text,
+            icon: icon,
+            confirmButtonText: 'Ok'
+        });
+    }
 
+    const [searchData, setFormData] = useState({
+        departureCity: '',
+        arrivalCity: '',
+        totalPassangers: '',
+        flightClass: '',
+        departureDate: ''
+    });
+
+    const handleInputChange = (event) => {
+        const {id, value} = event.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [id] : value
+            })
+        )
+    };
+
+    const handleSubmit = async(event) => {
+        event.preventDefault();
+        try {
+            const params = {
+                departureCity: searchData.departureCity,
+                arrivalCity: searchData.arrivalCity,
+                totalPassangers: searchData.totalPassangers,
+                flightClass: searchData.flightClass,
+                departureDate: searchData.departureDate,
+            }
+            console.log(params);
+            const response = await axios.get('http://127.0.0.1:3000/api/search-flight', {params});
+            console.log(response);
+            showAlert('Berhasil', 'Berikut data penerbangan yang anda cari', 'success');
+            // navigate('/cari-jadwal', 
+                // {state: {flights: response.data.flights, searchDetails: response.data.searchDetails}})
+        }catch(error){
+            console.error('Cek lagi disini error', error);
+            showAlert('Gagal', 'Data penerbangan tidak ditemukan', 'error');
+            navigate('/pesan');
+        }
+    }
     const getOrderBanner = async() => {
         try {
             const response = await axios.get('http://127.0.0.1:3000/api/order-banner');
@@ -23,25 +72,24 @@ const orderPage = () => {
         }
     }
 
-    // const getUser = () => {
-    //     try {
-    //         const token = localStorage.getItem('token');
-    //         if(token){
-    //             const userDecode = jwtDecode(token);
-    //             setUser(userDecode);
-    //             setLogin(true)
-    //             } else {
-    //                 setLogin(false);
-    //             }        
-    //         } catch (error) {
-    //             console.error('Invalid Token', error);
-    //             setLogin(true);
-    //     }
-    // }
+    const getUser = () => {
+        try {
+            const token = localStorage.getItem('token');
+            if(!token){
+                setAccess(false);
+                showAlert('Gagal', 'Maaf tidak boleh akses halaman ini!', 'error');
+                navigate('/masuk');
+            } else {
+                setAccess(true);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     useEffect(()=>{
+        getUser();
         getOrderBanner();
-        // getUser();
     }, [])
 
     return (
@@ -75,33 +123,63 @@ const orderPage = () => {
                     <Container>
                         <Row>
                             <Col>
-                                <Form action="/search">
+                                <Form onSubmit={handleSubmit}>
                                     <Row>
                                         <Col lg={10}>
                                             <Row>
                                                 <Col>
-                                                    <Form.Label>Dari</Form.Label>
-                                                    <Form.Control id="inputDari" type="text" placeholder="Masukkan Kota Asal" />
+                                                    <Form.Label htmlFor="departureCity">Dari</Form.Label>
+                                                    <Form.Control 
+                                                        id="departureCity" 
+                                                        type="text" 
+                                                        placeholder="Masukkan Kota Asal" 
+                                                        value={searchData.departureCity}
+                                                        onChange={handleInputChange}
+                                                    />
                                                 </Col>
                                                 <Col>
-                                                    <Form.Label>Ke</Form.Label>
-                                                    <Form.Control id="inputKe" type="text" placeholder="Masukkan Kota Tujuan" />
+                                                    <Form.Label htmlFor="arrivalCity">Ke</Form.Label>
+                                                    <Form.Control 
+                                                        id="arrivalCity" 
+                                                        type="text" 
+                                                        placeholder="Masukkan Kota Tujuan" 
+                                                        value={searchData.arrivalCity}
+                                                        onChange={handleInputChange}
+                                                    />
                                                 </Col>
                                                 <Col>
-                                                    <Form.Label>Jumlah Penumpang</Form.Label>
-                                                    <Form.Control id="inputJumlahPenumpang" type="number" placeholder="Jumlah Penumpang" min="1" />
+                                                    <Form.Label htmlFor="totalPassangers">Jumlah Penumpang</Form.Label>
+                                                    <Form.Control 
+                                                        id="totalPassangers" 
+                                                        type="number" 
+                                                        placeholder="Jumlah Penumpang" 
+                                                        min="1" 
+                                                        value={searchData.totalPassangers}
+                                                        onChange={handleInputChange}
+                                                        />
                                                 </Col>
                                                 <Col>
-                                                    <Form.Label>Pilih Kelas</Form.Label>
-                                                    <Form.Control id="inputKelas" as="select">
-                                                        <option value="ekonomi">Ekonomi</option>
-                                                        <option value="bisnis">Bisnis</option>
-                                                        <option value="first">First</option>
+                                                    <Form.Label htmlFor="flightClass">Pilih Kelas</Form.Label>
+                                                    <Form.Control 
+                                                        id="flightClass" 
+                                                        as="select"
+                                                        value={searchData.flightClass}
+                                                        onChange={handleInputChange}
+                                                    
+                                                    >
+                                                        <option value="Ekonomi">Ekonomi</option>
+                                                        <option value="Bisnis">Bisnis</option>
+                                                        <option value="Premium">Premium</option>
                                                     </Form.Control>
                                                 </Col>
                                                 <Col>
-                                                    <Form.Label>Tanggal Berangkat</Form.Label>
-                                                    <Form.Control id="inputTanggalBerangkat" type="date"/>
+                                                    <Form.Label htmlFor="departureDate">Tanggal Berangkat</Form.Label>
+                                                    <Form.Control 
+                                                        id="departureDate" 
+                                                        type="date"
+                                                        value={searchData.departureDate}
+                                                        onChange={handleInputChange}
+                                                    />
                                                 </Col>
                                             </Row>
                                         </Col>
