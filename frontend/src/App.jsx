@@ -27,7 +27,7 @@ function App() {
         <Route path="/daftar" Component={DaftarPage} />
         <Route path="/masuk" Component={MasukPage} />
         <Route path="/pesan" Component={OrderPage} />
-        <Route path="/cari-jadwal" Component={SearchPage} />
+        <Route path="/cari-jadwal/*" Component={SearchPage} />
         <Route path="/info" Component={InfoPage} />
         <Route path="/profil" Component={ProfilPage} />
         <Route path="/bayar" Component={BayarPage} />

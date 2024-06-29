@@ -52,10 +52,14 @@ const orderPage = () => {
             }
             console.log(params);
             const response = await axios.get('http://127.0.0.1:3000/api/search-flight', {params});
-            console.log(response);
-            showAlert('Berhasil', 'Berikut data penerbangan yang anda cari', 'success');
-            // navigate('/cari-jadwal', 
-                // {state: {flights: response.data.flights, searchDetails: response.data.searchDetails}})
+            if (response.data.flights.length > 0 ) {
+                showAlert('Berhasil', 'Berikut data penerbangan yang anda cari', 'success');
+                const query = new URLSearchParams(params).toString();
+                navigate(`/cari-jadwal/seacrh-flight?${query}`,  {state: { flights: response.data.flights, searchDetails: response.data.searchFlight}})
+            } else {
+                showAlert('Gagal', 'Data penerbangan tidak tersedia', 'error');
+            }
+            console.log(response.data);
         }catch(error){
             console.error('Cek lagi disini error', error);
             showAlert('Gagal', 'Data penerbangan tidak ditemukan', 'error');
@@ -128,7 +132,7 @@ const orderPage = () => {
                                         <Col lg={10}>
                                             <Row>
                                                 <Col>
-                                                    <Form.Label htmlFor="departureCity">Dari</Form.Label>
+                                                    <Form.Label htmlFor="departureCity">Kota Asal</Form.Label>
                                                     <Form.Control 
                                                         id="departureCity" 
                                                         type="text" 
@@ -138,7 +142,7 @@ const orderPage = () => {
                                                     />
                                                 </Col>
                                                 <Col>
-                                                    <Form.Label htmlFor="arrivalCity">Ke</Form.Label>
+                                                    <Form.Label htmlFor="arrivalCity">Kota Tujuan</Form.Label>
                                                     <Form.Control 
                                                         id="arrivalCity" 
                                                         type="text" 
@@ -162,11 +166,10 @@ const orderPage = () => {
                                                     <Form.Label htmlFor="flightClass">Pilih Kelas</Form.Label>
                                                     <Form.Control 
                                                         id="flightClass" 
-                                                        as="select"
+                                                        as="select" 
                                                         value={searchData.flightClass}
-                                                        onChange={handleInputChange}
-                                                    
-                                                    >
+                                                        onChange={handleInputChange}>
+                                                        <option value="">Pilih Kelas</option>
                                                         <option value="Ekonomi">Ekonomi</option>
                                                         <option value="Bisnis">Bisnis</option>
                                                         <option value="Premium">Premium</option>
