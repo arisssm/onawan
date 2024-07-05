@@ -37,7 +37,7 @@ const orderPage = () => {
             ...prevState,
             [id] : value
             })
-        )
+        );
     };
 
     const handleSubmit = async(event) => {
@@ -50,12 +50,12 @@ const orderPage = () => {
                 flightClass: searchData.flightClass,
                 departureDate: searchData.departureDate,
             }
-            console.log(params);
+            // console.log(params);
             const response = await axios.get('http://127.0.0.1:3000/api/search-flight', {params});
             if (response.data.flights.length > 0 ) {
                 showAlert('Berhasil', 'Berikut data penerbangan yang anda cari', 'success');
                 const query = new URLSearchParams(params).toString();
-                navigate(`/cari-jadwal/seacrh-flight?${query}`,  {state: { flights: response.data.flights, searchDetails: response.data.searchFlight}})
+                navigate(`/cari-jadwal/seacrh-flight?${query}`,  {state: { flights: response.data.flights, searchDetails: response.data.searchFlight}});    
             } else {
                 showAlert('Gagal', 'Data penerbangan tidak tersedia', 'error');
             }

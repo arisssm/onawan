@@ -23,50 +23,78 @@ const searchPage = () => {
 
     const [login, setLogin] = useState(false);
     const [user, setUser] = useState('');
-    const [id, SetId] = useState('');
+    const [id, setId] = useState('');
     const {flights, searchDetails} = location.state || { flights: [], searchDetails: {} };
-    console.log(flights);
-    console.log(searchDetails);
+    // console.log(flights);
+    // console.log(searchDetails);
     const [payments, setPayments] = useState([]);
     const [statusPayment, setStatusPayment] = useState(false);
 
     const getUser = () => {
         try {
             const token = localStorage.getItem('token');
-            if(!token){
+            if(token){
+                const userDecode = jwtDecode(token);
+                setUser(userDecode);
+                setId(userDecode.id);
+                setLogin(true);
+                
+                const time = Date.now() / 1000;
+                if (userDecode.exp < time ) {
+                    localStorage.removeItem('token');
+                    setLogin(false)
+                } else {
+                    setLogin(true)
+                }
+            } else {
                 setLogin(false);
                 showAlert('Gagal', 'Maaf tidak boleh akses halaman ini!', 'error');
                 navigate('/masuk');
-            } else {
-                setLogin(true);
             }
         } catch (error) {
             console.log(error);
         }
     }
 
-    const getPayment = async () => {
+    const getPayment = async() => {
         try {
-            const response = await axios.get('http://127.0.0.1:5000/api/payment');
+            const auth = {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            };
+            const response = await axios.get('http://127.0.0.1:3000/api/payment', auth);
+            console.log(response.data.payment);
             const payments = response.data.payment;
             setPayments(payments);
-            const statusUnpaid = payments.some(payment => payment.reservationId.userId._id === id && payment.status === 'unpaid');
+            const statusUnpaid = payments.some(payment => payment.reservationId.userId._id === id && payment.status === 'belum bayar');
             setStatusPayment(statusUnpaid);
             if (statusUnpaid) {
                 showAlert('Peringatan', 'Anda memiliki pembayaran yang belum diselesaikan.', 'warning');
+            } else {
+                showAlert('Lanjut', 'Anda tidak memiliki pembayaran saat ini', 'success');
             }
         } catch (error) {
             console.error('Cek lagi kode ini, ada kesalahan', error);
         }
     };
 
-    useEffect(()=>{
+    const handleFlightSelect = (flights) => {
+        if(statusPayment) {
+            showAlert('Maaf', 'kamu memiliki pembayaran yang belum di selesaikan', 'warning');
+            navigate('/profil/' + id);
+        } else {
+            navigate('/info', { state: {flights, searchDetails}});
+        }
+    }
+
+    useEffect(() => {
         getUser();
         getPayment();
-    }, [])
+    }, [id])
 
     const tanggal = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
-    const tanggalBerangkat = new Date(searchDetails.departureDate).toLocaleDateString('id-Id', tanggal);
+    const tanggalBerangkat = new Date(searchDetails.departureDate).toLocaleDateString('id-ID', tanggal);
     return (
         <>
             <div className="search">
@@ -100,8 +128,8 @@ const searchPage = () => {
                         <Row className="mb-5">
                             {flights.map((flight)=>(
                                 <Col lg={4} key={flight._id}>
-                                    <div className="card-pilihan">
-                                        <Link to="/info"><img src={`http://127.0.0.1:3000/images/${flight.icon}`} alt="icon-flight" /></Link>
+                                    <div className="card-pilihan" onClick={() => handleFlightSelect(flight)}>
+                                        <Link to="/info"><img src={`http://127.0.0.1:3000/images/${flight.icon}`} width="80vh" alt="icon-flight" /></Link>
                                         <Row className="pilihan-maskapai">
                                             <Link to="/info">{flight.airlineId.name}</Link>
                                             <Col lg={2}>

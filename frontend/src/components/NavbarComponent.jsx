@@ -12,16 +12,22 @@ const NavbarComponent = () => {
     const getUser = () => {
         try {
         const token = localStorage.getItem('token');
-        if(token){
+            if(token){
             const userDecode = jwtDecode(token);
             setUser(userDecode);
-            setLogin(true)
+            const time = Date.now() / 1000;
+                if (userDecode.exp < time ) {
+                    localStorage.removeItem('token');
+                    setLogin(false)
+                } else {
+                    setLogin(true)
+                }
             } else {
                 setLogin(false);
             }        
         } catch (error) {
             console.error('Invalid Token', error);
-            setLogin(true);
+            // setLogin(true);
         }
     }
 

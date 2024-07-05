@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes,} from "react-router-dom";
 
 // import halaman
 import DestinasiPage from "./pages/destinasiPage";
@@ -14,7 +14,6 @@ import BayarPage from "./pages/bayarPage";
 import KonfirmasiPage from "./pages/konfirmasiPage";
 import CetakPage from "./pages/cetakPage";
 
-
 function App() {
 
   return (
@@ -29,7 +28,7 @@ function App() {
         <Route path="/pesan" Component={OrderPage} />
         <Route path="/cari-jadwal/*" Component={SearchPage} />
         <Route path="/info" Component={InfoPage} />
-        <Route path="/profil" Component={ProfilPage} />
+        <Route path="/profil/:id" Component={ProfilPage} />
         <Route path="/bayar" Component={BayarPage} />
         <Route path="/konfirmasi" Component={KonfirmasiPage} />
         <Route path="/cetak" Component={CetakPage} />
