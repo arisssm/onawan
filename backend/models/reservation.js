@@ -11,7 +11,7 @@ const passangerSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    typeTicket: {
+    passengerType: {
         type: String,
         enum: ['Dewasa', 'Anak-anak'],
         require: true

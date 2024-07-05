@@ -6,7 +6,7 @@ const { authJWT } = require('../middlewares/auth');
 
 router.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Method', "GET, POST, PUT, DELETE, OPTIONS");
+    res.setHeader('Access-Control-Allow-Methods', "GET, POST, PUT, DELETE, OPTIONS");
     res.setHeader('Access-Control-Allow-Headers', "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
     next();
 });
@@ -49,7 +49,7 @@ router.get('/payment-method',authJWT, apiController.indexPaymentMethod);
 router.get('/user', apiController.indexUser);
 router.put('/update-user', authJWT, apiController.updateUser);
 /**====================================================================== */
-router.post('/post-reservation', apiController.postReservation);
+router.post('/post-reservation', authJWT, apiController.postReservation);
 router.get('/reservation', apiController.indexReservation);
 router.get('/reservation/:id', apiController.showReservation);
 /**====================================================================== */

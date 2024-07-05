@@ -61,7 +61,7 @@ module.exports = {
             },
                 "RANDOM-TOKEN", 
                 {
-                    expiresIn : "12h"
+                    expiresIn : "2h"
                 }
             );
             res.status(200).json({
@@ -297,7 +297,7 @@ module.exports = {
                 totalPassangers, 
                 flightClass, 
                 departureDate 
-            } = req.body;
+            } = req.query;
 
             const departureAirport = await AirportList.findOne({ city: departureCity, category: 'departure' });
             const arrivalAirport = await AirportList.findOne({ city: arrivalCity, category: 'arrival' });
@@ -330,7 +330,7 @@ module.exports = {
                 message: 'Success',
                 flights: flights,
                 totalflights: totalFlights,
-                searchFlight: req.body
+                searchFlight: req.query
             });
         } catch(error) {
             res.status(400).json({
@@ -485,8 +485,14 @@ module.exports = {
             .populate({
                 path: 'reservationId',
                 populate: [
-                    { 
-                        path: 'flightId', model: 'flightSchedule'
+                    { path: 'userId' },
+                    {
+                        path: 'flightId',
+                        populate: [
+                            { path: 'departureAirportId' },
+                            { path: 'arrivalAirportId' },
+                            { path: 'airlineId' }
+                        ]
                     }
                 ]
             })
@@ -494,7 +500,7 @@ module.exports = {
 
             res.status(200).json({
                 message: 'Success to get payment.',
-                data: payment
+                payment: payment
             });
         } catch (error) {
             // console.log(error);
