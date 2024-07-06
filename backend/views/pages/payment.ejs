@@ -38,7 +38,7 @@
                                 <th>No</th>
                                 <th>Id Payment</th>
                                 <th>Id Reservation</th>
-                                <th>Id Payment Method</th>
+                                <th>Customer</th>
                                 <th>Payment Method</th>
                                 <th>Status</th>
                                 <th>Deadline</th>
@@ -51,14 +51,14 @@
                                     <td><%= r+1  %></td>
                                     <td><%= payment[r]._id %></td>
                                     <td><%= payment[r].reservationId._id %></td>
-                                    <td><%= payment[r].paymentMethodId._id %></td>
+                                    <td><%= payment[r].reservationId.userId.fullname %></td>
                                     <td><%= payment[r].paymentMethodId.name %></td>
                                     <td>
                                         <span class="badge badge-pill badge-primary">
                                             <%= payment[r].status %>
                                         </span>
                                     </td>
-                                   
+                                    
                                     <td>
                                         <%= payment[r].deadline.toISOString().split('T')[0] %>
                                         -

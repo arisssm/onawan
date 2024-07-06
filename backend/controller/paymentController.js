@@ -7,8 +7,14 @@ module.exports = {
             .populate({
                 path: 'reservationId',
                 populate: [
-                    { 
-                        path: 'flightId', model: 'flightSchedule'
+                    { path: 'userId' },
+                    {
+                        path: 'flightId',
+                        populate: [
+                            { path: 'departureAirportId' },
+                            { path: 'arrivalAirportId' },
+                            { path: 'airlineId' }
+                        ]
                     }
                 ]
             })
