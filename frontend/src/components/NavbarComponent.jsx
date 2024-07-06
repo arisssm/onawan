@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const NavbarComponent = () => {
     const [user, setUser] = useState('');
     const [login, setLogin] = useState(false);
+    const [idUser, setIdUser] = useState('');
     const navigate = useNavigate();
 
     const getUser = () => {
@@ -15,6 +16,7 @@ const NavbarComponent = () => {
             if(token){
             const userDecode = jwtDecode(token);
             setUser(userDecode);
+            setIdUser(userDecode.id)
             const time = Date.now() / 1000;
                 if (userDecode.exp < time ) {
                     localStorage.removeItem('token');
@@ -50,7 +52,7 @@ const NavbarComponent = () => {
                         <NavLink href="/pesan">Pesan Tiket</NavLink>
                         <NavLink href="/tentang-kami">Tentang Kami</NavLink>
                         <div className="vr"></div>
-                        <NavLink href="/profil">Profil</NavLink>
+                        <NavLink href={`/profil/${idUser}`}>Profil</NavLink>
                     </Nav>
                 </Navbar.Collapse>
                 </Container>
