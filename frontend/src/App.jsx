@@ -29,7 +29,7 @@ function App() {
         <Route path="/cari-jadwal/*" Component={SearchPage} />
         <Route path="/info" Component={InfoPage} />
         <Route path="/profil/:id" Component={ProfilPage} />
-        <Route path="/bayar" Component={BayarPage} />
+        <Route path="/bayar/:id" Component={BayarPage} />
         <Route path="/konfirmasi" Component={KonfirmasiPage} />
         <Route path="/cetak" Component={CetakPage} />
       </Routes>

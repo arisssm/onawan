@@ -11,16 +11,34 @@ import { jwtDecode } from 'jwt-decode';
 const infoPage = () => {
     const { state } = useLocation();
     const navigate = useNavigate();
-    const { flights, searchDetails} = state;
-    // console.log(flights);
+    const { flights, searchDetails} = state || {};
+    // console.log(searchDetails);
     const [jumlahPenumpang, setJumlahPenumpang] = useState(1);
-    const [ access, setAccess] = useState(true);
-    const [ userInfo, setUserInfo] = useState({ fullname: '', phone: '', email: ''});
+    const [ login, setLogin] = useState(true);
+
+    const [ userInfo, setUserInfo] = useState(
+        { 
+            fullname: '', 
+            phone: '', 
+            email: ''
+        }
+    );
     const [ userTitle, setUserTitle] = useState('');
-    const [passangersDetails, setPassangerDetails] = useState(Array(searchDetails.totalPassangers).fill({ title: '', fullname: '', passengerType: ''}));
+    const [passangersDetails, setPassangerDetails] = useState(
+        Array(searchDetails.totalPassangers)
+        .fill(
+            { 
+                title: '', 
+                fullname: '', 
+                passengerType: ''
+            }
+        )
+    );
+    
     const tanggal = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
     const tanggalBerangkat = new Date(flights.departureTime).toLocaleDateString('id-ID', tanggal);
     const totalPayment = flights.price * searchDetails.totalPassangers;
+    
     const MySwal = withReactContent(Swal);
     const showAlert = ( title, text, icon) => {
         MySwal.fire({
@@ -40,23 +58,34 @@ const infoPage = () => {
     const getUser = () => {
         try {
             const token = localStorage.getItem('token');
-            if(!token){
-                setAccess(false);
-                showAlert('Gagal', 'Maaf tidak boleh akses halaman ini!', 'error');
-                navigate('/masuk');
+            if (token) {
+                const userDecode = jwtDecode(token);
+                const time = Date.now() / 1000;
+                if (userDecode.exp < time) {
+                    localStorage.removeItem('token');
+                    setLogin(false);
+                } else {
+                    setLogin(true);
+                    setUserInfo(userDecode);
+                }
             } else {
-                setAccess(true);
+                setLogin(false);
+                showAlert('Gagal', 'Silahkan login kembali', 'error');
+                navigate('/masuk');
             }
         } catch (error) {
-            console.log(error);
+            console.error('Invalid Token', error);
         }
-    }
+    };
 
-    const infoUser = () => {
-        const userDecode = jwtDecode(localStorage.getItem('token'))
-        setUserInfo(userDecode);
-    }
 
+    const checkState = () => {
+        if (flights == undefined && searchDetails == undefined ) {
+            showAlert('Gagal', 'Data penerbangan tidak ditemukan', 'error');
+            navigate('/pesan');
+        }
+    };
+    
     const handlePassangersDetailsChange = (index, field, value ) => {
         const newPassangersDetails = [...passangersDetails];
         if(!newPassangersDetails[index]) {
@@ -71,7 +100,7 @@ const infoPage = () => {
         event.preventDefault();
         try {
             const body = {
-                userTitle: userTitle,
+                userTitle: userTitle, 
                 userId: userInfo.id,
                 passengers: passangersDetails,
                 flightId: flights._id,
@@ -88,15 +117,15 @@ const infoPage = () => {
 
             const response = await axios.post('http://127.0.0.1:3000/api/post-reservation', body, authConfig);
             console.log(response.data.reservation);
-            // showAlert('Sukses', 'reservasi kamu telah dibuat, silahkan lanjut untuk pembayaran', 'error');
-            // const reservationId = response.data.reservation._id;
+            showAlert('Sukses', 'reservasi kamu telah dibuat, silahkan lanjut untuk pembayaran', 'success');
+            const reservationId = response.data.reservation._id;
 
-            // if(response.statusText == 'OK'){
-            //     navigate('/bayar/' + reservationId, { state: { reservation: response.data.reservation}})
-            // } else {
-            //     navigate('/info');
-            //     showAlert('Error', 'data reservasi tidak benar', 'error');
-            // }
+            if(response.statusText == 'OK'){
+                navigate('/bayar/' + reservationId, { state: { reservation: response.data.reservation}})
+            } else {
+                navigate('/info');
+                showAlert('Error', 'data reservasi tidak benar', 'error');
+            }
         } catch (error) {
             console.error('Cek lagi kode disini', error);
         }
@@ -106,8 +135,10 @@ const infoPage = () => {
 
     useEffect(()=>{
         getUser();
-        infoUser();
-    }, [])
+        if (!login) {
+            checkState();
+        }
+    }, [login])
 
     return (
         <>
