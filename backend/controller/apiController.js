@@ -385,7 +385,7 @@ module.exports = {
                 });
             }
     
-            const document = await Reservation.create({
+            const reservation = await Reservation.create({
                 userId,
                 userTitle,
                 reservationDate,
@@ -393,10 +393,21 @@ module.exports = {
                 passengers,
                 flightId
             });
-    
+
+            const data = await Reservation.findById(reservation._id)
+            .populate('userId')
+            .populate({
+                path: 'flightId',
+                populate: [
+                    { path: 'airlineId'},
+                    { path: 'departureAirportId'},
+                    { path: 'arrivalAirportId'}
+                ]
+            });
+
             return res.status(200).json({
                 message: 'Success. Reservation has been created',
-                reservation: document
+                reservation: data
             });
         } catch (error) {
             res.status(400).json({
@@ -459,16 +470,33 @@ module.exports = {
                 });
             }
 
-            const payment = await Payment.create({
+            const document = await Payment.create({
                 reservationId,
                 paymentMethodId,
                 deadline,
                 status: 'belum bayar'
             });
 
+            const payment = await Payment.findById(document._id)
+            .populate({
+                path: 'reservationId',
+                populate: [
+                    { path: 'userId' },
+                    {
+                        path: 'flightId',
+                        populate: [
+                            { path: 'departureAirportId' },
+                            { path: 'arrivalAirportId' },
+                            { path: 'airlineId' }
+                        ]
+                    }
+                ]
+            })
+            .populate('paymentMethodId');
+
             res.status(200).json({
                 message: 'Success, payment has been created.',
-                data: payment
+                payment: payment
             });
 
         } catch(error) {
@@ -517,8 +545,14 @@ module.exports = {
             .populate({
                 path: 'reservationId',
                 populate: [
-                    { 
-                        path: 'flightId', model: 'flightSchedule'
+                    { path: 'userId' },
+                    {
+                        path: 'flightId',
+                        populate: [
+                            { path: 'departureAirportId' },
+                            { path: 'arrivalAirportId' },
+                            { path: 'airlineId' }
+                        ]
                     }
                 ]
             })

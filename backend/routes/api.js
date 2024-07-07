@@ -44,7 +44,7 @@ router.get('/search-flight', apiController.searchFlight);
 /**====================================================================== */
 router.get('/airport', apiController.indexAirport);
 /**====================================================================== */
-router.get('/payment-method',authJWT, apiController.indexPaymentMethod);
+router.get('/payment-method', apiController.indexPaymentMethod);
 /**====================================================================== */
 router.get('/user', apiController.indexUser);
 router.put('/update-user', authJWT, apiController.updateUser);
