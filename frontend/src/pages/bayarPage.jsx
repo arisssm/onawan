@@ -22,8 +22,9 @@ const bayarPage = () => {
     }
 
     const { reservation } = state || {};
-    // console.log(reservation);
+    console.log(reservation);
     const { id } = useParams();
+
     const [ login, setLogin] = useState(true);
     const [ paymentMethods, setPaymentMethods] = useState([]);
     const [activeKey, setActiveKey] = useState('');
@@ -36,6 +37,7 @@ const bayarPage = () => {
             const token = localStorage.getItem('token');
             if (token) {
                 const userDecode = jwtDecode(token);
+                console.log(userDecode);
                 const time = Date.now() / 1000;
                 if (userDecode.exp < time) {
                     localStorage.removeItem('token');
@@ -55,7 +57,7 @@ const bayarPage = () => {
 
     const checkState = () => {
         if (reservation == undefined ) {
-            showAlert('Gagal', 'Data penerbangan tidak ditemukan', 'error');
+            showAlert('Gagal', 'Silahkan kembali cari penerbangan!', 'error');
             navigate('/pesan');
         }
     };
@@ -79,8 +81,8 @@ const bayarPage = () => {
     }
 
     const postPayment = async (event) => {
+        event.preventDefault();
         try{
-            event.preventDefault();
             const selectedPayment = getSelectedPaymentMethod();
             if(!selectedPayment){
                 showAlert('Gagal', 'Silahkan pilih metode pembayaran!', 'error');
@@ -93,9 +95,9 @@ const bayarPage = () => {
             const body = {
                 reservationId: reservation._id,
                 paymentMethodId: selectedPayment._id,
-                deadline: deadline.toSOString(),
+                deadline: deadline.toISOString(),
                 status: 'belum bayar'
-            }
+            };
     
             const authConfig = {
                 headers: {
@@ -105,7 +107,7 @@ const bayarPage = () => {
     
             const response = await axios.post('http://127.0.0.1:3000/api/post-payment', body, authConfig);
             console.log(response.data.payment);
-            showAlert('Sukses', 'pembayaran kamu telah dibuat, silahkan lanjut untuk konfirmasi', 'success');
+            showAlert('Sukses', 'Pembayaran kamu telah dibuat, silahkan lanjut untuk konfirmasi', 'success');
             const paymentId = response.data.payment._id;
             if(response.statusText == 'OK'){
                 navigate('/konfirmasi/' + paymentId, { state: { payment: response.data.payment}})

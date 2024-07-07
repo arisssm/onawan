@@ -30,7 +30,7 @@ function App() {
         <Route path="/info" Component={InfoPage} />
         <Route path="/profil/:id" Component={ProfilPage} />
         <Route path="/bayar/:id" Component={BayarPage} />
-        <Route path="/konfirmasi" Component={KonfirmasiPage} />
+        <Route path="/konfirmasi/:id" Component={KonfirmasiPage} />
         <Route path="/cetak" Component={CetakPage} />
       </Routes>
     </>
