@@ -1,13 +1,26 @@
 import { Container, Row, Col, Button, Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link,  useLocation, useParams } from "react-router-dom";
 import html2pdf from 'html2pdf.js'; // Import html2pdf
 
 import FooterComponent from "../components/FooterComponent";
 import NavbarComponent from "../components/NavbarComponent";
 import logo from "../assets/img-logo.png";
-import maskapai from "../assets/ic-lionair.png";
 
 const CetakPage = () => {
+    const { state } = useLocation();
+    const { payment } = state || {};
+    console.log(payment);
+    const { id } = useParams();
+
+    const user = payment.reservationId.userId;
+    const flight = payment.reservationId.flightId;
+    const passanger = payment.reservationId.passengers;
+    const tanggal = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+    const tanggalBerangkat = new Date(payment.reservationId.flightId.departureTime).toLocaleDateString('id-ID', tanggal);
+    const tanggalKedatangan = new Date(payment.reservationId.flightId.departureTime).toLocaleDateString('id-ID', tanggal);
+    const tanggalPemesanan = new Date(payment.reservationId.reservationDate).toLocaleDateString('id-ID', tanggal);
+
+    console.log(passanger);
     // Fungsi untuk menangani klik tombol unduh
     const handleDownload = () => {
         // Pilih elemen yang akan diubah menjadi PDF
@@ -49,19 +62,19 @@ const CetakPage = () => {
 
                                 <Row className="mb-3">
                                     <Col lg={3}>
-                                        <img src={maskapai} alt="" />
+                                        <img src={`http://127.0.0.1:3000/images/${ payment.reservationId.flightId.icon}`} width="80vh" alt="" />
                                     </Col>
                                     <Col lg={3}>
                                         <p>Nama Pemesan:</p>
-                                        <h6>Jhon Doe</h6>
+                                        <h6>{user.fullname}</h6>
                                     </Col>
                                     <Col lg={3}>
                                         <p>Tanggal Pemesanan:</p>
-                                        <h6>Minggu, 14 Januari 2024</h6>
+                                        <h6>{tanggalPemesanan}</h6>
                                     </Col>
                                     <Col lg={3}>
                                         <p>Kode Booking:</p>
-                                        <h6 className="text-info">JKPL14</h6>
+                                        <h6 className="text-info">{payment.reservationId._id}</h6>
                                     </Col>
                                 </Row>
 
@@ -77,9 +90,9 @@ const CetakPage = () => {
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>B 737 Ekonomi C</td>
-                                                <td>Senin, 15 Januari 2024 | 07.00 <br /> Palembang - Sultan Mahmud Badaruddin II Airport </td>
-                                                <td>Senin, 15 Januari 2024 | 09.00 <br /> Jakarta - Soekarno Hatta Airport </td>
+                                                <td>{flight.flightNumber} {flight.flightClass}</td>
+                                                <td>{tanggalBerangkat} | 07.00 <br /> Palembang - Sultan Mahmud Badaruddin II Airport </td>
+                                                <td>{tanggalKedatangan} | 09.00 <br /> Jakarta - Soekarno Hatta Airport </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -98,13 +111,15 @@ const CetakPage = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Tuan</td>
-                                                <td>Jhon Doe</td>
-                                                <td>Dewasa</td>
-                                                <td>1234567890</td>
-                                            </tr>
+                                            {passanger.map((user, index) => (
+                                                <tr key={index}>
+                                                    <td>1</td>
+                                                    <td>{user.title}</td>
+                                                    <td>{user.fullname}</td>
+                                                    <td>{user.passengerType}</td>
+                                                    <td>{user._id}</td>
+                                                </tr>
+                                            ))}
                                         </tbody>
                                     </table>
                                 </div>

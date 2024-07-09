@@ -31,7 +31,7 @@ function App() {
         <Route path="/profil/:id" Component={ProfilPage} />
         <Route path="/bayar/:id" Component={BayarPage} />
         <Route path="/konfirmasi/:id" Component={KonfirmasiPage} />
-        <Route path="/cetak" Component={CetakPage} />
+        <Route path="/cetak/:id" Component={CetakPage} />
       </Routes>
     </>
   )

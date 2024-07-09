@@ -43,6 +43,35 @@ const ProfilPage = () => {
         email: '',
     });
 
+    const handleFormModal = async(event) => {
+        event.preventDefault();
+        try {
+            const body = {
+                id: formData.id,
+                fullname: formData.fullname,
+                phone: formData.phone,
+                email: formData.email
+            };
+
+            console.log(body);
+
+            const auth = {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            };
+
+            const response = await axios.put('http://127.0.0.1:3000/api/update-user/', body, auth);
+            console.log(response.data);
+            showAlert('Berhasil', 'Profilmu sudah di-update!', 'success');
+            handleClose();
+            setUser(response.data.updateUser);
+            setFormData(response.data.updateUser);
+        }catch(error){
+            console.error('API tidak valid, form submit tidak benar' ,error)
+        }
+    }
+
     const getUser = async() => {
         try {
             const token = localStorage.getItem('token');
@@ -50,7 +79,7 @@ const ProfilPage = () => {
                 const userDecode = jwtDecode(token);
                 console.log(userDecode);
                 setId(userDecode.id);
-                
+
                 const time = Date.now() / 1000;
                 if (userDecode.exp < time) {
                     localStorage.removeItem('token');
@@ -58,15 +87,15 @@ const ProfilPage = () => {
                 } else {
                     setLogin(true);
                 }
-
+        
                 const authConfig = {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 }
 
-                const response = await axios.post('http://127.0.0.1:3000/api/update-user', authConfig);
-                console.log(response.data.user);
+                const response = await axios.get(`http://127.0.0.1:3000/api/detail-user/${userDecode.id}`, authConfig);
+                console.log(response.data);
                 const userData = response.data.user;
                 setUser(userData);
                 setFormData({
@@ -88,7 +117,7 @@ const ProfilPage = () => {
     const getPayment = async() => {
         try{
             const response = await axios.get('http://127.0.0.1:3000/api/payment');
-            console.log(response.data.payment);
+            // console.log(response.data.payment);
             setPayments(response.data.payment)
         } catch(error){
             console.error('Cek kode ini, ada kesalahan', error)
@@ -116,21 +145,21 @@ const ProfilPage = () => {
         setShow(false);
     };
 
-    const handleChange = (e) => {
+    const handleChange = (e) => { 
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         });
     };
 
-    const [activeKey, setActiveKey] = useState('pending');
+    const [activeKey, setActiveKey] = useState('');
     const handleSelect = (selectedKey) => {
         setActiveKey(selectedKey);
     };
 
     const renderContent = () => {
         const userPayment = getSelectedPayment();
-        console.log(userPayment);
+        // console.log(userPayment);
         if (!userPayment || userPayment.length === 0) return null;
         return userPayment.map((payment) => {
             const tanggal = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -151,7 +180,7 @@ const ProfilPage = () => {
                         </Col>
                         <Col lg={4}>
                             <p>Maskapai</p>
-                            <img src={`http://127.0.0.1:3000/images/${payment.reservationId.flightId.icon}`} alt="" />
+                            <img src={`http://127.0.0.1:3000/images/${payment.reservationId.flightId.icon}`} width="80vh" alt="" />
                         </Col>
                     </Row>
                     <hr />
@@ -200,9 +229,9 @@ const ProfilPage = () => {
                     <Row className="d-flex align-items-center">
                         <Col lg={6}>
                             <p>Nama Lengkap</p>
-                            <h5>{formData.nama}</h5>
+                            <h5>{formData.fullname}</h5>
                             <p>Nomor Telepon</p>
-                            <h5>{formData.telpon}</h5>
+                            <h5>{formData.phone}</h5>
                             <p>Email</p>
                             <h5>{formData.email}</h5>
                         </Col>
@@ -245,23 +274,55 @@ const ProfilPage = () => {
                     <Modal.Title>Edit Info</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form>
-                        <Form.Label className="mt-2">Nama Lengkap</Form.Label>
-                        <Form.Control className="mb-2" type="text" placeholder="Masukkan Nama Lengkap" name="nama" />
-                        <Form.Label className="mt-2">Nomor Telepon</Form.Label>
-                        <Form.Control className="mb-2" type="text" placeholder="Masukkan Nomor Telepon" name="telpon" />
-                        <Form.Label className="mt-2">Email</Form.Label>
-                        <Form.Control className="mb-2" type="email" placeholder="Masukkan Nama Lengkap" name="email" />
+                    <Form onSubmit={handleFormModal}>
+                        <Form.Label htmlFor="id" className="mt-2">Id</Form.Label>
+                        <Form.Control 
+                            id="id"
+                            name="id"
+                            className="mb-2" 
+                            type="text"
+                            value={formData.id || ''} 
+                            onChange={handleChange} 
+                            readOnly
+                            style={{backgroundColor: 'whitesmoke'}}
+                        />
+                        <Form.Label htmlFor="fullname" className="mt-2">Nama Lengkap</Form.Label>
+                        <Form.Control 
+                            id="fullname"
+                            name="fullname"
+                            className="mb-2" 
+                            type="text"
+                            value={formData.fullname || ''} 
+                            onChange={handleChange} 
+                        />
+                        <Form.Label htmlFor="phone" className="mt-2">Nomor Telepon</Form.Label>
+                        <Form.Control 
+                            id="phone"
+                            name="phone"
+                            className="mb-2" 
+                            type="text"
+                            value={formData.phone || ''} 
+                            onChange={handleChange}  
+                        />
+                        <Form.Label htmlFor="email" className="mt-2">Email</Form.Label>
+                        <Form.Control 
+                            id="email"
+                            name="email"
+                            className="mb-2" 
+                            type="email" 
+                            value={formData.email || ''} 
+                            onChange={handleChange}  
+                        />
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleClose}>
+                                Tutup
+                            </Button>
+                            <Button variant="primary" type="submit">
+                                Simpan
+                            </Button>
+                        </Modal.Footer>
                     </Form>
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Tutup
-                    </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Simpan
-                    </Button>
-                </Modal.Footer>
             </Modal>
 
             {/* Modal keluar akun */}
