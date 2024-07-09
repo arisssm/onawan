@@ -48,13 +48,14 @@ router.get('/payment-method', apiController.indexPaymentMethod);
 /**====================================================================== */
 router.get('/user', apiController.indexUser);
 router.put('/update-user', authJWT, apiController.updateUser);
+router.get('/detail-user/:id', authJWT, apiController.detailUser);
 /**====================================================================== */
 router.post('/post-reservation', authJWT, apiController.postReservation);
 router.get('/reservation', apiController.indexReservation);
 router.get('/reservation/:id', apiController.showReservation);
 /**====================================================================== */
 router.post('/post-payment',authJWT, apiController.postPayment);
-router.get('/payment',authJWT, apiController.indexPayment);
+router.get('/payment', apiController.indexPayment);
 router.get('/payment/:id',authJWT, apiController.showPayment);
 /**====================================================================== */
 module.exports = router;

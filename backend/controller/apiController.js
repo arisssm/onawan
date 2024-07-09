@@ -272,20 +272,39 @@ module.exports = {
             });
         }
     },
+
+    detailUser: async (req, res) => {
+        try {
+            const userId = req.params.id;
+            const user = await User.findById(userId).select('-password');
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+            res.status(200).json({ user });
+        } catch (error) {
+            console.error('Error fetching user details:', error);
+            res.status(500).json({ message: 'Server error' });
+        }
+    },
+
     updateUser: async (req, res) => {
         try {
             const { id, fullname, email, phone, password } = req.body;
-            const updateUser = await User.findOneAndUpdate({ _id:id}, {
-                fullname: fullname,
-                email: email,
-                phone: phone,
-                password: password
-            }, {new: true});
+            const updateField = {};
+                if (fullname) updateField.fullname = fullname;
+                if (email) updateField.email = email;
+                if (phone) updateField.phone = phone;
+                if (password) updateField.password = password;
+
+                const updateUser = await User.findByIdAndUpdate(id, updateField, { new: true });
+                if (!updateUser) {
+                    return res.status(404).json({ message: 'User not found' });
+                }
             res.status(200).json({message: 'Success', updateUser })
         } catch(error){
             res.status(400).json({
                 message: 'Failed',
-                error: error.message
+                error: error
             });
         }
     },
