@@ -17,8 +17,8 @@ This project is a full-stack web application with an Express.js backend and a Re
 ### Installation
 
 1. Clone the repository:
-   git clone https://github.com/your-username/my-project.git
-   cd my-project
+   git clone https://github.com/username/project.git
+   cd project
 2. Install dependencies for both backend and frontend:
    cd backend && cd frontend
    npm install
